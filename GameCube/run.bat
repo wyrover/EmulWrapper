@@ -1,0 +1,2 @@
+rem "\\NAS\emul\GameCube\emulator\dolphin-master-4.0-2097-x64\Dolphin.exe" /b /e "\\NAS\emul\GameCube\image\젤다의 전설 - 황혼의 공주 [The Legend of Zelda - Twilight Princess].gcz"
+"\\NAS\emul\GameCube\emulator\dolphin-master-4.0-2097-x64\Dolphin.exe" --exec=\\.\F:

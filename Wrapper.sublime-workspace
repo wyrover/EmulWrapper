@@ -1,0 +1,934 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"A_Scr",
+				"A_ScreenHeight"
+			],
+			[
+				"A_Scree",
+				"A_ScreenWidth"
+			],
+			[
+				"mouse",
+				"MouseClick"
+			],
+			[
+				"prop",
+				"properties"
+			],
+			[
+				"exit",
+				"ExitApp"
+			],
+			[
+				"%A%",
+				"%A_LoopFileFullPath%"
+			],
+			[
+				"imagef",
+				"imageFilePath"
+			],
+			[
+				"Trayi",
+				"TrayTip"
+			],
+			[
+				"Resol",
+				"ResolutionChanger"
+			],
+			[
+				"tr",
+				"Tray"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "#NoEnv\n#include %A_ScriptDir%\\..\\..\\ZZ_Library\\Include.ahk\n\nemulatorPid := \"\"\n\nimageFilePath := %0%\n;imageFilePath := \"d:\\download\\PS1 ROM\\전국무쌍 (한글판)\\Sengoku Mugen (J).ccd\"\n\nif ( imageFilePath = \"\" ) {\n\n    Run, % \"ePSXe.exe\",,,emulatorPid\n	ExitApp	\n\n} else {\n\n	setConfig( imageFilePath )\n\n	if ( VirtualDisk.open( imageFilePath ) = true ) {\n		;RunWait, % \"ePSXe.exe -nogui -slowboot\",,,emulatorPid\n		RunWait, % \"ePSXe.exe -nogui\",,,emulatorPid\n		VirtualDisk.close()\n	} else {\n;		MsgBox, % \"ePSXe.exe -nogui -loadbin \"\"\" imageFilePath \"\"\"\"\n    	RunWait, % \"ePSXe.exe -nogui -loadbin \"\"\" imageFilePath \"\"\"\",,,emulatorPid\n	}\n\n	ExitApp\n\n}\n\n!F4:: ; ALT + F4\n\n    ;SetWinDelay, 50\n	;PostMessage, 0x111, 40007,,,ahk_class EPSX	; Exit ePSXe ; ControlSend,, {Esc down}{Esc up}, ePSXe ahk_class EPSX\n	;RunWait, taskkill /im ePSXe.exe /f\n	Process, Close, %emulatorPid%\n\n    ResolutionChanger.restore()\n    VirtualDisk.close()\n\n    ExitApp\n	\n^F3::\n    Tray.show( \"Merong\", \"blablah\" )\n	return\n\n\nsetConfig( imageFilePath ) {\n	\n	registryPath := \"S-1-5-21-108037658-2208837996-2228346073-500\\Software\\epsxe\\config\"\n	\n	confDir := FileUtil.getDir( imageFilepath ) . \"\\_EL_CONFIG\"\n	\n	IfExist %confDir%\\bios\n	{\n		Loop, %confDir%\\bios\\*.bin\n		{\n			;MsgBox %A_LoopFileFullPath%\n			RegWrite, REG_SZ, HKU, %registryPath%, BiosName, %A_LoopFileFullPath%\n			break\n		}\n	} else {\n		Loop, %A_ScriptDir%\\bios\\*.bin\n		{\n			;MsgBox %A_LoopFileName%\n			RegWrite, REG_SZ, HKU, %registryPath%, BiosName, bios\\%A_LoopFileName%\n			break\n		}\n	}\n	\n	IfExist %confDir%\\memcards\n	{\n		IfNotExist %confDir%\\memcards\\epsxe001.mcr\n			FileAppend,,%confDir%\\memcards\\epsxe001.mcr\n\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard1, %confDir%\\memcards\\epsxe001.mcr\n\n	} else {\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard1, \\memcards\\epsxe001.mcr\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard2, \\memcards\\epsxe002.mcr\n	}\n\n}",
+			"file": "PlayStation/ePSXe 1.9.0/WrapperEpsxe.ahk",
+			"file_size": 1970,
+			"file_write_time": 130835170222592180,
+			"settings":
+			{
+				"buffer_size": 1881,
+				"line_ending": "Windows",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "#NoEnv\n#include %A_ScriptDir%\\..\\..\\ZZ_Library\\Include.ahk\n\nemulatorPid := \"\"\n\nimageFilePath := %0%\n;imageFilePath := \"d:\\download\\PS1 ROM\\전국무쌍 (한글판)\\Sengoku Mugen (J).ccd\"\n\nif ( imageFilePath = \"\" ) {\n\n    Run, % \"ePSXe.exe\",,,emulatorPid\n	ExitApp	\n\n} else {\n\n	setConfig( imageFilePath )\n\n	if ( VirtualDisk.open( imageFilePath ) = true ) {\n		;RunWait, % \"ePSXe.exe -nogui -slowboot\",,,emulatorPid\n		RunWait, % \"ePSXe.exe -nogui\",,,emulatorPid\n		VirtualDisk.close()\n	} else {\n;		MsgBox, % \"ePSXe.exe -nogui -loadbin \"\"\" imageFilePath \"\"\"\"\n    	RunWait, % \"ePSXe.exe -nogui -loadbin \"\"\" imageFilePath \"\"\"\",,,emulatorPid\n	}\n\n	ExitApp\n\n}\n\n!F4:: ; ALT + F4\n\n    ;SetWinDelay, 50\n	;PostMessage, 0x111, 40007,,,ahk_class EPSX	; Exit ePSXe ; ControlSend,, {Esc down}{Esc up}, ePSXe ahk_class EPSX\n	;RunWait, taskkill /im ePSXe.exe /f\n	Process, Close, %emulatorPid%\n\n    ResolutionChanger.restore()\n    VirtualDisk.close()\n\n    ExitApp\n	\n^F3::\n    Tray.show( \"Merong\", \"blablah\" )\n	return\n\n\nsetConfig( imageFilePath ) {\n	\n	registryPath := \"S-1-5-21-108037658-2208837996-2228346073-500\\Software\\epsxe\\config\"\n	\n	confDir := FileUtil.getDir( imageFilepath ) . \"\\_EL_CONFIG\"\n	\n	IfExist %confDir%\\bios\n	{\n		Loop, %confDir%\\bios\\*.bin\n		{\n			;MsgBox %A_LoopFileFullPath%\n			RegWrite, REG_SZ, HKU, %registryPath%, BiosName, %A_LoopFileFullPath%\n			break\n		}\n	} else {\n		Loop, %A_ScriptDir%\\bios\\*.bin\n		{\n			;MsgBox %A_LoopFileName%\n			RegWrite, REG_SZ, HKU, %registryPath%, BiosName, bios\\%A_LoopFileName%\n			break\n		}\n	}\n	\n	IfExist %confDir%\\memcards\n	{\n		IfNotExist %confDir%\\memcards\\epsxe001.mcr\n			FileAppend,,%confDir%\\memcards\\epsxe001.mcr\n\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard1, %confDir%\\memcards\\epsxe001.mcr\n\n	} else {\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard1, \\memcards\\epsxe001.mcr\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard2, \\memcards\\epsxe002.mcr\n	}\n\n}",
+			"file": "PlayStation/ePSXe 1.9.25/WrapperEpsxe.ahk",
+			"file_size": 1970,
+			"file_write_time": 130835170222592180,
+			"settings":
+			{
+				"buffer_size": 1881,
+				"line_ending": "Windows",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "CREATE TABLE 'TB_GAME_IMAGE' (\n	'console_type'	TEXT,\n	'game_id'	TEXT,\n	'title'	TEXT,\n	'path'	TEXT,\n	'option'	TEXT DEFAULT '{}',\n	'default_emul_id'	TEXT,\n	'category_id'	TEXT,\n	'manufacturer_id'	TEXT,\n	'release_date'	TEXT,\n	'play_time'	TEXT,\n	'play_count'	INTEGER DEFAULT 0,\n	PRIMARY KEY(console_type,game_id)\n);",
+			"settings":
+			{
+				"buffer_size": 310,
+				"line_ending": "Windows",
+				"name": "CREATE TABLE 'TB_GAME_IMAGE' ("
+			}
+		},
+		{
+			"file": "/D/download/Diablo 2/레지.reg",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Mednafen/.gitignore",
+			"settings":
+			{
+				"buffer_size": 25,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "copy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\3DO\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Amiga\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Apple2e\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Apple2gs\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\DOS\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\DreamCast\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Famicom\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \"\\\\NAS\\emul\\emulator\\Game&Watch\\.gitignore\"\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\GameBoyAdvance\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\GameCube\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Mame\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\MegaDrive\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\MESS\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Model2\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Model3\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\MSX\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\NeoGeoCD\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Nintendo64\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\NintendoDS\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\PC9801\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\PcEngine\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\PcFx\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\PlayStation\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\PSP\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Saturn\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\SegaMarkIII\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\SuperFamicom\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\VirtualBox\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\WonderSwan\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Zinc\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\ZZ_Library\\.gitignore",
+			"settings":
+			{
+				"buffer_size": 2702,
+				"line_ending": "Windows",
+				"name": "copy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS"
+			}
+		},
+		{
+			"file": "VirtualBox/.gitignore",
+			"settings":
+			{
+				"buffer_size": 25,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/NIDE/workspace/NayasisCore/hyperlaunch-3/Modules/ePSXe/ePSXe.ahk",
+			"settings":
+			{
+				"buffer_size": 12529,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/AutoHotkey/AutoHotkey.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/AutoHotkey/AutoHotkey.sublime-build",
+					""
+				],
+				[
+					"Packages/AutoHotkey/AutoHotkey.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/AutoHotkey/AutoHotkey.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"AutoHotkey - Compile"
+			],
+			[
+				"run",
+				"AutoHotkey - Run"
+			],
+			[
+				"comp",
+				"AutoHotkey - Compile"
+			],
+			[
+				"autoh",
+				"AutoHotkey - Run"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"auto",
+				"AutoHotkey - Run"
+			],
+			[
+				"add li",
+				"SublimeGit: Add License"
+			],
+			[
+				"remove p",
+				"Package Control: Remove Package"
+			],
+			[
+				"git:in",
+				"Git: Init"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"git",
+				"Github: Open File"
+			],
+			[
+				"packagein",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"key",
+				"Preferences: Key Bindings - Default"
+			],
+			[
+				"key bin",
+				"Preferences: Key Bindings - User"
+			],
+			[
+				"setting",
+				"Preferences: Settings - User"
+			],
+			[
+				"pref",
+				"Preferences: Settings - Default"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: add",
+				"Package Control: Add Channel"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: up",
+				"Package Control: Upgrade Package"
+			]
+		],
+		"width": 528.0
+	},
+	"console":
+	{
+		"height": 341.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())",
+			"import urllib.request,os,hashlib; h = '2deb499853c4371624f5a07e27c334aa' + 'bf8c4e67d14fb0525ba4f89698a6d7e1'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"sublime.version()",
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)",
+			"1 + 2",
+			"\"1234\"",
+			"sublime.version()",
+			"sublime.version",
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"//NAS/emul/emulator",
+		"//NAS/emul/emulator/Apple2e"
+	],
+	"file_history":
+	[
+		"//NAS/emul/emulator/.gitignore",
+		"//NAS/emul/emulator/Mednafen/mednafen-0.9.32.1-wip-win32/WrapperMednafen.ahk",
+		"/D/download/Diablo 1/RUN.ini",
+		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.25/WrapperEpsxe2.ahk",
+		"//NAS/emul/emulator/ZZ_Library/DiskContainer.ahk",
+		"//NAS/emul/emulator/Apple2gs/ActiveGS/WrapperActiveGs.ahk",
+		"/D/download/xbox/Z.wanted",
+		"//NAS/emul/image/Apple2e/Action/캡틴 굿나잇 [Captain Goodnight (1985)(Broderbund)]/goodnight.codes.txt",
+		"//NAS/emul/emulator/Apple2e/AppleWin1.26NtscAlpha/WrapperAppleWin.ahk",
+		"//NAS/emul/emulator/ZZ_Library/FileUtil.ahk",
+		"//NAS/emul/emulator/ZZ_Library/ResolutionChanger.ahk",
+		"//NAS/emul/emulator/Apple2gs/ActiveGS/xmlTest.ahk",
+		"//NAS/emul/emulator/ZZ_Library/Xml.ahk",
+		"/C/NIDE/workspace/NayasisCore/hyperlaunch-3/Modules/ePSXe/ePSXe.ahk",
+		"/D/download/Starcraft/RUN.ahk",
+		"/D/download/Starcraft/RUN.ini",
+		"/D/download/Starcraft/RUN.reg",
+		"//NAS/game-PC/STRATEGY/스타크래프트 1 [StarCraft]/윈도우7 레지스트리 등록/scbw116_x64.reg",
+		"/D/download/Include file.ahk",
+		"/C/NIDE/bin/ide/IntelliJ IDEA 14.1.4/bin/idea64.exe.vmoptions",
+		"/C/NIDE/maven/settings.xml",
+		"/C/NIDE/bin/ide/IntelliJ IDEA 14.1.4/bin/idea.exe.vmoptions",
+		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/WinVICE/WinVICE.ahk",
+		"/D/download/xbox/Rayman 3 - Hoodlum Havoc.wanted",
+		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/CCS64/CCS64.ahk",
+		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/BlueMSX/BlueMSX.ahk",
+		"//NAS/emul/image/Apple2gs/rpg/Dragon Wars (1990)(Interplay)/run.activegsxml",
+		"//NAS/emul/image/Apple2gs/rpg/Dragon Wars (1990)(Interplay)/temp.2mg",
+		"//NAS/emul/image/Apple2gs/puzzle & board/Tetris (1988)(Spectrum Holobyte)/run.activegsxml",
+		"//NAS/emul/emulator/Apple2gs/ActiveGS/default.activegsxml",
+		"//NAS/emul/_tool/DaemonToolsImageCompress/DaemonToolsImageCompress.ahk",
+		"/D/game/The Witcher 3/DLC/reg.txt",
+		"//NAS/emul/image/Apple2gs/adventure/Police Quest (1987)(Sierra)/run.activegsxml",
+		"/D/game/The Witcher 3/RUN.ahk",
+		"/D/game/The Witcher 3/RUN.ini",
+		"/D/game/The Witcher 3/RUN.reg",
+		"/C/Program Files/AutoHotkey/SciTE/user/Styles/tidRich_Zenburn.style.properties",
+		"/C/Program Files/AutoHotkey/SciTE/user/Styles/HatOfGod.style.properties",
+		"//NAS/emul/emulator/ZZ_Library/Include.ahk",
+		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.25/WrapperEpsxe.ahk",
+		"//NAS/emul/emulator/ZZ_Library/xml.ahk",
+		"//NAS/emul/emulator/PC9801/NekoProject II 0.84/WrapperNp21nt.ahk",
+		"/D/game/The Witcher 3/CBTest.reg",
+		"/C/totalCmd/usercmd.ini",
+		"/C/Users/Administrator/AppData/Local/Temp/_tcx/0/0/Hdd1/launch.ini",
+		"/C/totalCmd/wincmd.ini",
+		"/D/game/The Witcher 3/RUN.prop",
+		"//NAS/emul/emulator/PC9801/anex86_v2.78_kr/WrapperAnex86.ahk",
+		"/D/download/이블위딘tu4적용/patch/decls/renderprogs/global.inc",
+		"/D/download/이블위딘tu4적용/patch/fonts/fot_lyrastd_db/24.dat",
+		"/D/download/이블위딘tu4적용/patch/decls/renderprogs/skinning_normals.inc",
+		"/D/download/이블위딘tu4적용/patch/decls/renderprogs/skinning.inc",
+		"/C/Users/Administrator/Desktop/CBTest.reg",
+		"//NAS/emul/emulator/ZZ_Library/7Zip.ahk",
+		"/D/game/The Witcher 3/RunTest.ahk",
+		"/D/game/The Witcher 3/Run.bat",
+		"/D/game/The Witcher 3/reg.txt",
+		"//NAS/util/App/SimpleLauncher/config/db/config.xml",
+		"/D/download/20150125/dosbox.conf",
+		"/D/download/Tales of Eternia (J) (Disc 1) [SLPS-03050]/Tales of Eternia (J) (Disc 1) [SLPS-03050]/Tales of Eternia (J) (Disc 1) [SLPS-03050].cue",
+		"//NAS/emul/emulator/.project",
+		"/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/User/Github Tools.sublime-settings",
+		"//NAS/emul/emulator/.project.backup",
+		"//NAS/emul/emulator/Mame/mame 0.155/.gitignore",
+		"//NAS/emul/emulator/3DO/.gitignore",
+		"//NAS/emul/emulator/MSX/.gitignore",
+		"//NAS/emul/emulator/Amiga/.gitignore",
+		"//NAS/emul/emulator/ZZ_Library/test/7Zip.ahk",
+		"//NAS/emul/emulator/Zinc/.gitignore",
+		"//NAS/emul/emulator/ZZ_Library/.gitignore",
+		"/D/download/Script.ahk",
+		"/D/2015-06-17.sl",
+		"//NAS/emul/emulator/ZZ_Library/Zip.ahk",
+		"//NAS/emul/emulator/.git/config",
+		"//NAS/emul/emulator/Apple2e/.gitignore",
+		"/D/download/ahkdll-v1-release-master/ahkdll-v1-release-master/Compiler/IconChanger.ahk",
+		"/D/download/ahkdll-v1-release-master/ahkdll-v1-release-master/README.md",
+		"/C/Users/Administrator/Desktop/apple.reg",
+		"//NAS/emul/emulator/Apple2e/AppleWin1.26NtscAlpha/.gitignore",
+		"//NAS/emul/emulator/ZZ_Library/Common.ahk",
+		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/AppleWin/AppleWin.ahk",
+		"/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/User/Default (Windows).sublime-keymap",
+		"/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/Default/Preferences.sublime-settings",
+		"/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/User/Preferences.sublime-settings",
+		"//NAS/emul/emulator/Apple2gs/kegs 0.91-win working frame(no disk images)/src/defcomm.h",
+		"//NAS/emul/emulator/Famicom/Fceux-r3079/luaScripts/luabot_framework.lua",
+		"/C/Users/Administrator/.emulationstation/es_systems.cfg",
+		"/D/download/애플2_문서/apple2_disk_images/apple2_disk_images/neuromancer/Hint, Manual, Wheel, Info, comic with URLs/Hint.txt",
+		"/D/download/emulationstation_win32_latest/launch_portable.bat",
+		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/DOSBox/DOSBox.ahk",
+		"/C/development/NIDE/workspace/hyperlaunch-3/Lib/HyperPause.ahk",
+		"/C/development/NIDE/workspace/hyperlaunch-3/Lib/Shared.ahk",
+		"/C/development/NIDE/workspace/AutoHotkey/Study/DebugMessage.ahk",
+		"/D/development/test/Saturn/.gitignore",
+		"/D/download/ahkdll-v1-release-master/ahkdll-v1-release-master/lib/ZipFileRaw.ahk",
+		"//NAS/emul/emulator/ZZ_Library/VirtualDisk.ahk",
+		"//NAS/emul/emulator/Saturn/.gitignore",
+		"//NAS/emul/emulator/ZZ_Library/minizip.ahk",
+		"/D/download/ahkdll-v1-release-master/ahkdll-v1-release-master/Compiler/ScriptParser.ahk",
+		"/D/download/ahkdll-v1-release-master/ahkdll-v1-release-master/lib/_MemoryLibrary.ahk",
+		"/C/development/NIDE/workspace/hyperlaunch-3/Lib/MultiPlayer.ahk",
+		"/C/Users/Administrator/.emulationstation/es_settings.cfg",
+		"/D/app/Emul/Famicom/nestopiaGit_20141007/nestopia.xml",
+		"//NAS/emul/emulator/Mame/.gitignore",
+		"/D/download/config_n6004r_19700101_000159.cfg",
+		"/D/download/애플2_문서/apple2_disk_images/apple2_disk_images/GameMaker/gamemakermanual.txt",
+		"/D/download/애플2_문서/apple2_disk_images/apple2_disk_images/신검의전설/legend_of_divine_sword-readme.txt",
+		"//NAS/emul/frontend/emulationstation_win32_latest/.emulationstation/themes/simple/3do/art/3do.svg",
+		"//NAS/emul/frontend/emulationstation_win32_latest/.emulationstation/themes/simple/simple.xml",
+		"//NAS/emul/frontend/emulationstation_win32_latest/launch_portable.bat",
+		"/D/download/emulationstation_win32_latest/.emulationstation/es_log.txt",
+		"/C/Users/Administrator/.emulationstation/themes/simple/nes/theme.xml",
+		"/C/Users/Administrator/.emulationstation/es_log.txt",
+		"/C/Users/Administrator/.emulationstation/gamelists/nes/gamelist.xml",
+		"/D/download/emulationstation_win32_latest/.emulationstation/es_systems.cfg",
+		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.0 (T-Kr)/WrapperEpsxe.ahk",
+		"/C/Program Files/AutoHotkey/SciTE/ahk.lua",
+		"/C/Program Files/AutoHotkey/SciTE/ahk.api",
+		"/C/Program Files/AutoHotkey/SciTE/ahk.commands.properties",
+		"/C/Program Files/AutoHotkey/SciTE/ahk.keywords.properties",
+		"/C/Program Files/AutoHotkey/SciTE/ahk2.properties",
+		"/C/Program Files/AutoHotkey/SciTE/platforms.properties",
+		"/C/Program Files/AutoHotkey/SciTE/SciTEGlobal.properties",
+		"/C/Program Files/AutoHotkey/SciTE/tillagoto.properties",
+		"/C/Program Files/AutoHotkey/SciTE/toolbar.properties",
+		"/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/Blank.style.properties",
+		"/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/PlasticCodeWrap.style.properties"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"&",
+			"`",
+			"epsxeLaunchType",
+			"\n",
+			"\">(.|\\n)+?</sql>",
+			"id=\"createTbLang\"",
+			"id=\".*?\"",
+			"id=\"createTbCd\"",
+			",",
+			"https://firedrop.com/0e53b46c67bd936c,https://firedrop.com/7730f53e49362a5e",
+			"OpenROM",
+			"\n",
+			"\\(Disk.*of.*\\)",
+			"\\[.*\\]",
+			".zip",
+			"d:\\download\\Apple\\Apple_II_GS_TOSEC_2012_04_23\\Apple II GS [TOSEC]\\Apple IIGS - Games (TOSEC-v2010-10-12_CM)\\",
+			"\n",
+			"\\",
+			"\\[.*\\]",
+			"\\[.\\]",
+			"\\(Disk.*of.*\\)",
+			".zip",
+			"d:\\download\\Apple\\Apple_II_GS_TOSEC_2012_04_23\\Apple II GS [TOSEC]\\Apple IIGS - Games (TOSEC-v2010-10-12_CM)",
+			"Dir",
+			"dir",
+			"bootSlot",
+			"%d",
+			"font",
+			"save",
+			"()\n",
+			"default",
+			"\">",
+			"<a href=\"",
+			"<img src=\"http://i1.daumcdn.net/cfs.tistory",
+			"<a href=\"http://nemo838.tistory.com/attachment",
+			"A_LoopReadLine",
+			":=",
+			" :=",
+			":=",
+			"bindValue",
+			"REG_BINARY",
+			"REG_EXPAND_SZ",
+			"REG_MULTI_SZ",
+			"REG_QWORD",
+			"REG_DWORD",
+			"file",
+			"IniWrite",
+			"HDD%a_index%FILE",
+			"a_index",
+			" :: Emul - ",
+			"\"groupName\" : \"Emul - ",
+			"\\",
+			"7Zip.gop.dllName \"",
+			"_dosTime",
+			"_dosDate",
+			"_overwrite",
+			"_recursion",
+			"getDate",
+			"_run",
+			"7Zip.op.",
+			"hwnd",
+			"_run(commandline)",
+			"%7Zip.op.dllName%",
+			"\"7-zip64\\",
+			"opt",
+			"nSize",
+			"7Zip_DosDate",
+			"7Zip_DosTime",
+			"_dosDateTimeToStr",
+			"7Zip_DosDateTimeToStr",
+			"7Zip_DosDate",
+			"7Zip_.opt",
+			"_overwrite",
+			"7Zip__Overwrite",
+			"7Zip",
+			"7Zip__Recursion",
+			"opt",
+			"add",
+			"7Zip_",
+			" ;End Function",
+			" ;End Function  ",
+			"_run",
+			"7Zip__SevenZip",
+			"7Zip_",
+			"7-zip32\\",
+			"quit",
+			"left",
+			"next_view_in_stack",
+			"if",
+			"7z",
+			"Log(",
+			"7z",
+			"Int ,",
+			"Int",
+			"UInt",
+			"zipHandle",
+			"MZ_",
+			"\n",
+			"\"",
+			"\n",
+			"14:48:28.541 DEBUG (NXmlTest.java:25) ",
+			"\\\\NAS\\emul\\Famicom\\emulator\\nestopiaGit_20141007",
+			"%\"\n",
+			"worker",
+			"diskNumber",
+			"font",
+			"menu",
+			"imageDir",
+			"imageFilePath",
+			"\n		",
+			"VirtualDisk",
+			"this.path",
+			"path",
+			"this",
+			"this.",
+			"this",
+			"rc",
+			"vd",
+			"VirtualDisk"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": true,
+		"regex": true,
+		"replace_history":
+		[
+			"'",
+			"",
+			"\n",
+			"\\\\NAS\\emul\\emulator\\Famicom\\nestopiaGit_20141007",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": false
+	},
+	"groups":
+	[
+		{
+			"selected": 6,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "PlayStation/ePSXe 1.9.0/WrapperEpsxe.ahk",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1881,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								1677
+							]
+						],
+						"settings":
+						{
+							"in_converting": true,
+							"origin_encoding": "EUC-KR",
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "PlayStation/ePSXe 1.9.25/WrapperEpsxe.ahk",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1881,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								477,
+								477
+							]
+						],
+						"settings":
+						{
+							"in_converting": true,
+							"origin_encoding": "EUC-KR",
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 310,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								310
+							]
+						],
+						"settings":
+						{
+							"auto_name": "CREATE TABLE 'TB_GAME_IMAGE' (",
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/D/download/Diablo 2/레지.reg",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "Mednafen/.gitignore",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 25,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								25,
+								25
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2702,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								669,
+								581
+							]
+						],
+						"settings":
+						{
+							"auto_name": "copy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "VirtualBox/.gitignore",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 25,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/C/NIDE/workspace/NayasisCore/hyperlaunch-3/Modules/ePSXe/ePSXe.ahk",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12529,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": -0.0,
+						"translation.y": 1940.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 184.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "Wrapper.sublime-project",
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"7zip",
+				"ZZ_Library\\7Zip.ahk"
+			],
+			[
+				"diskcon",
+				"ZZ_Library\\DiskContainer.ahk"
+			],
+			[
+				"wrapperappl",
+				"Apple2e\\AppleWin1.26NtscAlpha\\WrapperAppleWin.ahk"
+			],
+			[
+				"wrapper",
+				"PC9801\\NekoProject II 0.84\\WrapperNp21nt.ahk"
+			],
+			[
+				".gitignore",
+				"3DO\\.gitignore"
+			],
+			[
+				"virtual",
+				"ZZ_Library\\VirtualDisk.ahk"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "wrapp",
+		"selected_items":
+		[
+			[
+				"wrapp",
+				"\\\\NAS\\emul\\emulator\\Wrapper.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"isAttemptOk"
+			]
+		],
+		"width": 392.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 166.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
