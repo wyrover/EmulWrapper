@@ -1,0 +1,13 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\CD PROJEKT RED\The Witcher 3]
+"Install Dir"="#{cd}"
+"GameEXE"="#{cd}\\bin\\x64\\witcher3.exe"
+"LauncherEXE"="#{cd}\\bin\\x64\\witcher3.exe"
+"Install_Path"="#{cd}"
+"execPath"="#{cd}\\bin\\x64\\witcher3.exe"
+"SpeechLanguage"="EN"
+"TextLanguage"="EN"
+"DisplayName"="The Witcher?3: Wild Hunt"
+"Publisher"="CD PROJEKT RED"
+"URLInfoAbout"="http://en.cdprojektred.com/"
