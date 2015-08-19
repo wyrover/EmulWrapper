@@ -84,7 +84,7 @@
 			"file": "/D/download/Diablo 2/레지.reg",
 			"settings":
 			{
-				"buffer_size": 0,
+				"buffer_size": 396,
 				"line_ending": "Windows"
 			}
 		},
@@ -106,18 +106,34 @@
 			}
 		},
 		{
-			"file": "VirtualBox/.gitignore",
+			"file": "/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/tidRich_Zenburn.style.properties",
 			"settings":
 			{
-				"buffer_size": 25,
-				"line_ending": "Unix"
+				"buffer_size": 2590,
+				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/NIDE/workspace/NayasisCore/hyperlaunch-3/Modules/ePSXe/ePSXe.ahk",
+			"file": "/D/download/Diablo 2/레지 - 복사본.reg",
 			"settings":
 			{
-				"buffer_size": 12529,
+				"buffer_size": 1399,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/download/Diablo 2/RUN.ahk",
+			"settings":
+			{
+				"buffer_size": 8803,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/download/Diablo 2/RUN.ini",
+			"settings":
+			{
+				"buffer_size": 82,
 				"line_ending": "Windows"
 			}
 		}
@@ -285,6 +301,10 @@
 	],
 	"file_history":
 	[
+		"/D/download/Diablo 2/RUN.ahk",
+		"/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/PlasticCodeWrap.style.properties",
+		"/C/NIDE/workspace/NayasisCore/hyperlaunch-3/Modules/ePSXe/ePSXe.ahk",
+		"//NAS/emul/emulator/VirtualBox/.gitignore",
 		"//NAS/emul/emulator/.gitignore",
 		"//NAS/emul/emulator/Mednafen/mednafen-0.9.32.1-wip-win32/WrapperMednafen.ahk",
 		"/D/download/Diablo 1/RUN.ini",
@@ -298,7 +318,6 @@
 		"//NAS/emul/emulator/ZZ_Library/ResolutionChanger.ahk",
 		"//NAS/emul/emulator/Apple2gs/ActiveGS/xmlTest.ahk",
 		"//NAS/emul/emulator/ZZ_Library/Xml.ahk",
-		"/C/NIDE/workspace/NayasisCore/hyperlaunch-3/Modules/ePSXe/ePSXe.ahk",
 		"/D/download/Starcraft/RUN.ahk",
 		"/D/download/Starcraft/RUN.ini",
 		"/D/download/Starcraft/RUN.reg",
@@ -409,10 +428,7 @@
 		"/C/Program Files/AutoHotkey/SciTE/ahk2.properties",
 		"/C/Program Files/AutoHotkey/SciTE/platforms.properties",
 		"/C/Program Files/AutoHotkey/SciTE/SciTEGlobal.properties",
-		"/C/Program Files/AutoHotkey/SciTE/tillagoto.properties",
-		"/C/Program Files/AutoHotkey/SciTE/toolbar.properties",
-		"/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/Blank.style.properties",
-		"/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/PlasticCodeWrap.style.properties"
+		"/C/Program Files/AutoHotkey/SciTE/tillagoto.properties"
 	],
 	"find":
 	{
@@ -572,7 +588,7 @@
 	"groups":
 	[
 		{
-			"selected": 6,
+			"selected": 8,
 			"sheets":
 			[
 				{
@@ -603,7 +619,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
@@ -634,7 +650,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -663,7 +679,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
@@ -672,7 +688,7 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 0,
+						"buffer_size": 396,
 						"regions":
 						{
 						},
@@ -691,7 +707,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -707,8 +723,8 @@
 						"selection":
 						[
 							[
-								25,
-								25
+								0,
+								0
 							]
 						],
 						"settings":
@@ -720,7 +736,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -748,16 +764,73 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
 					"buffer": 6,
-					"file": "VirtualBox/.gitignore",
+					"file": "/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/tidRich_Zenburn.style.properties",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 25,
+						"buffer_size": 2590,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								502,
+								502
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Java/JavaProperties.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/D/download/Diablo 2/레지 - 복사본.reg",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1399,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								351,
+								351
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/D/download/Diablo 2/RUN.ahk",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8803,
 						"regions":
 						{
 						},
@@ -766,6 +839,35 @@
 							[
 								0,
 								0
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/D/download/Diablo 2/RUN.ini",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 82,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								35,
+								35
 							]
 						],
 						"settings":
@@ -777,37 +879,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/C/NIDE/workspace/NayasisCore/hyperlaunch-3/Modules/ePSXe/ePSXe.ahk",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 12529,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": -0.0,
-						"translation.y": 1940.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
