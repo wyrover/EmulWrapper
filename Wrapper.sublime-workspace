@@ -47,96 +47,6 @@
 	},
 	"buffers":
 	[
-		{
-			"contents": "#NoEnv\n#include %A_ScriptDir%\\..\\..\\ZZ_Library\\Include.ahk\n\nemulatorPid := \"\"\n\nimageFilePath := %0%\n;imageFilePath := \"d:\\download\\PS1 ROM\\전국무쌍 (한글판)\\Sengoku Mugen (J).ccd\"\n\nif ( imageFilePath = \"\" ) {\n\n    Run, % \"ePSXe.exe\",,,emulatorPid\n	ExitApp	\n\n} else {\n\n	setConfig( imageFilePath )\n\n	if ( VirtualDisk.open( imageFilePath ) = true ) {\n		;RunWait, % \"ePSXe.exe -nogui -slowboot\",,,emulatorPid\n		RunWait, % \"ePSXe.exe -nogui\",,,emulatorPid\n		VirtualDisk.close()\n	} else {\n;		MsgBox, % \"ePSXe.exe -nogui -loadbin \"\"\" imageFilePath \"\"\"\"\n    	RunWait, % \"ePSXe.exe -nogui -loadbin \"\"\" imageFilePath \"\"\"\",,,emulatorPid\n	}\n\n	ExitApp\n\n}\n\n!F4:: ; ALT + F4\n\n    ;SetWinDelay, 50\n	;PostMessage, 0x111, 40007,,,ahk_class EPSX	; Exit ePSXe ; ControlSend,, {Esc down}{Esc up}, ePSXe ahk_class EPSX\n	;RunWait, taskkill /im ePSXe.exe /f\n	Process, Close, %emulatorPid%\n\n    ResolutionChanger.restore()\n    VirtualDisk.close()\n\n    ExitApp\n	\n^F3::\n    Tray.show( \"Merong\", \"blablah\" )\n	return\n\n\nsetConfig( imageFilePath ) {\n	\n	registryPath := \"S-1-5-21-108037658-2208837996-2228346073-500\\Software\\epsxe\\config\"\n	\n	confDir := FileUtil.getDir( imageFilepath ) . \"\\_EL_CONFIG\"\n	\n	IfExist %confDir%\\bios\n	{\n		Loop, %confDir%\\bios\\*.bin\n		{\n			;MsgBox %A_LoopFileFullPath%\n			RegWrite, REG_SZ, HKU, %registryPath%, BiosName, %A_LoopFileFullPath%\n			break\n		}\n	} else {\n		Loop, %A_ScriptDir%\\bios\\*.bin\n		{\n			;MsgBox %A_LoopFileName%\n			RegWrite, REG_SZ, HKU, %registryPath%, BiosName, bios\\%A_LoopFileName%\n			break\n		}\n	}\n	\n	IfExist %confDir%\\memcards\n	{\n		IfNotExist %confDir%\\memcards\\epsxe001.mcr\n			FileAppend,,%confDir%\\memcards\\epsxe001.mcr\n\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard1, %confDir%\\memcards\\epsxe001.mcr\n\n	} else {\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard1, \\memcards\\epsxe001.mcr\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard2, \\memcards\\epsxe002.mcr\n	}\n\n}",
-			"file": "PlayStation/ePSXe 1.9.0/WrapperEpsxe.ahk",
-			"file_size": 1970,
-			"file_write_time": 130835170222592180,
-			"settings":
-			{
-				"buffer_size": 1881,
-				"line_ending": "Windows",
-				"scratch": true
-			}
-		},
-		{
-			"contents": "#NoEnv\n#include %A_ScriptDir%\\..\\..\\ZZ_Library\\Include.ahk\n\nemulatorPid := \"\"\n\nimageFilePath := %0%\n;imageFilePath := \"d:\\download\\PS1 ROM\\전국무쌍 (한글판)\\Sengoku Mugen (J).ccd\"\n\nif ( imageFilePath = \"\" ) {\n\n    Run, % \"ePSXe.exe\",,,emulatorPid\n	ExitApp	\n\n} else {\n\n	setConfig( imageFilePath )\n\n	if ( VirtualDisk.open( imageFilePath ) = true ) {\n		;RunWait, % \"ePSXe.exe -nogui -slowboot\",,,emulatorPid\n		RunWait, % \"ePSXe.exe -nogui\",,,emulatorPid\n		VirtualDisk.close()\n	} else {\n;		MsgBox, % \"ePSXe.exe -nogui -loadbin \"\"\" imageFilePath \"\"\"\"\n    	RunWait, % \"ePSXe.exe -nogui -loadbin \"\"\" imageFilePath \"\"\"\",,,emulatorPid\n	}\n\n	ExitApp\n\n}\n\n!F4:: ; ALT + F4\n\n    ;SetWinDelay, 50\n	;PostMessage, 0x111, 40007,,,ahk_class EPSX	; Exit ePSXe ; ControlSend,, {Esc down}{Esc up}, ePSXe ahk_class EPSX\n	;RunWait, taskkill /im ePSXe.exe /f\n	Process, Close, %emulatorPid%\n\n    ResolutionChanger.restore()\n    VirtualDisk.close()\n\n    ExitApp\n	\n^F3::\n    Tray.show( \"Merong\", \"blablah\" )\n	return\n\n\nsetConfig( imageFilePath ) {\n	\n	registryPath := \"S-1-5-21-108037658-2208837996-2228346073-500\\Software\\epsxe\\config\"\n	\n	confDir := FileUtil.getDir( imageFilepath ) . \"\\_EL_CONFIG\"\n	\n	IfExist %confDir%\\bios\n	{\n		Loop, %confDir%\\bios\\*.bin\n		{\n			;MsgBox %A_LoopFileFullPath%\n			RegWrite, REG_SZ, HKU, %registryPath%, BiosName, %A_LoopFileFullPath%\n			break\n		}\n	} else {\n		Loop, %A_ScriptDir%\\bios\\*.bin\n		{\n			;MsgBox %A_LoopFileName%\n			RegWrite, REG_SZ, HKU, %registryPath%, BiosName, bios\\%A_LoopFileName%\n			break\n		}\n	}\n	\n	IfExist %confDir%\\memcards\n	{\n		IfNotExist %confDir%\\memcards\\epsxe001.mcr\n			FileAppend,,%confDir%\\memcards\\epsxe001.mcr\n\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard1, %confDir%\\memcards\\epsxe001.mcr\n\n	} else {\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard1, \\memcards\\epsxe001.mcr\n		RegWrite, REG_SZ, HKU, %registryPath%, Memcard2, \\memcards\\epsxe002.mcr\n	}\n\n}",
-			"file": "PlayStation/ePSXe 1.9.25/WrapperEpsxe.ahk",
-			"file_size": 1970,
-			"file_write_time": 130835170222592180,
-			"settings":
-			{
-				"buffer_size": 1881,
-				"line_ending": "Windows",
-				"scratch": true
-			}
-		},
-		{
-			"contents": "CREATE TABLE 'TB_GAME_IMAGE' (\n	'console_type'	TEXT,\n	'game_id'	TEXT,\n	'title'	TEXT,\n	'path'	TEXT,\n	'option'	TEXT DEFAULT '{}',\n	'default_emul_id'	TEXT,\n	'category_id'	TEXT,\n	'manufacturer_id'	TEXT,\n	'release_date'	TEXT,\n	'play_time'	TEXT,\n	'play_count'	INTEGER DEFAULT 0,\n	PRIMARY KEY(console_type,game_id)\n);",
-			"settings":
-			{
-				"buffer_size": 310,
-				"line_ending": "Windows",
-				"name": "CREATE TABLE 'TB_GAME_IMAGE' ("
-			}
-		},
-		{
-			"file": "/D/download/Diablo 2/레지.reg",
-			"settings":
-			{
-				"buffer_size": 396,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Mednafen/.gitignore",
-			"settings":
-			{
-				"buffer_size": 25,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "copy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\3DO\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Amiga\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Apple2e\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Apple2gs\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\DOS\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\DreamCast\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Famicom\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \"\\\\NAS\\emul\\emulator\\Game&Watch\\.gitignore\"\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\GameBoyAdvance\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\GameCube\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Mame\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\MegaDrive\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\MESS\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Model2\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Model3\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\MSX\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\NeoGeoCD\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Nintendo64\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\NintendoDS\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\PC9801\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\PcEngine\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\PcFx\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\PlayStation\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\PSP\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Saturn\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\SegaMarkIII\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\SuperFamicom\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\VirtualBox\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\WonderSwan\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\Zinc\\.gitignore\ncopy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS\\emul\\emulator\\ZZ_Library\\.gitignore",
-			"settings":
-			{
-				"buffer_size": 2702,
-				"line_ending": "Windows",
-				"name": "copy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS"
-			}
-		},
-		{
-			"file": "/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/tidRich_Zenburn.style.properties",
-			"settings":
-			{
-				"buffer_size": 2590,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/D/download/Diablo 2/레지 - 복사본.reg",
-			"settings":
-			{
-				"buffer_size": 1399,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/D/download/Diablo 2/RUN.ahk",
-			"settings":
-			{
-				"buffer_size": 8803,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/D/download/Diablo 2/RUN.ini",
-			"settings":
-			{
-				"buffer_size": 82,
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "Packages/AutoHotkey/AutoHotkey.sublime-build",
 	"build_system_choices":
@@ -301,7 +211,16 @@
 	],
 	"file_history":
 	[
+		"/D/download/DIA/RUN.ini",
+		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.0/WrapperEpsxe.ahk",
+		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.25/WrapperEpsxe.ahk",
+		"//NAS/emul/emulator/Mednafen/.gitignore",
+		"/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/tidRich_Zenburn.style.properties",
+		"/D/download/DIA/readme.txt",
+		"/D/download/Diablo 2/RUN.ini",
 		"/D/download/Diablo 2/RUN.ahk",
+		"/D/download/Diablo 2/레지 - 복사본.reg",
+		"/D/download/Diablo 2/레지.reg",
 		"/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/PlasticCodeWrap.style.properties",
 		"/C/NIDE/workspace/NayasisCore/hyperlaunch-3/Modules/ePSXe/ePSXe.ahk",
 		"//NAS/emul/emulator/VirtualBox/.gitignore",
@@ -343,7 +262,6 @@
 		"/C/Program Files/AutoHotkey/SciTE/user/Styles/tidRich_Zenburn.style.properties",
 		"/C/Program Files/AutoHotkey/SciTE/user/Styles/HatOfGod.style.properties",
 		"//NAS/emul/emulator/ZZ_Library/Include.ahk",
-		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.25/WrapperEpsxe.ahk",
 		"//NAS/emul/emulator/ZZ_Library/xml.ahk",
 		"//NAS/emul/emulator/PC9801/NekoProject II 0.84/WrapperNp21nt.ahk",
 		"/D/game/The Witcher 3/CBTest.reg",
@@ -420,15 +338,7 @@
 		"/C/Users/Administrator/.emulationstation/es_log.txt",
 		"/C/Users/Administrator/.emulationstation/gamelists/nes/gamelist.xml",
 		"/D/download/emulationstation_win32_latest/.emulationstation/es_systems.cfg",
-		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.0 (T-Kr)/WrapperEpsxe.ahk",
-		"/C/Program Files/AutoHotkey/SciTE/ahk.lua",
-		"/C/Program Files/AutoHotkey/SciTE/ahk.api",
-		"/C/Program Files/AutoHotkey/SciTE/ahk.commands.properties",
-		"/C/Program Files/AutoHotkey/SciTE/ahk.keywords.properties",
-		"/C/Program Files/AutoHotkey/SciTE/ahk2.properties",
-		"/C/Program Files/AutoHotkey/SciTE/platforms.properties",
-		"/C/Program Files/AutoHotkey/SciTE/SciTEGlobal.properties",
-		"/C/Program Files/AutoHotkey/SciTE/tillagoto.properties"
+		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.0 (T-Kr)/WrapperEpsxe.ahk"
 	],
 	"find":
 	{
@@ -588,300 +498,8 @@
 	"groups":
 	[
 		{
-			"selected": 8,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "PlayStation/ePSXe 1.9.0/WrapperEpsxe.ahk",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1881,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								1677
-							]
-						],
-						"settings":
-						{
-							"in_converting": true,
-							"origin_encoding": "EUC-KR",
-							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "PlayStation/ePSXe 1.9.25/WrapperEpsxe.ahk",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1881,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								477,
-								477
-							]
-						],
-						"settings":
-						{
-							"in_converting": true,
-							"origin_encoding": "EUC-KR",
-							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 310,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								310
-							]
-						],
-						"settings":
-						{
-							"auto_name": "CREATE TABLE 'TB_GAME_IMAGE' (",
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/D/download/Diablo 2/레지.reg",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 396,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "Mednafen/.gitignore",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 25,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2702,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								669,
-								581
-							]
-						],
-						"settings":
-						{
-							"auto_name": "copy \\\\NAS\\emul\\emulator\\Mednafen\\.gitignore \\\\NAS",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/tidRich_Zenburn.style.properties",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2590,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								502,
-								502
-							]
-						],
-						"settings":
-						{
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/Java/JavaProperties.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/D/download/Diablo 2/레지 - 복사본.reg",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1399,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								351,
-								351
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "/D/download/Diablo 2/RUN.ahk",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8803,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "/D/download/Diablo 2/RUN.ini",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 82,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								35,
-								35
-							]
-						],
-						"settings":
-						{
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				}
 			]
 		}
 	],
