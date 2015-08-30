@@ -26,6 +26,7 @@ if( setConfig( imageFilePath ) == true )
 		WinSet, Style, -0xC40000, ahk_class AfxFrameOrView90s   ; remove the titlebar and border(s) 
 		;WinMove, ahk_class AfxFrameOrView90s,, -42, -50, 884, 697  ; remove border
 		WinMove, ahk_class AfxFrameOrView90s,, 0, 0, 800, 600  ; move the window to 0,0 and reize it to 800x600 (show original)
+		Send {F8} ; Lock Mouse
 
 		WinWaitClose, ahk_class AfxFrameOrView90s
 	}
@@ -176,11 +177,14 @@ setConfig( imageFilePath ) {
 		  <image slot="7" disk="4" icon=""></image>
 		  <speed>2</speed> <!-- 0:unlimited, 2:normal, 3:zip-->
 		  <bootslot>5</bootslot>
-		  <bramparam>background:dark-blue;border:dark-blue</bramparam>
+		  <emulatorParam>background:dark-blue;border:dark-blue;</emulatorParam>
+		  <systemParam></systemParam>
 		</config>
 	)
 
-	;<bramparam>background:black;border:dark-blue</bramparam>
+	;<emulatorParam>background:black;border:dark-blue</emulatorParam>
+	;<emulatorParam>background:dark-blue;border:dark-blue;PNGBoarder:0</emulatorParam>
+	;<systemParam></systemParam>
 
 	diskIndex := []
 	diskIndex.Insert( "//config/image[@slot='5'][@disk='1']" )
