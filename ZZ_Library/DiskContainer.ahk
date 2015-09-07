@@ -165,6 +165,15 @@ class DiskContainer {
     
     cancel() {
         Tray.show( "Cancel to change disk" )
+        For slotNo, slot in DiskContainer.slot
+        {
+            if( slot.file == "" )
+                continue
+            
+            slot.file         := ""
+            slot.functionName := ""
+
+        }
         SetTimer, Timer_DiskContainer_insertDisk_RunFunction, off
     }
     

@@ -8,7 +8,7 @@ prop := readProperties( fileIni )
 ; set default
 prop[ "cd" ] := A_ScriptDir
 
-;setRegistry( fileReg, prop )
+setRegistry( fileReg, prop )
 
 runProgram( fileIni, prop )
 

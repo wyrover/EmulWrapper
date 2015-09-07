@@ -47,6 +47,33 @@
 	},
 	"buffers":
 	[
+		{
+			"contents": "Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Falcom]\n\n[HKEY_CURRENT_USER\\Software\\Falcom\\Fsetup]\n\"DisplayName\"=\"Fsetup\"\n\"Path\"=\"D:\\\\\"\n\"ZWEI\"=\"D:\\\\download\\\\FALCOM ZWEI\\\\ZWEI\"\n\n[HKEY_CURRENT_USER\\Software\\Falcom\\ZWEI]\n\"Path\"=\"D:\\\\download\\\\FALCOM ZWEI\\\\ZWEI\"\n\n",
+			"file": "/D/download/FALCOM ZWEI/ZWEI/REG 등록(32,64bit 공용).reg",
+			"file_size": 586,
+			"file_write_time": 130859439415225931,
+			"settings":
+			{
+				"buffer_size": 280,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "ZZ_Study/run/RUN.ahk",
+			"settings":
+			{
+				"buffer_size": 8754,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/download/Halo/REG_X64.reg",
+			"settings":
+			{
+				"buffer_size": 1150,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "Packages/AutoHotkey/AutoHotkey.sublime-build",
 	"build_system_choices":
@@ -206,11 +233,22 @@
 	},
 	"expanded_folders":
 	[
-		"//NAS/emul/emulator",
-		"//NAS/emul/emulator/Apple2e"
+		"//NAS/emul/emulator"
 	],
 	"file_history":
 	[
+		"/D/download/Commandos 1/RUN.ini",
+		"//NAS/emul/emulator/Apple2gs/ActiveGS/WrapperActiveGs.ahk",
+		"/D/download/FALCOM ZWEI/RUN.ini",
+		"/D/download/Metro 2033 Redux/RUN.ini",
+		"/D/download/Metro 2033 Redux/RUN.reg",
+		"/D/download/FALCOM ZWEI/RUN.ahk",
+		"//NAS/emul/emulator/ZZ_Library/DiskContainer.ahk",
+		"/D/download/FALCOM ZWEI/RUN.reg",
+		"//NAS/emul/emulator/Apple2gs/ActiveGS/run.activegsxml",
+		"//NAS/emul/emulator/Apple2gs/kegs 0.91-win working frame(no disk images)/src/protos_xdriver.h",
+		"/D/download/FINAL FANTASY TYPE 0 HD/RUN.ini",
+		"//NAS/emul/emulator/Apple2gs/ActiveGS/default.activegsxml",
 		"/D/download/DIA/RUN.ini",
 		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.0/WrapperEpsxe.ahk",
 		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.25/WrapperEpsxe.ahk",
@@ -228,8 +266,6 @@
 		"//NAS/emul/emulator/Mednafen/mednafen-0.9.32.1-wip-win32/WrapperMednafen.ahk",
 		"/D/download/Diablo 1/RUN.ini",
 		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.25/WrapperEpsxe2.ahk",
-		"//NAS/emul/emulator/ZZ_Library/DiskContainer.ahk",
-		"//NAS/emul/emulator/Apple2gs/ActiveGS/WrapperActiveGs.ahk",
 		"/D/download/xbox/Z.wanted",
 		"//NAS/emul/image/Apple2e/Action/캡틴 굿나잇 [Captain Goodnight (1985)(Broderbund)]/goodnight.codes.txt",
 		"//NAS/emul/emulator/Apple2e/AppleWin1.26NtscAlpha/WrapperAppleWin.ahk",
@@ -252,7 +288,6 @@
 		"//NAS/emul/image/Apple2gs/rpg/Dragon Wars (1990)(Interplay)/run.activegsxml",
 		"//NAS/emul/image/Apple2gs/rpg/Dragon Wars (1990)(Interplay)/temp.2mg",
 		"//NAS/emul/image/Apple2gs/puzzle & board/Tetris (1988)(Spectrum Holobyte)/run.activegsxml",
-		"//NAS/emul/emulator/Apple2gs/ActiveGS/default.activegsxml",
 		"//NAS/emul/_tool/DaemonToolsImageCompress/DaemonToolsImageCompress.ahk",
 		"/D/game/The Witcher 3/DLC/reg.txt",
 		"//NAS/emul/image/Apple2gs/adventure/Police Quest (1987)(Sierra)/run.activegsxml",
@@ -329,16 +364,7 @@
 		"//NAS/emul/emulator/Mame/.gitignore",
 		"/D/download/config_n6004r_19700101_000159.cfg",
 		"/D/download/애플2_문서/apple2_disk_images/apple2_disk_images/GameMaker/gamemakermanual.txt",
-		"/D/download/애플2_문서/apple2_disk_images/apple2_disk_images/신검의전설/legend_of_divine_sword-readme.txt",
-		"//NAS/emul/frontend/emulationstation_win32_latest/.emulationstation/themes/simple/3do/art/3do.svg",
-		"//NAS/emul/frontend/emulationstation_win32_latest/.emulationstation/themes/simple/simple.xml",
-		"//NAS/emul/frontend/emulationstation_win32_latest/launch_portable.bat",
-		"/D/download/emulationstation_win32_latest/.emulationstation/es_log.txt",
-		"/C/Users/Administrator/.emulationstation/themes/simple/nes/theme.xml",
-		"/C/Users/Administrator/.emulationstation/es_log.txt",
-		"/C/Users/Administrator/.emulationstation/gamelists/nes/gamelist.xml",
-		"/D/download/emulationstation_win32_latest/.emulationstation/es_systems.cfg",
-		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.0 (T-Kr)/WrapperEpsxe.ahk"
+		"/D/download/애플2_문서/apple2_disk_images/apple2_disk_images/신검의전설/legend_of_divine_sword-readme.txt"
 	],
 	"find":
 	{
@@ -498,8 +524,94 @@
 	"groups":
 	[
 		{
+			"selected": 2,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "/D/download/FALCOM ZWEI/ZWEI/REG 등록(32,64bit 공용).reg",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 280,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								247,
+								247
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "ZZ_Study/run/RUN.ahk",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8754,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								155,
+								155
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/D/download/Halo/REG_X64.reg",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1150,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -555,6 +667,10 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"diskco",
+				"ZZ_Library\\DiskContainer.ahk"
+			],
 			[
 				"7zip",
 				"ZZ_Library\\7Zip.ahk"

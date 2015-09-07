@@ -8,7 +8,7 @@ imageFilePath  := %0%
 ;imageFilePath   := "\\NAS\emul\image\Apple2gs\rpg\Dragon Wars (1990)(Interplay)"
 ;imageFilePath   := "\\NAS\emul\image\Apple2gs\rpg\Dragon Wars (1990)(Interplay)\Dragon Wars (1990)(Interplay)(DIsk1).hdd.zip"
 
-fddContainer := new DiskContainer( imageFilePath, "i).*\.zip" )
+fddContainer := new DiskContainer( imageFilePath, "i)^(?!.*?(hdd|dsk)).*\.(zip|2mg)$" )
 fddContainer.initSlot( 2 )
 
 global bootSlot := 5
@@ -88,6 +88,7 @@ ExitApp
 		}
 
 		WinClose, ahk_class #32770
+		Send {F8} ; Lock Mouse
 	}
     return
 
@@ -114,6 +115,7 @@ reset() {
 		}
 
 		WinClose, ahk_class #32770
+		Send {F8} ; Lock Mouse
 	}
 }
 
@@ -139,13 +141,32 @@ insertDisk( slotNo, file ) {
 		Send ^v
 		Send +{tab}{Enter}
 		WinClose, ahk_class #32770
-
+		Send {F8} ; Lock Mouse
 	}
     
 }
 
 removeDisk( slotNo ) {
-	insertDisk( slotNo, "" )
+	WinActivate, ahk_class AfxFrameOrView90s
+	Click 50, 50, right
+
+	WinWait, ahk_class #32770
+	IfWinExist
+	{
+
+		WinActivate, ahk_class #32770
+		Click 47, 47, left
+		Click 47, 195, left
+		Send {home}{enter}
+
+		if( slotNo != "1" )
+			Send {down}
+
+		Send {tab}{tab}{tab}{tab}{tab}
+		Send {Enter}
+		WinClose, ahk_class #32770
+	}
+
 }
 
 
@@ -198,7 +219,7 @@ setConfig( imageFilePath ) {
 
 	x := new XML( activegsxml )
 
-    files := FileUtil.getFiles( imageFilePath, "i)^(?!.*?hdd).*\.zip$" )
+    files := FileUtil.getFiles( imageFilePath, "i)^(?!.*?(hdd|notInsert)).*\.(zip|2mg)$" )
 	Loop, % files.MaxIndex()
 	{
 		if( a_index > 2 )
