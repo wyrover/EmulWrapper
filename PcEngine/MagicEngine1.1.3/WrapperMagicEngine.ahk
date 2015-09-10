@@ -3,7 +3,7 @@
 
 emulatorPid   := ""
 imageFilePath := %0%
-;imageFilePath := "\\NAS\emul\image\PcEngine\cd\RPG\�̽� 4 - ������ [Ys IV - The Dawn of Ys (Eng Patch 1.0)].mdx"
+;imageFilePath := ""
 ;imageFilePath := "\\NAS\emul\image\PcEngine\hucard\Batman (J).zip"
 
 if( VirtualDisk.open( imageFilePath, false ) = true ) {

@@ -59,19 +59,22 @@
 			}
 		},
 		{
+			"contents": "#NoEnv\n\nfileIni := A_ScriptDir \"\\Run.ini\"\nfileReg := A_ScriptDir \"\\Run.reg\"\n\nprop := readProperties( fileIni )\n\n; set default\nprop[ \"cd\" ] := A_ScriptDir\n\nsetRegistry( fileReg, prop )\n\nrunProgram( fileIni, prop )\n\n\nExitApp\n\n\nrunProgram( fileIni, properties ) {\n\n	IniRead, resolution,  %fileIni%, init, resolution\n	if ( resolution != \"ERROR\" && resolution != \"\" ) {\n    	width  := Trim( RegExReplace( resolution, \"i)^(.*?)x.*?$\", \"$1\" ) )\n    	height := Trim( RegExReplace( resolution, \"i)^.*?x(.*?)$\", \"$1\" ) )\n		ResolutionChanger.change( width, height )\n	}\n\n\n	IniRead, execPath,  %fileIni%, init, executor\n	IniRead, isRunWait, %fileIni%, init, runWait\n	\n	if ( execPath != \"ERROR\" && execPath != \"\" ) {\n		\n		execPath := bindValue( execPath, properties )\n		SplitPath, execPath, , execDir\n		\n		if ( isRunWait == \"true\" || (resolution != \"ERROR\" && resolution != \"\") )\n		{\n			RunWait %execPath%, %execDir%\n			;MsgBox % \"RunWait : \" isRunWait \",\" resolution\n			;Run %execPath%, %execDir%\n			ResolutionChanger.restore()\n		} else {\n			Run %execPath%, %execDir%\n			;msgbox Run\n		}\n\n		;msgbox % \"isRunWait:\" isRunWait  \", resolution:\" resolution \", result:\"  ( isRunWait != true )\n\n	}\n\n\n\n}\n\n\nisFile( path ) {\n\n	IfNotExist %path%, return false\n\n	FileGetAttrib, attr, %path%\n	\n	Return ! InStr( attr, \"D\" )\n\n}\n\nreadProperties( file ) {\n\n	prop     := []tryrfgt ytuh\n	readMode := false\n\n	Loop, Read, %file%\n	{\n\n		if RegExMatch(A_LoopReadLine, \"^#.*\" )\n			continue\n\n		if ( readMode == false ) {\n			if RegExMatch(A_LoopReadLine, \"i)^\\[properties\\]\" )\n				readMode = true\n			continue\n		} else {\n			If RegExMatch(A_LoopReadLine, \"^\\[.*\\]\" ) {\n				readMode = false\n				continue\n			}\n		}\n\n    key := RegExReplace( A_LoopReadLine, \"^(.*?)=.*?$\", \"$1\" )\n    val := RegExReplace( A_LoopReadLine, \"^.*?=(.*?)$\", \"$1\" )\n\n		prop[ Trim(key) ] := Trim(val)\n\n	}\n\n	return prop\n\n}\n\n/**\n* Write Registry from file \n*\n* @param file       {String} filePath contains data formatted Windows Registry\n* @param properties {Array}  properties to bind\n*/\nsetRegistry( file, properties ) {\n\n	regKey       := \"\"\n	readNextLine := false\n	isHex        := true\n\n	Loop, Read, %file%\n	{\n\n		if RegExMatch(A_LoopReadLine, \"^Windows Registry Editor\" ) {\n			continue\n		} else if ( StrLen(A_LoopReadLine) == 0 ) {\n			Continue\n		} else if RegExMatch(A_LoopReadLine, \"^\\[.*\\]\" ) {\n			regKey := RegExReplace( A_LoopReadLine, \"^\\[(.*)\\]\", \"$1\" )\n			continue\n		} else if ( regKey == \"\" ) {\n			continue\n		}\n\n		if ( readNextLine == true ) {\n			regVal := regVal A_LoopReadLine\n		} else {\n	\n			regName := RegExReplace( RegExReplace( A_LoopReadLine, \"^\"\"(.*?)\"\"=.*$\", \"$1\" ), \"\\\\\"\"\", \"\"\"\" )\n			;regName := RegExReplace( A_LoopReadLine, \"^\"\"(.*?)\"\"=.*$\", \"$1\" )\n			regVal  := RegExReplace( A_LoopReadLine, \"^\"\".*?\"\"=(.*)$\", \"$1\" )\n			regType := \"REG_SZ\"\n			\n			if RegExMatch( regVal, \"^\"\".*\"\"$\" ) {\n				regType := \"REG_SZ\"\n				regVal  := bindValue( RegExReplace( regVal, \"^\"\"(.*)\"\"$\", \"$1\" ), properties )\n				isHex   := false\n			} else if RegExMatch( regVal, \"^dword:\" ) {\n				regType := \"REG_DWORD\"\n				regVal  := RegExReplace( regVal, \"^dword:(.*)$\", \"$1\" )\n				isHex   := false\n			} else if RegExMatch( regVal, \"^hex\\(b\\):\" ) {\n				regType := \"REG_QWORD\"\n				regVal  := RegExReplace( regVal, \"^hex\\(b\\):(.*)$\", \"$1\" )\n				isHex   := true\n			} else if RegExMatch( regVal, \"^hex\\(7\\):\" ) {\n				regType := \"REG_MULTI_SZ\"\n				regVal  := RegExReplace( regVal, \"^hex\\(7\\):(.*)$\", \"$1\" )\n				isHex   := true\n			} else if RegExMatch( regVal, \"^hex\\(2\\):\" ) {\n				regType := \"REG_EXPAND_SZ\"\n				regVal  := RegExReplace( regVal, \"^hex\\(2\\):(.*)$\", \"$1\" )\n				isHex   := true\n			} else if RegExMatch( regVal, \"^hex:\" ) {\n				regType := \"REG_BINARY\"\n				regVal  := RegExReplace( regVal, \"^hex:(.*)$\", \"$1\" )\n				isHex   := true\n			}\n			\n		}\n\n		if ( RegExMatch(regVal, \"^.*\\\\$\") ) {\n      		readNextLine := true\n      		continue\n		} else {\n			readNextLine := false\n		}\n\n		if ( isHex == true ) {\n			regVal := RegExReplace( regVal, \"[\\\\\\t ]\", \"\" )\n\n			if ( regType == \"REG_QWORD\" ) {\n				;; Not Working !!\n				regVal := toNumberFromHex( regVal )\n			} else {\n				regVal := toStringFromHex( regVal )\n			}\n\n		}\n\n		RegWrite, % regType, % regKey, % regName, % regVal\n\n	}\n\n}\n\nbindValue( value, properties ) {\n\n	For key, val in properties\n		value := StrReplace( value, \"#{\" key \"}\", val )\n\n	return value\n\n}\n\ntoStringFromHex( hexValue ) {\n\n  if ! hexValue\n    return 0\n\n  array := StrSplit( hexValue, \",\" )\n\n  if ( mod( array.MaxIndex(), 2 ) != 0 ) {\n  	array.Insert( \"00\" )\n  }\n\n  result := \"\"\n\n  for i, element in array\n  {\n  	if ( mod(i,2) == 0 )\n  		Continue\n\n  	result := result chr( \"0x\" array[i + 1] array[i] )\n  }\n\n  return result\n\n}\n\ntoNumberFromHex( hexValue ) {\n\n  if ! hexValue\n    return 0\n\n  array := StrSplit( hexValue, \",\" )\n\n  if ( mod( array.MaxIndex(), 2 ) != 0 ) {\n  	array.Insert( \"00\" )\n  }\n\n  result := \"\"\n\n  for i, element in array\n  {\n  	if ( mod(i,2) == 0 )\n  		Continue\n\n  	result := array[i + 1] array[i] result\n\n  }\n\n  ;return \"0x\" result\n  return \"0x0000000c\"\n\n}\n\nconvertBase( fromBase, toBase, number )\n{\n    static u := A_IsUnicode ? \"_wcstoui64\" : \"_strtoui64\"\n    static v := A_IsUnicode ? \"_i64tow\"    : \"_i64toa\"\n    VarSetCapacity(s, 65, 0)\n    value := DllCall(\"msvcrt.dll\\\" u, \"Str\", number, \"UInt\", 0, \"UInt\", fromBase, \"CDECL Int64\")\n    DllCall(\"msvcrt.dll\\\" v, \"Int64\", value, \"Str\", s, \"UInt\", toBase, \"CDECL\")\n    return s\n}\n\n\nclass ResolutionChanger {\n\n    static void := ResolutionChanger._init()\n\n    _init() {\n        this.srcWidth  := A_ScreenWidth\n        this.srcHeight := A_ScreenHeight\n    }\n  \n    __New() {\n        throw Exception( \"ResolutionChanger is a static class, dont instante it!\", -1 )\n    }\n\n\n    change( width, height ) {\n\n    	If ( RegExMatch(width, \"^\\d+$\") == false || RegExMatch(height, \"^\\d+$\") == false ) {\n    		MsgBox Resolution must be consisted with digit values ( input values : [%width%]x[%height%])\n    	    return\n    	}\n\n        VarSetCapacity( dM, 156, 0 )\n        NumPut( 156, dM, 36 )\n        NumPut( 0x5c0000, dM, 40 )\n        NumPut( width, dM, 108 )\n        NumPut( height, dM, 112 )\n        DllCall( \"ChangeDisplaySettingsA\", UInt,&dM, UInt,0 )\n    }\n  \n    /*\n    change( width, height, colorDepth:=32, Hz:=60 ) {\n        VarSetCapacity( dM,156,0 ), NumPut( 156,2,&dM,36 )\n        DllCall( \"EnumDisplaySettings\", UInt,0, UInt,-1, UInt,&dM ), NumPut(0x5c0000,dM,40)\n        NumPut(cD,dM,104),  NumPut(sW,dM,108),  NumPut(sH,dM,112),  NumPut(rR,dM,120)\n        Return DllCall( \"ChangeDisplaySettings\", UInt,&dM, UInt,0 )\n    }\n    */\n  \n    restore() {\n        if ( A_ScreenWidth != this.srcWidth || A_ScreenHeight != this.srcHeight ) {\n            this.change( this.srcWidth, this.srcHeight )\n        }\n    }\n\n}\n\n\n; Sends text to a console's input stream. WinTitle may specify any window in\n; the target process. Since each process may be attached to only one console,\n; ConsoleSend fails if the script is already attached to a console.\n\n; ConsoleSend( text, WinTitle=\"\", WinText=\"\", ExcludeTitle=\"\", ExcludeText=\"\" ) {\n\n;     WinGet, pid, PID, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%\n;     if !pid\n;         return false, ErrorLevel:=\"window\"\n;     ; Attach to the console belonging to %WinTitle%'s process.\n;     if !DllCall(\"AttachConsole\", \"uint\", pid)\n;         return false, ErrorLevel:=\"AttachConsole\"\n;     hConIn := DllCall(\"CreateFile\", \"str\", \"CONIN$\", \"uint\", 0xC0000000\n;                 , \"uint\", 0x3, \"uint\", 0, \"uint\", 0x3, \"uint\", 0, \"uint\", 0)\n;     if hConIn = -1\n;         return false, ErrorLevel:=\"CreateFile\"\n    \n;     VarSetCapacity(ir, 24, 0)       ; ir := new INPUT_RECORD\n;     NumPut(1, ir, 0, \"UShort\")      ; ir.EventType := KEY_EVENT\n;     NumPut(1, ir, 8, \"UShort\")      ; ir.KeyEvent.wRepeatCount := 1\n;     ; wVirtualKeyCode, wVirtualScanCode and dwControlKeyState are not needed,\n;     ; so are left at the default value of zero.\n    \n;     Loop, Parse, text ; for each character in text\n;     {\n;         NumPut(Asc(A_LoopField), ir, 14, \"UShort\")\n        \n;         NumPut(true, ir, 4, \"Int\")  ; ir.KeyEvent.bKeyDown := true\n;         gosub ConsoleSendWrite\n        \n;         NumPut(false, ir, 4, \"Int\") ; ir.KeyEvent.bKeyDown := false\n;         gosub ConsoleSendWrite\n;     }\n;     gosub ConsoleSendCleanup\n;     return true\n    \n;     ConsoleSendWrite:\n;         if ! DllCall(\"WriteConsoleInput\", \"uint\", hconin, \"uint\", &ir, \"uint\", 1, \"uint*\", 0)\n;         {\n;             gosub ConsoleSendCleanup\n;             return false, ErrorLevel:=\"WriteConsoleInput\"\n;         }\n;     return\n    \n;     ConsoleSendCleanup:\n;         if (hConIn!=\"\" && hConIn!=-1)\n;             DllCall(\"CloseHandle\", \"uint\", hConIn)\n;         ; Detach from %WinTitle%'s console.\n;         DllCall(\"FreeConsole\")\n;     return\n\n; }",
 			"file": "ZZ_Study/run/RUN.ahk",
+			"file_size": 9111,
+			"file_write_time": 130859496198189462,
 			"settings":
 			{
-				"buffer_size": 8754,
+				"buffer_size": 8766,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/D/download/Halo/REG_X64.reg",
+			"file": "//NAS/Download/ps3netsrv/ps3netsrv/common.h",
 			"settings":
 			{
-				"buffer_size": 1150,
-				"line_ending": "Windows"
+				"buffer_size": 2018,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -237,6 +240,10 @@
 	],
 	"file_history":
 	[
+		"/D/download/NARUTO SHIPPUDEN Ultimate Ninja STORM 3 Full Burst/RUN.ini",
+		"/D/download/Sine Mora/RUN.ini",
+		"/D/download/Commandos 2/RUN.ini",
+		"/D/download/Halo/REG_X64.reg",
 		"/D/download/Commandos 1/RUN.ini",
 		"//NAS/emul/emulator/Apple2gs/ActiveGS/WrapperActiveGs.ahk",
 		"/D/download/FALCOM ZWEI/RUN.ini",
@@ -360,11 +367,7 @@
 		"/D/download/ahkdll-v1-release-master/ahkdll-v1-release-master/lib/_MemoryLibrary.ahk",
 		"/C/development/NIDE/workspace/hyperlaunch-3/Lib/MultiPlayer.ahk",
 		"/C/Users/Administrator/.emulationstation/es_settings.cfg",
-		"/D/app/Emul/Famicom/nestopiaGit_20141007/nestopia.xml",
-		"//NAS/emul/emulator/Mame/.gitignore",
-		"/D/download/config_n6004r_19700101_000159.cfg",
-		"/D/download/애플2_문서/apple2_disk_images/apple2_disk_images/GameMaker/gamemakermanual.txt",
-		"/D/download/애플2_문서/apple2_disk_images/apple2_disk_images/신검의전설/legend_of_divine_sword-readme.txt"
+		"/D/app/Emul/Famicom/nestopiaGit_20141007/nestopia.xml"
 	],
 	"find":
 	{
@@ -383,6 +386,10 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"SHIPPUDEN",
+			"NARUTO",
+			"download",
+			"d",
 			"&",
 			"`",
 			"epsxeLaunchType",
@@ -561,15 +568,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8754,
+						"buffer_size": 8766,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								155,
-								155
+								1353,
+								1353
 							]
 						],
 						"settings":
@@ -578,7 +585,7 @@
 							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1020.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -586,11 +593,11 @@
 				},
 				{
 					"buffer": 2,
-					"file": "/D/download/Halo/REG_X64.reg",
+					"file": "//NAS/Download/ps3netsrv/ps3netsrv/common.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1150,
+						"buffer_size": 2018,
 						"regions":
 						{
 						},
@@ -603,7 +610,8 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/C++/C++.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
