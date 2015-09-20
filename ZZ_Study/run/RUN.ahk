@@ -18,34 +18,52 @@ ExitApp
 
 runProgram( fileIni, properties ) {
 
-	IniRead, resolution,  %fileIni%, init, resolution
-	if ( resolution != "ERROR" && resolution != "" ) {
+	IniRead, executor,                 %fileIni%, init, executor,                  ""
+	IniRead, executorDir,              %fileIni%, init, executorDir,               ""
+	IniRead, resolution,               %fileIni%, init, resolution,                ""
+	IniRead, resolutionFitWindow,      %fileIni%, init, resolutionFitWindow,       ""
+	IniRead, resolutionFitWindowDelay, %fileIni%, init, resolutionFitWindowDelay,  0
+	IniRead, isRunWait,                %fileIni%, init, runWait,                   "false"
+
+	if ( resolution != "" ) {
     	width  := Trim( RegExReplace( resolution, "i)^(.*?)x.*?$", "$1" ) )
     	height := Trim( RegExReplace( resolution, "i)^.*?x(.*?)$", "$1" ) )
 		ResolutionChanger.change( width, height )
+		isRunWait := "true"
 	}
 
-
-	IniRead, execPath,  %fileIni%, init, executor
-	IniRead, isRunWait, %fileIni%, init, runWait
-	
-	if ( execPath != "ERROR" && execPath != "" ) {
+	if ( executor != "" ) {
 		
-		execPath := bindValue( execPath, properties )
-		SplitPath, execPath, , execDir
+		executor    := bindValue( executor,     properties )
+		executorDir := bindValue( executorDir,  properties )
 		
-		if ( isRunWait == "true" || (resolution != "ERROR" && resolution != "") )
+		if( resolution != "" && resolutionFitWindow != "" )
 		{
-			RunWait %execPath%, %execDir%
-			;MsgBox % "RunWait : " isRunWait "," resolution
-			;Run %execPath%, %execDir%
+			Run, %executor%, %executorDir%,,applicationPid
+			WinWait, %resolutionFitWindow%,, 3
+			If ErrorLevel
+			{
+				MsgBox % "There is no window to wait.(" resolutionFitWindow ")"
+				Process, Close, %applicationPid%
+			}
+			else
+			{
+				Sleep, %resolutionFitWindowDelay%
+				WinSet, Style, -0xC40000, %resolutionFitWindow% ; remove the titlebar and border(s) 
+				WinMove, %resolutionFitWindow%,, 0, 0, %width%, %height%  ; move the window to 0,0 and reize to width x height 
+				MouseMove, %width%, %height%
+				WinWaitClose, %resolutionFitWindow%
+			}
+			ResolutionChanger.restore()
+
+		}
+		else if ( isRunWait == "true" )
+		{
+			RunWait, %executor%, %executorDir%
 			ResolutionChanger.restore()
 		} else {
-			Run %execPath%, %execDir%
-			;msgbox Run
+			Run, %executor%, %executorDir%
 		}
-
-		;msgbox % "isRunWait:" isRunWait  ", resolution:" resolution ", result:"  ( isRunWait != true )
 
 	}
 
