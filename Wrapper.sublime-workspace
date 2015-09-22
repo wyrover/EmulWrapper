@@ -4,6 +4,34 @@
 		"selected_items":
 		[
 			[
+				"resolu",
+				"resolutionFitWindowWait"
+			],
+			[
+				"%re",
+				"%resolutionFitWindowDelay%"
+			],
+			[
+				"preEx",
+				"preExecutorDir"
+			],
+			[
+				"prop",
+				"prop"
+			],
+			[
+				"executor",
+				"executorDir"
+			],
+			[
+				"mou",
+				"MouseMove"
+			],
+			[
+				"WinW",
+				"WinWaitClose"
+			],
+			[
 				"A_Scr",
 				"A_ScreenHeight"
 			],
@@ -14,10 +42,6 @@
 			[
 				"mouse",
 				"MouseClick"
-			],
-			[
-				"prop",
-				"properties"
 			],
 			[
 				"exit",
@@ -48,33 +72,63 @@
 	"buffers":
 	[
 		{
-			"contents": "Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Falcom]\n\n[HKEY_CURRENT_USER\\Software\\Falcom\\Fsetup]\n\"DisplayName\"=\"Fsetup\"\n\"Path\"=\"D:\\\\\"\n\"ZWEI\"=\"D:\\\\download\\\\FALCOM ZWEI\\\\ZWEI\"\n\n[HKEY_CURRENT_USER\\Software\\Falcom\\ZWEI]\n\"Path\"=\"D:\\\\download\\\\FALCOM ZWEI\\\\ZWEI\"\n\n",
-			"file": "/D/download/FALCOM ZWEI/ZWEI/REG 등록(32,64bit 공용).reg",
-			"file_size": 586,
-			"file_write_time": 130859439415225931,
+			"contents": "me2.do/5Lt7L9yk \n\nc:\\Users\\Administrator\\AppData\\Local\\FOMM\\",
 			"settings":
 			{
-				"buffer_size": 280,
+				"buffer_size": 60,
+				"line_ending": "Windows",
+				"name": "me2.do/5Lt7L9yk"
+			}
+		},
+		{
+			"file": "/D/download/Fallout TTW (New)/RUN.ini",
+			"settings":
+			{
+				"buffer_size": 141,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "#NoEnv\n\nfileIni := A_ScriptDir \"\\Run.ini\"\nfileReg := A_ScriptDir \"\\Run.reg\"\n\nprop := readProperties( fileIni )\n\n; set default\nprop[ \"cd\" ] := A_ScriptDir\n\nsetRegistry( fileReg, prop )\n\nrunProgram( fileIni, prop )\n\n\nExitApp\n\n\nrunProgram( fileIni, properties ) {\n\n	IniRead, resolution,  %fileIni%, init, resolution\n	if ( resolution != \"ERROR\" && resolution != \"\" ) {\n    	width  := Trim( RegExReplace( resolution, \"i)^(.*?)x.*?$\", \"$1\" ) )\n    	height := Trim( RegExReplace( resolution, \"i)^.*?x(.*?)$\", \"$1\" ) )\n		ResolutionChanger.change( width, height )\n	}\n\n\n	IniRead, execPath,  %fileIni%, init, executor\n	IniRead, isRunWait, %fileIni%, init, runWait\n	\n	if ( execPath != \"ERROR\" && execPath != \"\" ) {\n		\n		execPath := bindValue( execPath, properties )\n		SplitPath, execPath, , execDir\n		\n		if ( isRunWait == \"true\" || (resolution != \"ERROR\" && resolution != \"\") )\n		{\n			RunWait %execPath%, %execDir%\n			;MsgBox % \"RunWait : \" isRunWait \",\" resolution\n			;Run %execPath%, %execDir%\n			ResolutionChanger.restore()\n		} else {\n			Run %execPath%, %execDir%\n			;msgbox Run\n		}\n\n		;msgbox % \"isRunWait:\" isRunWait  \", resolution:\" resolution \", result:\"  ( isRunWait != true )\n\n	}\n\n\n\n}\n\n\nisFile( path ) {\n\n	IfNotExist %path%, return false\n\n	FileGetAttrib, attr, %path%\n	\n	Return ! InStr( attr, \"D\" )\n\n}\n\nreadProperties( file ) {\n\n	prop     := []tryrfgt ytuh\n	readMode := false\n\n	Loop, Read, %file%\n	{\n\n		if RegExMatch(A_LoopReadLine, \"^#.*\" )\n			continue\n\n		if ( readMode == false ) {\n			if RegExMatch(A_LoopReadLine, \"i)^\\[properties\\]\" )\n				readMode = true\n			continue\n		} else {\n			If RegExMatch(A_LoopReadLine, \"^\\[.*\\]\" ) {\n				readMode = false\n				continue\n			}\n		}\n\n    key := RegExReplace( A_LoopReadLine, \"^(.*?)=.*?$\", \"$1\" )\n    val := RegExReplace( A_LoopReadLine, \"^.*?=(.*?)$\", \"$1\" )\n\n		prop[ Trim(key) ] := Trim(val)\n\n	}\n\n	return prop\n\n}\n\n/**\n* Write Registry from file \n*\n* @param file       {String} filePath contains data formatted Windows Registry\n* @param properties {Array}  properties to bind\n*/\nsetRegistry( file, properties ) {\n\n	regKey       := \"\"\n	readNextLine := false\n	isHex        := true\n\n	Loop, Read, %file%\n	{\n\n		if RegExMatch(A_LoopReadLine, \"^Windows Registry Editor\" ) {\n			continue\n		} else if ( StrLen(A_LoopReadLine) == 0 ) {\n			Continue\n		} else if RegExMatch(A_LoopReadLine, \"^\\[.*\\]\" ) {\n			regKey := RegExReplace( A_LoopReadLine, \"^\\[(.*)\\]\", \"$1\" )\n			continue\n		} else if ( regKey == \"\" ) {\n			continue\n		}\n\n		if ( readNextLine == true ) {\n			regVal := regVal A_LoopReadLine\n		} else {\n	\n			regName := RegExReplace( RegExReplace( A_LoopReadLine, \"^\"\"(.*?)\"\"=.*$\", \"$1\" ), \"\\\\\"\"\", \"\"\"\" )\n			;regName := RegExReplace( A_LoopReadLine, \"^\"\"(.*?)\"\"=.*$\", \"$1\" )\n			regVal  := RegExReplace( A_LoopReadLine, \"^\"\".*?\"\"=(.*)$\", \"$1\" )\n			regType := \"REG_SZ\"\n			\n			if RegExMatch( regVal, \"^\"\".*\"\"$\" ) {\n				regType := \"REG_SZ\"\n				regVal  := bindValue( RegExReplace( regVal, \"^\"\"(.*)\"\"$\", \"$1\" ), properties )\n				isHex   := false\n			} else if RegExMatch( regVal, \"^dword:\" ) {\n				regType := \"REG_DWORD\"\n				regVal  := RegExReplace( regVal, \"^dword:(.*)$\", \"$1\" )\n				isHex   := false\n			} else if RegExMatch( regVal, \"^hex\\(b\\):\" ) {\n				regType := \"REG_QWORD\"\n				regVal  := RegExReplace( regVal, \"^hex\\(b\\):(.*)$\", \"$1\" )\n				isHex   := true\n			} else if RegExMatch( regVal, \"^hex\\(7\\):\" ) {\n				regType := \"REG_MULTI_SZ\"\n				regVal  := RegExReplace( regVal, \"^hex\\(7\\):(.*)$\", \"$1\" )\n				isHex   := true\n			} else if RegExMatch( regVal, \"^hex\\(2\\):\" ) {\n				regType := \"REG_EXPAND_SZ\"\n				regVal  := RegExReplace( regVal, \"^hex\\(2\\):(.*)$\", \"$1\" )\n				isHex   := true\n			} else if RegExMatch( regVal, \"^hex:\" ) {\n				regType := \"REG_BINARY\"\n				regVal  := RegExReplace( regVal, \"^hex:(.*)$\", \"$1\" )\n				isHex   := true\n			}\n			\n		}\n\n		if ( RegExMatch(regVal, \"^.*\\\\$\") ) {\n      		readNextLine := true\n      		continue\n		} else {\n			readNextLine := false\n		}\n\n		if ( isHex == true ) {\n			regVal := RegExReplace( regVal, \"[\\\\\\t ]\", \"\" )\n\n			if ( regType == \"REG_QWORD\" ) {\n				;; Not Working !!\n				regVal := toNumberFromHex( regVal )\n			} else {\n				regVal := toStringFromHex( regVal )\n			}\n\n		}\n\n		RegWrite, % regType, % regKey, % regName, % regVal\n\n	}\n\n}\n\nbindValue( value, properties ) {\n\n	For key, val in properties\n		value := StrReplace( value, \"#{\" key \"}\", val )\n\n	return value\n\n}\n\ntoStringFromHex( hexValue ) {\n\n  if ! hexValue\n    return 0\n\n  array := StrSplit( hexValue, \",\" )\n\n  if ( mod( array.MaxIndex(), 2 ) != 0 ) {\n  	array.Insert( \"00\" )\n  }\n\n  result := \"\"\n\n  for i, element in array\n  {\n  	if ( mod(i,2) == 0 )\n  		Continue\n\n  	result := result chr( \"0x\" array[i + 1] array[i] )\n  }\n\n  return result\n\n}\n\ntoNumberFromHex( hexValue ) {\n\n  if ! hexValue\n    return 0\n\n  array := StrSplit( hexValue, \",\" )\n\n  if ( mod( array.MaxIndex(), 2 ) != 0 ) {\n  	array.Insert( \"00\" )\n  }\n\n  result := \"\"\n\n  for i, element in array\n  {\n  	if ( mod(i,2) == 0 )\n  		Continue\n\n  	result := array[i + 1] array[i] result\n\n  }\n\n  ;return \"0x\" result\n  return \"0x0000000c\"\n\n}\n\nconvertBase( fromBase, toBase, number )\n{\n    static u := A_IsUnicode ? \"_wcstoui64\" : \"_strtoui64\"\n    static v := A_IsUnicode ? \"_i64tow\"    : \"_i64toa\"\n    VarSetCapacity(s, 65, 0)\n    value := DllCall(\"msvcrt.dll\\\" u, \"Str\", number, \"UInt\", 0, \"UInt\", fromBase, \"CDECL Int64\")\n    DllCall(\"msvcrt.dll\\\" v, \"Int64\", value, \"Str\", s, \"UInt\", toBase, \"CDECL\")\n    return s\n}\n\n\nclass ResolutionChanger {\n\n    static void := ResolutionChanger._init()\n\n    _init() {\n        this.srcWidth  := A_ScreenWidth\n        this.srcHeight := A_ScreenHeight\n    }\n  \n    __New() {\n        throw Exception( \"ResolutionChanger is a static class, dont instante it!\", -1 )\n    }\n\n\n    change( width, height ) {\n\n    	If ( RegExMatch(width, \"^\\d+$\") == false || RegExMatch(height, \"^\\d+$\") == false ) {\n    		MsgBox Resolution must be consisted with digit values ( input values : [%width%]x[%height%])\n    	    return\n    	}\n\n        VarSetCapacity( dM, 156, 0 )\n        NumPut( 156, dM, 36 )\n        NumPut( 0x5c0000, dM, 40 )\n        NumPut( width, dM, 108 )\n        NumPut( height, dM, 112 )\n        DllCall( \"ChangeDisplaySettingsA\", UInt,&dM, UInt,0 )\n    }\n  \n    /*\n    change( width, height, colorDepth:=32, Hz:=60 ) {\n        VarSetCapacity( dM,156,0 ), NumPut( 156,2,&dM,36 )\n        DllCall( \"EnumDisplaySettings\", UInt,0, UInt,-1, UInt,&dM ), NumPut(0x5c0000,dM,40)\n        NumPut(cD,dM,104),  NumPut(sW,dM,108),  NumPut(sH,dM,112),  NumPut(rR,dM,120)\n        Return DllCall( \"ChangeDisplaySettings\", UInt,&dM, UInt,0 )\n    }\n    */\n  \n    restore() {\n        if ( A_ScreenWidth != this.srcWidth || A_ScreenHeight != this.srcHeight ) {\n            this.change( this.srcWidth, this.srcHeight )\n        }\n    }\n\n}\n\n\n; Sends text to a console's input stream. WinTitle may specify any window in\n; the target process. Since each process may be attached to only one console,\n; ConsoleSend fails if the script is already attached to a console.\n\n; ConsoleSend( text, WinTitle=\"\", WinText=\"\", ExcludeTitle=\"\", ExcludeText=\"\" ) {\n\n;     WinGet, pid, PID, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%\n;     if !pid\n;         return false, ErrorLevel:=\"window\"\n;     ; Attach to the console belonging to %WinTitle%'s process.\n;     if !DllCall(\"AttachConsole\", \"uint\", pid)\n;         return false, ErrorLevel:=\"AttachConsole\"\n;     hConIn := DllCall(\"CreateFile\", \"str\", \"CONIN$\", \"uint\", 0xC0000000\n;                 , \"uint\", 0x3, \"uint\", 0, \"uint\", 0x3, \"uint\", 0, \"uint\", 0)\n;     if hConIn = -1\n;         return false, ErrorLevel:=\"CreateFile\"\n    \n;     VarSetCapacity(ir, 24, 0)       ; ir := new INPUT_RECORD\n;     NumPut(1, ir, 0, \"UShort\")      ; ir.EventType := KEY_EVENT\n;     NumPut(1, ir, 8, \"UShort\")      ; ir.KeyEvent.wRepeatCount := 1\n;     ; wVirtualKeyCode, wVirtualScanCode and dwControlKeyState are not needed,\n;     ; so are left at the default value of zero.\n    \n;     Loop, Parse, text ; for each character in text\n;     {\n;         NumPut(Asc(A_LoopField), ir, 14, \"UShort\")\n        \n;         NumPut(true, ir, 4, \"Int\")  ; ir.KeyEvent.bKeyDown := true\n;         gosub ConsoleSendWrite\n        \n;         NumPut(false, ir, 4, \"Int\") ; ir.KeyEvent.bKeyDown := false\n;         gosub ConsoleSendWrite\n;     }\n;     gosub ConsoleSendCleanup\n;     return true\n    \n;     ConsoleSendWrite:\n;         if ! DllCall(\"WriteConsoleInput\", \"uint\", hconin, \"uint\", &ir, \"uint\", 1, \"uint*\", 0)\n;         {\n;             gosub ConsoleSendCleanup\n;             return false, ErrorLevel:=\"WriteConsoleInput\"\n;         }\n;     return\n    \n;     ConsoleSendCleanup:\n;         if (hConIn!=\"\" && hConIn!=-1)\n;             DllCall(\"CloseHandle\", \"uint\", hConIn)\n;         ; Detach from %WinTitle%'s console.\n;         DllCall(\"FreeConsole\")\n;     return\n\n; }",
+			"file": "/D/download/Fallout TTW (New)/RUN.ahk",
+			"settings":
+			{
+				"buffer_size": 10739,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/download/Fallout TTW (New)/bin/Data/NVSE/plugins/OneTweak.ini",
+			"settings":
+			{
+				"buffer_size": 808,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/download/Fallout TTW (New)/RUN.reg",
+			"settings":
+			{
+				"buffer_size": 140,
+				"line_ending": "Windows"
+			}
+		},
+		{
 			"file": "ZZ_Study/run/RUN.ahk",
-			"file_size": 9111,
-			"file_write_time": 130859496198189462,
 			"settings":
 			{
-				"buffer_size": 8766,
+				"buffer_size": 10600,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "//NAS/Download/ps3netsrv/ps3netsrv/common.h",
+			"contents": "Windows Registry Editor Version 5.00\n\nWindows Registry Editor Version 5.00\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Bethesda Softworks\\FalloutNV]\n\"Installed Path\"=\"#{cd}\\\\bin\\\\\"",
+			"file": "/D/download/Fallout TTW/RUN.reg",
+			"file_size": 171,
+			"file_write_time": 130872259985974932,
 			"settings":
 			{
-				"buffer_size": 2018,
-				"line_ending": "Unix"
+				"buffer_size": 166,
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -123,7 +177,7 @@
 		[
 			[
 				"",
-				"AutoHotkey - Compile"
+				"AutoHotkey - Run"
 			],
 			[
 				"run",
@@ -240,6 +294,33 @@
 	],
 	"file_history":
 	[
+		"/D/download/Fallout TTW (New)/RUN.ahk",
+		"/D/download/Fallout TTW/RUN.ini",
+		"/D/download/Fallout 3 TTW/RUN.ini",
+		"/D/download/Fallout TTW/RUN.reg",
+		"/D/download/ANNO1404G/Anno 1404 Gold Edition/RUN.ini",
+		"/D/download/ANNO1404G/Anno 1404 Gold Edition/RUN.ahk",
+		"//NAS/emul/emulator/ZZ_Study/run/RUN.ini",
+		"//NAS/emul/emulator/ZZ_Study/run/RUN.ahk",
+		"/C/Users/Administrator/AppData/Local/Temp/_tc/Ys 1 Eternal.ahk",
+		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.0 (T-Kr)/WrapperEpsxe.ahk",
+		"//NAS/emul/emulator/PcEngine/MagicEngine1.1.3/WrapperMagicEngine.ahk",
+		"/D/download/Resident Evil HD Remaster/RUN.ini",
+		"/D/download/Resident Evil HD Remaster/RUN.ahk",
+		"/D/download/ANNO1404G/Anno 1404 Gold Edition/bin/installFont.bat",
+		"/D/download/Resident Evil HD Remaster/bin/start.bat",
+		"/D/download/Resident Evil HD Remaster/bin/codex.ini",
+		"//NAS/Download/ps3netsrv/ps3netsrv/common.h",
+		"/D/download/FALCOM ZWEI/ZWEI/REG 등록(32,64bit 공용).reg",
+		"/C/Users/Administrator/AppData/Roaming/Steam/CODEX/304240/local/config.ini",
+		"/C/Users/Administrator/AppData/Roaming/Steam/CODEX/340170/config.ini",
+		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.25/WrapperEpsxe.ahk",
+		"/D/download/Resident Evil HD Remaster/RUN.reg",
+		"/D/download/Halo/RUN.reg",
+		"/D/download/Halo/RUN.ini",
+		"/D/download/God-Fighter Zeroigar - CirnoRadimoreAD (CRA)/Mednafen/mednaffe.ini",
+		"//NAS/emul/emulator/Mednafen/MedGui Reborn Beta 0.043/MedGuiR/Mini.ini",
+		"//NAS/game-console/Android/Console/MUCH 78P01/ForSnail/IMEI.txt",
 		"/D/download/NARUTO SHIPPUDEN Ultimate Ninja STORM 3 Full Burst/RUN.ini",
 		"/D/download/Sine Mora/RUN.ini",
 		"/D/download/Commandos 2/RUN.ini",
@@ -258,7 +339,6 @@
 		"//NAS/emul/emulator/Apple2gs/ActiveGS/default.activegsxml",
 		"/D/download/DIA/RUN.ini",
 		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.0/WrapperEpsxe.ahk",
-		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.25/WrapperEpsxe.ahk",
 		"//NAS/emul/emulator/Mednafen/.gitignore",
 		"/C/Users/Administrator/Documents/AutoHotkey/SciTE/Styles/tidRich_Zenburn.style.properties",
 		"/D/download/DIA/readme.txt",
@@ -341,33 +421,7 @@
 		"//NAS/emul/emulator/Apple2e/.gitignore",
 		"/D/download/ahkdll-v1-release-master/ahkdll-v1-release-master/Compiler/IconChanger.ahk",
 		"/D/download/ahkdll-v1-release-master/ahkdll-v1-release-master/README.md",
-		"/C/Users/Administrator/Desktop/apple.reg",
-		"//NAS/emul/emulator/Apple2e/AppleWin1.26NtscAlpha/.gitignore",
-		"//NAS/emul/emulator/ZZ_Library/Common.ahk",
-		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/AppleWin/AppleWin.ahk",
-		"/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/User/Default (Windows).sublime-keymap",
-		"/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/Default/Default (Windows).sublime-keymap",
-		"/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/Default/Preferences.sublime-settings",
-		"/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/User/Preferences.sublime-settings",
-		"//NAS/emul/emulator/Apple2gs/kegs 0.91-win working frame(no disk images)/src/defcomm.h",
-		"//NAS/emul/emulator/Famicom/Fceux-r3079/luaScripts/luabot_framework.lua",
-		"/C/Users/Administrator/.emulationstation/es_systems.cfg",
-		"/D/download/애플2_문서/apple2_disk_images/apple2_disk_images/neuromancer/Hint, Manual, Wheel, Info, comic with URLs/Hint.txt",
-		"/D/download/emulationstation_win32_latest/launch_portable.bat",
-		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/DOSBox/DOSBox.ahk",
-		"/C/development/NIDE/workspace/hyperlaunch-3/Lib/HyperPause.ahk",
-		"/C/development/NIDE/workspace/hyperlaunch-3/Lib/Shared.ahk",
-		"/C/development/NIDE/workspace/AutoHotkey/Study/DebugMessage.ahk",
-		"/D/development/test/Saturn/.gitignore",
-		"/D/download/ahkdll-v1-release-master/ahkdll-v1-release-master/lib/ZipFileRaw.ahk",
-		"//NAS/emul/emulator/ZZ_Library/VirtualDisk.ahk",
-		"//NAS/emul/emulator/Saturn/.gitignore",
-		"//NAS/emul/emulator/ZZ_Library/minizip.ahk",
-		"/D/download/ahkdll-v1-release-master/ahkdll-v1-release-master/Compiler/ScriptParser.ahk",
-		"/D/download/ahkdll-v1-release-master/ahkdll-v1-release-master/lib/_MemoryLibrary.ahk",
-		"/C/development/NIDE/workspace/hyperlaunch-3/Lib/MultiPlayer.ahk",
-		"/C/Users/Administrator/.emulationstation/es_settings.cfg",
-		"/D/app/Emul/Famicom/nestopiaGit_20141007/nestopia.xml"
+		"/C/Users/Administrator/Desktop/apple.reg"
 	],
 	"find":
 	{
@@ -386,6 +440,19 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"preExecutor",
+			"%executorDir%",
+			"preExecutorDir",
+			"%executor%",
+			"			",
+			"isRunWait",
+			"execDir",
+			"execPath",
+			"\n			",
+			"VirtualDisk",
+			"\" ).append( \"\\n\" );",
+			"\\t",
+			"		sb.append( \"",
 			"SHIPPUDEN",
 			"NARUTO",
 			"download",
@@ -500,14 +567,6 @@
 			"imageDir",
 			"imageFilePath",
 			"\n		",
-			"VirtualDisk",
-			"this.path",
-			"path",
-			"this",
-			"this.",
-			"this",
-			"rc",
-			"vd",
 			"VirtualDisk"
 		],
 		"highlight": true,
@@ -536,23 +595,52 @@
 			[
 				{
 					"buffer": 0,
-					"file": "/D/download/FALCOM ZWEI/ZWEI/REG 등록(32,64bit 공용).reg",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 280,
+						"buffer_size": 60,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								247,
-								247
+								60,
+								60
 							]
 						],
 						"settings":
 						{
+							"auto_name": "me2.do/5Lt7L9yk",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/D/download/Fallout TTW (New)/RUN.ini",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 141,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								139,
+								139
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
@@ -563,20 +651,113 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "ZZ_Study/run/RUN.ahk",
+					"buffer": 2,
+					"file": "/D/download/Fallout TTW (New)/RUN.ahk",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8766,
+						"buffer_size": 10739,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1353,
-								1353
+								2189,
+								2189
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
+						},
+						"translation.x": 2.0,
+						"translation.y": 754.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/D/download/Fallout TTW (New)/bin/Data/NVSE/plugins/OneTweak.ini",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 808,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								147,
+								147
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/D/download/Fallout TTW (New)/RUN.reg",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 140,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								79,
+								79
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 5,
+					"file": "ZZ_Study/run/RUN.ahk",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10600,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4690,
+								4690
 							]
 						],
 						"settings":
@@ -585,39 +766,39 @@
 							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 1020.0,
+						"translation.y": 2704.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "//NAS/Download/ps3netsrv/ps3netsrv/common.h",
+					"buffer": 6,
+					"file": "/D/download/Fallout TTW/RUN.reg",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2018,
+						"buffer_size": 166,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								135,
+								135
 							]
 						],
 						"settings":
 						{
 							"origin_encoding": "ASCII",
-							"syntax": "Packages/C++/C++.tmLanguage"
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 6,
 					"type": "text"
 				}
 			]
@@ -640,11 +821,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -675,6 +863,14 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"wrapperexe",
+				"PlayStation\\ePSXe 1.9.0 (T-Kr)\\WrapperEpsxe.ahk"
+			],
+			[
+				"wrapperep",
+				"PlayStation\\ePSXe 1.9.0 (T-Kr)\\WrapperEpsxe.ahk"
+			],
 			[
 				"diskco",
 				"ZZ_Library\\DiskContainer.ahk"

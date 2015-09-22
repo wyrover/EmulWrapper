@@ -7,4 +7,7 @@
 #Include ResolutionChanger.ahk
 #Include Tray.ahk
 #Include Xml.ahk
+#Include 7Zip.ahk
+#Include JSON.ahk
+#Include Jxon.ahk
 ;#Include Zip.ahk

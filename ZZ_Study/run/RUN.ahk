@@ -1,7 +1,9 @@
 #NoEnv
 
-fileIni := A_ScriptDir "\Run.ini"
-fileReg := A_ScriptDir "\Run.reg"
+SplitPath, A_ScriptName, , , , NoextScriptFileName
+
+fileIni := A_ScriptDir "\" NoextScriptFileName ".ini"
+fileReg := A_ScriptDir "\" NoextScriptFileName ".reg"
 
 prop := readProperties( fileIni )
 
@@ -10,64 +12,104 @@ prop[ "cd" ] := A_ScriptDir
 
 setRegistry( fileReg, prop )
 
+runSub( "pre", fileIni, prop )
 runProgram( fileIni, prop )
-
+runSub( "post", fileIni, prop )
 
 ExitApp
 
+runMidThread:
+  SetTimer, runMidThread, off
+  runSub( "mid", fileIni, prop )
+  return
+
+runSub( section, fileIni, properties ) {
+  indices = ,0,1,2,3,4,5,6,7,8,9
+  loop, parse, indices, `,
+  {
+	IniRead, executor,    %fileIni%, %section%, executor%a_loopfield%,    _
+	IniRead, executorDir, %fileIni%, %section%, executor%a_loopfield%Dir, _
+	_runSub( executor, executorDir, properties )    
+  }
+}
+
+_runSub( executor, executorDir, properties ) {
+
+	if ( executor != "_" ) {
+		executor := bindValue( executor, properties )
+		if ( executorDir == "_" ) {
+			SplitPath, executor, , executorDir
+		}
+		executorDir := bindValue( executorDir, properties )
+		RunWait, %executor%, %executorDir%
+	}
+
+}
 
 runProgram( fileIni, properties ) {
 
-	IniRead, executor,                 %fileIni%, init, executor,                  ""
-	IniRead, executorDir,              %fileIni%, init, executorDir,               ""
-	IniRead, resolution,               %fileIni%, init, resolution,                ""
-	IniRead, resolutionFitWindow,      %fileIni%, init, resolutionFitWindow,       ""
-	IniRead, resolutionFitWindowDelay, %fileIni%, init, resolutionFitWindowDelay,  0
-	IniRead, isRunWait,                %fileIni%, init, runWait,                   "false"
+	IniRead, executor,                 %fileIni%, init, executor,                  _
+	IniRead, executorDir,              %fileIni%, init, executorDir,               _
+	IniRead, resolution,               %fileIni%, init, resolution,                _
+	IniRead, fullscreenWindow,         %fileIni%, init, fullscreenWindow,          _
+	IniRead, fullscreenWindowDelay,    %fileIni%, init, fullscreenWindowDelay,     0
+	IniRead, fullscreenWindowSize,     %fileIni%, init, fullscreenWindowSize,      _
+	IniRead, isRunWait,                %fileIni%, init, runWait,                   false
 
-	if ( resolution != "" ) {
+	if ( resolution != "_" ) {
     	width  := Trim( RegExReplace( resolution, "i)^(.*?)x.*?$", "$1" ) )
     	height := Trim( RegExReplace( resolution, "i)^.*?x(.*?)$", "$1" ) )
 		ResolutionChanger.change( width, height )
-		isRunWait := "true"
+		isRunWait := true
+		if ( fullscreenWindowSize == "_" ) {
+		    fullscreenWindowSize := resolution
+		}
 	}
 
-	if ( executor != "" ) {
+	if ( fullscreenWindowSize == "_" ) {
+	    fullscreenWindowSize := A_ScreenWidth x A_ScreenHeight
+	}
+
+	;MsgBox fullscreenWindowSize : %fullscreenWindowSize%
+
+	if ( executor != "_" ) {
 		
 		executor    := bindValue( executor,     properties )
+		if ( executorDir == "_" ) {
+			SplitPath, executor, , executorDir
+		}
 		executorDir := bindValue( executorDir,  properties )
-		
-		if( resolution != "" && resolutionFitWindow != "" )
-		{
+
+		if ( fullscreenWindow != "_" ) {
+			SetTimer, runMidThread, 500
 			Run, %executor%, %executorDir%,,applicationPid
-			WinWait, %resolutionFitWindow%,, 3
-			If ErrorLevel
-			{
-				MsgBox % "There is no window to wait.(" resolutionFitWindow ")"
+			Sleep, %fullscreenWindowDelay%
+			WinWait, %fullscreenWindow%,, 10
+
+			If ErrorLevel {
+				MsgBox % "There is no window to wait.(" fullscreenWindow ")"
 				Process, Close, %applicationPid%
-			}
-			else
-			{
-				Sleep, %resolutionFitWindowDelay%
-				WinSet, Style, -0xC40000, %resolutionFitWindow% ; remove the titlebar and border(s) 
-				WinMove, %resolutionFitWindow%,, 0, 0, %width%, %height%  ; move the window to 0,0 and reize to width x height 
+			} else {
+		    	width  := Trim( RegExReplace( fullscreenWindowSize, "i)^(.*?)x.*?$", "$1" ) )
+		    	height := Trim( RegExReplace( fullscreenWindowSize, "i)^.*?x(.*?)$", "$1" ) )
+				WinSet, Style, -0xC40000, %fullscreenWindow% ; remove the titlebar and border(s) 
+				WinMove, %fullscreenWindow%,, 0, 0, %width%, %height%  ; move the window to 0,0 and reize to width x height 
 				MouseMove, %width%, %height%
-				WinWaitClose, %resolutionFitWindow%
+				WinWaitClose, %fullscreenWindow%
 			}
+
 			ResolutionChanger.restore()
 
-		}
-		else if ( isRunWait == "true" )
-		{
+		} else if ( isRunWait == true ) {
+			SetTimer, runMidThread, 500
 			RunWait, %executor%, %executorDir%
 			ResolutionChanger.restore()
 		} else {
+			SetTimer, runMidThread, 500
 			Run, %executor%, %executorDir%
 		}
 
 	}
-
-
 
 }
 
@@ -146,7 +188,7 @@ setRegistry( file, properties ) {
 		} else {
 	
 			regName := RegExReplace( RegExReplace( A_LoopReadLine, "^""(.*?)""=.*$", "$1" ), "\\""", """" )
-			;regName := RegExReplace( A_LoopReadLine, "^""(.*?)""=.*$", "$1" )
+			regName := bindValue( regName, properties )
 			regVal  := RegExReplace( A_LoopReadLine, "^"".*?""=(.*)$", "$1" )
 			regType := "REG_SZ"
 			
@@ -178,7 +220,7 @@ setRegistry( file, properties ) {
 			
 		}
 
-		if ( RegExMatch(regVal, "^.*\\$") ) {
+		if ( RegExMatch(A_LoopReadLine, "^.*\\$") ) {
       		readNextLine := true
       		continue
 		} else {
@@ -196,7 +238,7 @@ setRegistry( file, properties ) {
 			}
 
 		}
-
+		
 		RegWrite, % regType, % regKey, % regName, % regVal
 
 	}
@@ -288,7 +330,6 @@ class ResolutionChanger {
         throw Exception( "ResolutionChanger is a static class, dont instante it!", -1 )
     }
 
-
     change( width, height ) {
 
     	If ( RegExMatch(width, "^\d+$") == false || RegExMatch(height, "^\d+$") == false ) {
@@ -296,22 +337,15 @@ class ResolutionChanger {
     	    return
     	}
 
+    	; Run, % A_ScriptDir "\script\dc32.exe -width=" width " -height=" height
+
         VarSetCapacity( dM, 156, 0 )
         NumPut( 156, dM, 36 )
         NumPut( 0x5c0000, dM, 40 )
         NumPut( width, dM, 108 )
         NumPut( height, dM, 112 )
-        DllCall( "ChangeDisplaySettingsA", UInt,&dM, UInt,0 )
+        DllCall( "ChangeDisplaySettingsA", UInt, &dM, UInt,0 )
     }
-  
-    /*
-    change( width, height, colorDepth:=32, Hz:=60 ) {
-        VarSetCapacity( dM,156,0 ), NumPut( 156,2,&dM,36 )
-        DllCall( "EnumDisplaySettings", UInt,0, UInt,-1, UInt,&dM ), NumPut(0x5c0000,dM,40)
-        NumPut(cD,dM,104),  NumPut(sW,dM,108),  NumPut(sH,dM,112),  NumPut(rR,dM,120)
-        Return DllCall( "ChangeDisplaySettings", UInt,&dM, UInt,0 )
-    }
-    */
   
     restore() {
         if ( A_ScreenWidth != this.srcWidth || A_ScreenHeight != this.srcHeight ) {
@@ -320,57 +354,3 @@ class ResolutionChanger {
     }
 
 }
-
-
-; Sends text to a console's input stream. WinTitle may specify any window in
-; the target process. Since each process may be attached to only one console,
-; ConsoleSend fails if the script is already attached to a console.
-
-; ConsoleSend( text, WinTitle="", WinText="", ExcludeTitle="", ExcludeText="" ) {
-
-;     WinGet, pid, PID, %WinTitle%, %WinText%, %ExcludeTitle%, %ExcludeText%
-;     if !pid
-;         return false, ErrorLevel:="window"
-;     ; Attach to the console belonging to %WinTitle%'s process.
-;     if !DllCall("AttachConsole", "uint", pid)
-;         return false, ErrorLevel:="AttachConsole"
-;     hConIn := DllCall("CreateFile", "str", "CONIN$", "uint", 0xC0000000
-;                 , "uint", 0x3, "uint", 0, "uint", 0x3, "uint", 0, "uint", 0)
-;     if hConIn = -1
-;         return false, ErrorLevel:="CreateFile"
-    
-;     VarSetCapacity(ir, 24, 0)       ; ir := new INPUT_RECORD
-;     NumPut(1, ir, 0, "UShort")      ; ir.EventType := KEY_EVENT
-;     NumPut(1, ir, 8, "UShort")      ; ir.KeyEvent.wRepeatCount := 1
-;     ; wVirtualKeyCode, wVirtualScanCode and dwControlKeyState are not needed,
-;     ; so are left at the default value of zero.
-    
-;     Loop, Parse, text ; for each character in text
-;     {
-;         NumPut(Asc(A_LoopField), ir, 14, "UShort")
-        
-;         NumPut(true, ir, 4, "Int")  ; ir.KeyEvent.bKeyDown := true
-;         gosub ConsoleSendWrite
-        
-;         NumPut(false, ir, 4, "Int") ; ir.KeyEvent.bKeyDown := false
-;         gosub ConsoleSendWrite
-;     }
-;     gosub ConsoleSendCleanup
-;     return true
-    
-;     ConsoleSendWrite:
-;         if ! DllCall("WriteConsoleInput", "uint", hconin, "uint", &ir, "uint", 1, "uint*", 0)
-;         {
-;             gosub ConsoleSendCleanup
-;             return false, ErrorLevel:="WriteConsoleInput"
-;         }
-;     return
-    
-;     ConsoleSendCleanup:
-;         if (hConIn!="" && hConIn!=-1)
-;             DllCall("CloseHandle", "uint", hConIn)
-;         ; Detach from %WinTitle%'s console.
-;         DllCall("FreeConsole")
-;     return
-
-; }
