@@ -1,17 +1,19 @@
 #NoEnv
 #include %A_ScriptDir%\..\..\ZZ_Library\Include.ahk
-;#include %A_ScriptDir%\..\..\ZZ_Library ; It's not work
 
 imageFilePath  := %0%
 ;imageFilePath  := "\\NAS\emul\image\Apple2gs\adventure\Police Quest (1987)(Sierra)"
 ;imageFilePath   := "\\NAS\emul\image\Apple2gs\adventure\King's Quest (1987)(Sierra)"
 ;imageFilePath   := "\\NAS\emul\image\Apple2gs\rpg\Dragon Wars (1990)(Interplay)"
 ;imageFilePath   := "\\NAS\emul\image\Apple2gs\rpg\Dragon Wars (1990)(Interplay)\Dragon Wars (1990)(Interplay)(DIsk1).hdd.zip"
+;imageFilePath   := "\\NAS\emul\image\Apple2gs\temp\Downhill Challenge (1989)(Broderbund)"
 
 fddContainer := new DiskContainer( imageFilePath, "i)^(?!.*?(hdd|dsk)).*\.(zip|2mg)$" )
 fddContainer.initSlot( 2 )
 
 global bootSlot := 5
+
+setCacheDir()
 
 if( setConfig( imageFilePath ) == true )
 {
@@ -169,6 +171,10 @@ removeDisk( slotNo ) {
 
 }
 
+setCacheDir() {
+	cacheDir := "z:\apple2gs"
+	Linker.linkDir( "c:/users/" a_username "/My Documents/ActiveGSLocalData", cacheDir )
+}
 
 setConfig( imageFilePath ) {
 
@@ -198,7 +204,7 @@ setConfig( imageFilePath ) {
 		  <image slot="7" disk="4" icon=""></image>
 		  <speed>2</speed> <!-- 0:unlimited, 2:normal, 3:zip-->
 		  <bootslot>5</bootslot>
-		  <emulatorParam>background:dark-blue;border:dark-blue;</emulatorParam>
+		  <emulatorParam>background:dark-blue;border:dark-blue;videoFX:lcd;</emulatorParam>
 		  <systemParam></systemParam>
 		</config>
 	)
@@ -219,7 +225,7 @@ setConfig( imageFilePath ) {
 
 	x := new XML( activegsxml )
 
-    files := FileUtil.getFiles( imageFilePath, "i)^(?!.*?(hdd|notInsert)).*\.(zip|2mg)$" )
+    files := FileUtil.getFiles( imageFilePath, "i)^(?!.*?(hdd|notInsert)).*\.(zip|2mg|po)$" )
 	Loop, % files.MaxIndex()
 	{
 		if( a_index > 2 )
@@ -228,7 +234,7 @@ setConfig( imageFilePath ) {
 		x.setText( diskIndex[A_Index], files[A_Index] )
 	}
 
-    files := FileUtil.getFiles( imageFilePath, "i)^.*\.hdd\.zip$" )
+    files := FileUtil.getFiles( imageFilePath, "i)^.*\.hdd\.(zip|2mg|po)$" )
 	Loop, % files.MaxIndex()
 	{
 		if( a_index > 4 )
