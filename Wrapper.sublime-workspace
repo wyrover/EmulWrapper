@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"ifnote",
+				"IfNotExist"
+			],
+			[
+				"A_Wi",
+				"A_WinDir"
+			],
+			[
 				"Error",
 				"ErrorLevel"
 			],
@@ -108,6 +116,27 @@
 	"buffers":
 	[
 		{
+			"file": "/D/download/FALCOM ZWEI/bin/uninstallIndeo.bat",
+			"settings":
+			{
+				"buffer_size": 5964,
+				"line_ending": "Windows",
+				"name": "rem - list of indeo files"
+			}
+		},
+		{
+			"contents": "1. 게임 경로중에 한글로 된 폴더가 있다면 영어로 변경\n   한글 폴더가 있을시 실행 불가\n\n< 게임 실행법 >\n\n1. ZWEI 폴더 안의 zweipet.exe를 실행합니다.\n2. 오른쪽 하단에 option을 누르고 옆에 'ZWEI!!런쳐'를 선택하고 OK를 누르면 밑에 '시작','옵션'이 나옵니다.\n3. 옵션을 클릭해서 설정을 알맞게 하고 실행하면 됩니다.\n   환경설정이 잘못되면 동영상 재생시 소리가 나오지 않습니다. (Indeo5 코덱 미등록으로 인한 배경음악 누락)\n\ntype: cd C:\\Windows\\SysWOW64 (32bit users can skip this step) - press enter\ntype: regsvr32 ir50_32.dll - press enter\n\n   Interface : DirectX5 이상을 사용한다\n   사운드 설정->Interface : 소프트웨어(DirectX3을 사용한다.)   (위에서 3번째 메뉴)\n   사운드 설정->DEVICE : 주 사운드 드라이버\n\n\n5. 설정이 끝나고 '실행'을 클릭했을 시 Indeo 오류가 나면 유틸리티 폴더 안의 iv5setup.exe를 실행해서 Indeo 코덱을 설치해야 합니다.\n   설치시 옵션은 Typical로 하시고 처음에 한동안 계속 읽은 다음에 설치가 됩니다. 그러니 쭉 기다리셔야 됩니다.\n\n\n6. 코덱 설치가 끝나고 이제 실행이 제대로 되었다면 \n   메인메뉴에서 option으로 들어가서 맨 밑에 '음량 밸런스' 를 알맞게 조절하여 배경음과 효과음이 같이 나오도록 합니다.",
+			"file": "/D/download/FALCOM ZWEI/bin/README.txt",
+			"file_size": 1130,
+			"file_write_time": 130895607981549841,
+			"settings":
+			{
+				"buffer_size": 773,
+				"line_ending": "Windows",
+				"scratch": true
+			}
+		},
+		{
 			"contents": "#NoEnv\n#include %A_ScriptDir%\\..\\..\\ZZ_Library\\Include.ahk\n\nimageFilePath  := %0%\n;imageFilePath  := \"\\\\NAS\\emul\\image\\Apple2gs\\adventure\\Police Quest (1987)(Sierra)\"\n;imageFilePath   := \"\\\\NAS\\emul\\image\\Apple2gs\\adventure\\King's Quest (1987)(Sierra)\"\n;imageFilePath   := \"\\\\NAS\\emul\\image\\Apple2gs\\rpg\\Dragon Wars (1990)(Interplay)\"\n;imageFilePath   := \"\\\\NAS\\emul\\image\\Apple2gs\\rpg\\Dragon Wars (1990)(Interplay)\\Dragon Wars (1990)(Interplay)(DIsk1).hdd.zip\"\n;imageFilePath   := \"\\\\NAS\\emul\\image\\Apple2gs\\temp\\Downhill Challenge (1989)(Broderbund)\"\n\nfddContainer := new DiskContainer( imageFilePath, \"i)^(?!.*?(hdd|dsk)).*\\.(zip|2mg)$\" )\nfddContainer.initSlot( 2 )\n\nglobal bootSlot := 5\n\nsetCacheDir()\n\nif( setConfig( imageFilePath ) == true )\n{\n\n	Run, % \"ActiveGS.exe \"\"\" FileUtil.getDir( imageFilepath ) \"\\run.activegsxml\"\"\",,,emulatorPid\n	WinWait, ahk_class AfxFrameOrView90s,, 5\n	IfWinExist\n	{\n\n		ResolutionChanger.change( 800, 600 )\n		;Sleep, 600\n		WinSet, Style, -0xC40000, ahk_class AfxFrameOrView90s   ; remove the titlebar and border(s) \n		;WinMove, ahk_class AfxFrameOrView90s,, -42, -50, 884, 697  ; remove border\n		WinMove, ahk_class AfxFrameOrView90s,, 0, 0, 800, 600  ; move the window to 0,0 and reize it to 800x600 (show original)\n		Send {F8} ; Lock Mouse\n\n		WinWaitClose, ahk_class AfxFrameOrView90s\n	}\n	\n	ResolutionChanger.restore()\n	\n} else {\n	Run, % \"ActiveGS.exe\",,,emulatorPid\n}\n\nExitApp\n\n^+PGUP:: ; Insert Disk in Drive#1\n\n    If GetKeyState( \"z\", \"P\" ) ; Ctrl + Shift + Z + PgUp :: Remove Disk in Drive#1\n		fddContainer.removeDisk( \"1\", \"removeDisk\" )\n	else ; Ctrl + Shift + PgUp :: Insert Disk in Drive#1\n		fddContainer.insertDisk( \"1\", \"insertDisk\" )\n	\n	return\n\n^+PGDN:: ; Insert Disk in Drive#2\n\n	If GetKeyState( \"z\", \"P\" ) ; Ctrl + Shift + Z + PgDn :: Remove Disk in Drive#2\n		fddContainer.removeDisk( \"2\", \"removeDisk\" )\n	else ; Ctrl + Shift + PgDn :: Insert Disk in Drive#2\n		fddContainer.insertDisk( \"2\", \"insertDisk\" )\n	\n	return\n\n^+End:: ; Cancel Disk Change	\n	fddContainer.cancel()\n	return\n	\n^+Del:: ; Reset\n	reset()\n	return\n\n^+Insert:: ; Toggle Speed\n	WinActivate, ahk_class AfxFrameOrView90s\n	Click 50, 50, right\n\n	WinWait, ahk_class #32770\n	IfWinExist\n	{\n\n		WinActivate, ahk_class #32770\n		Click 110, 47, left\n		Click 140, 80, left\n		Send {home}\n\n		if ( speedNormal != false ) {\n			Send {end}\n			speedNormal := false\n			Tray.show( \"Toggle speed to unlimited\" )\n		} else {\n			speedNormal := true\n			Tray.show( \"Toggle speed to normal\" )\n		}\n\n		WinClose, ahk_class #32770\n		Send {F8} ; Lock Mouse\n	}\n    return\n\n^+F4:: ; Control + Shift + F4\n	WinClose, ahk_class AfxFrameOrView90s\n	return\n\nreset() {\n\n	WinActivate, ahk_class AfxFrameOrView90s\n	Click 50, 50, right\n\n	WinWait, ahk_class #32770\n	IfWinExist\n	{\n\n		WinActivate, ahk_class #32770\n		Click 47, 47, left\n\n		if ( bootSlot = 5 ) {\n			Click 270, 195, left\n		} else if( bootSlot = 7 ) {\n			Click 325, 195, left\n		}\n\n		WinClose, ahk_class #32770\n		Send {F8} ; Lock Mouse\n	}\n}\n\ninsertDisk( slotNo, file ) {\n\n	WinActivate, ahk_class AfxFrameOrView90s\n	Click 50, 50, right\n\n	WinWait, ahk_class #32770\n	IfWinExist\n	{\n\n		WinActivate, ahk_class #32770\n		Click 47, 47, left\n		Click 47, 195, left\n		Send {home}{enter}\n\n		if( slotNo != \"1\" )\n			Send {down}\n\n		Send {tab}{tab}{tab}{tab}\n		Clipboard = %file%\n		Send ^v\n		Send +{tab}{Enter}\n		WinClose, ahk_class #32770\n		Send {F8} ; Lock Mouse\n	}\n    \n}\n\nremoveDisk( slotNo ) {\n	WinActivate, ahk_class AfxFrameOrView90s\n	Click 50, 50, right\n\n	WinWait, ahk_class #32770\n	IfWinExist\n	{\n\n		WinActivate, ahk_class #32770\n		Click 47, 47, left\n		Click 47, 195, left\n		Send {home}{enter}\n\n		if( slotNo != \"1\" )\n			Send {down}\n\n		Send {tab}{tab}{tab}{tab}{tab}\n		Send {Enter}\n		WinClose, ahk_class #32770\n	}\n\n}\n\nsetCacheDir() {\n	cacheDir := \"z:\\apple2gs\"\n	Linker.linkDir( \"c:/users/\" a_username \"/My Documents/ActiveGSLocalData\", cacheDir )\n}\n\nsetConfig( imageFilePath ) {\n\n	currDir := FileUtil.getDir( imageFilepath )\n	confDir := currDir . \"\\_EL_CONFIG\"\n\n	if( currDir = \"\" )\n		return false\n\n	activegsxml =\n	(\n		<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n		<config version=\"2\">\n		  <name>default</name>\n		  <desc>default</desc>\n		  <notes/>\n		  <format >2GS</format>\n		  <year>1989</year>\n		  <publisher url=\"http://www.freetoolsassociation.com\">Free Tools Association</publisher>\n		  <image slot=\"5\" disk=\"1\" icon=\"\"></image>\n		  <image slot=\"5\" disk=\"2\" icon=\"\"></image>\n		  <image slot=\"6\" disk=\"1\" icon=\"\"></image>\n		  <image slot=\"6\" disk=\"2\" icon=\"\"></image>\n		  <image slot=\"7\" disk=\"1\" icon=\"\"></image>\n		  <image slot=\"7\" disk=\"2\" icon=\"\"></image>\n		  <image slot=\"7\" disk=\"3\" icon=\"\"></image>\n		  <image slot=\"7\" disk=\"4\" icon=\"\"></image>\n		  <speed>2</speed> <!-- 0:unlimited, 2:normal, 3:zip-->\n		  <bootslot>5</bootslot>\n		  <emulatorParam>background:dark-blue;border:dark-blue;videoFX:lcd;</emulatorParam>\n		  <systemParam></systemParam>\n		</config>\n	)\n\n	;<emulatorParam>background:black;border:dark-blue</emulatorParam>\n	;<emulatorParam>background:dark-blue;border:dark-blue;PNGBoarder:0</emulatorParam>\n	;<systemParam></systemParam>\n\n	diskIndex := []\n	diskIndex.Insert( \"//config/image[@slot='5'][@disk='1']\" )\n	diskIndex.Insert( \"//config/image[@slot='5'][@disk='2']\" )\n	\n	hddIndex  := []\n	hddIndex.Insert( \"//config/image[@slot='7'][@disk='1']\" )\n	hddIndex.Insert( \"//config/image[@slot='7'][@disk='2']\" )\n	hddIndex.Insert( \"//config/image[@slot='7'][@disk='3']\" )\n	hddIndex.Insert( \"//config/image[@slot='7'][@disk='4']\" )\n\n	x := new XML( activegsxml )\n\n    files := FileUtil.getFiles( imageFilePath, \"i)^(?!.*?(hdd|notInsert)).*\\.(zip|2mg|po)$\" )\n	Loop, % files.MaxIndex()\n	{\n		if( a_index > 2 )\n			break\n\n		x.setText( diskIndex[A_Index], files[A_Index] )\n	}\n\n    files := FileUtil.getFiles( imageFilePath, \"i)^.*\\.hdd\\.(zip|2mg|po)$\" )\n	Loop, % files.MaxIndex()\n	{\n		if( a_index > 4 )\n			break\n\n		x.setText( hddIndex[A_Index], files[A_Index] )\n		x.setText( \"//config/bootslot\", \"7\" )\n\n		bootSlot := 7\n	}\n\n	;x.viewXML()\n	x.save( currDir . \"\\run.activegsxml\" )\n\n	return true\n\n}",
 			"file": "Apple2gs/ActiveGS/WrapperActiveGs.ahk",
 			"file_size": 6271,
@@ -120,18 +149,43 @@
 			}
 		},
 		{
-			"file": "/C/NIDE/NIDE.bat",
+			"file": "ZZ_Study/run/RUN.ahk",
 			"settings":
 			{
-				"buffer_size": 264,
+				"buffer_size": 8605,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "[init]\nexecutor    = #{cd}\\bin\\LoveR_Maki.exe\n",
-			"file": "/D/download/LoveraperMaki/LoveraperMaki/RUN.ini",
-			"file_size": 46,
-			"file_write_time": 130895333438021967,
+			"file": "ZZ_Library/7Zip.ahk",
+			"settings":
+			{
+				"buffer_size": 21912,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "#NoEnv\n#include %A_ScriptDir%\\..\\..\\ZZ_Library\\Include.ahk\n\nemulatorPid   := \"\"\nimageFilePath := %0%\n;imageFilePath := \"\"\n;imageFilePath := \"\\\\NAS\\emul\\image\\PcEngine\\hucard\\Batman (J).zip\"\n\nif( VirtualDisk.open( imageFilePath, false ) = true ) {\n	Run, % \"pce.exe \"\"./cards/Super CD-ROM2 System V3.01 (En).zip\"\"\",,,emulatorPid\n	WinWait, ahk_class MagicEngineWindowClass,, 5\n	IfWinExist\n	{\n		WinWaitActive, ahk_class MagicEngineWindowClass,, 5\n		;Sleep, 3000\n		;ControlSend,,{Enter},emulatorPid\n		;ControlSend,, {Enter},MagicEngine ahk_class MagicEngineWindowClass\n		;SendInput {Enter}\n		WinWaitClose\n	}\n	VirtualDisk.close()\n\n} else {\n	Run, % \"pce.exe \"\"\" imageFilePath \"\"\"\"\n}\n\nExitApp\n\n^F3::\n\n;MagicEngine  1.1\n;ahk_class MagicEngineWindowClass\n;ahk_exe pce.exe\n\n    Tray.show( \"Send Key\", \"Merong\" )\n	;SetKeyDelay(50)\n	;WinActive, ahk_class MagicEngineWindowClass\n	;ControlSend,, {ALT}+{F4}, ahk_class MagicEngineWindowClass\n	;Send !{F4}\n	SendMode InputThenPlay\n	;SendEvent {Enter}\n	SendInput {Enter}\n	;SendPlay {Enter}\n	return",
+			"file": "PcEngine/MagicEngine1.1.3/WrapperMagicEngine.ahk",
+			"file_size": 1071,
+			"file_write_time": 130862954006919916,
+			"settings":
+			{
+				"buffer_size": 1028,
+				"line_ending": "Windows",
+				"scratch": true
+			}
+		},
+		{
+			"file": "/D/download/FALCOM ZWEI/bin/Indeo5/install.ahk",
+			"settings":
+			{
+				"buffer_size": 924,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/download/Dead Space/RUN.ini",
 			"settings":
 			{
 				"buffer_size": 46,
@@ -139,64 +193,10 @@
 			}
 		},
 		{
-			"contents": "type: cd C:\\Windows\\SysWOW64 (32bit users can skip this step) - press enter\ntype: regsvr32 ir50_32.dll - press enter",
+			"file": "/C/NIDE/maven/settings.xml",
 			"settings":
 			{
-				"buffer_size": 116,
-				"line_ending": "Windows",
-				"name": "type: cd C:\\Windows\\SysWOW64 (32bit users can skip"
-			}
-		},
-		{
-			"contents": "1.알루미늄 장비 얻는 법\n 게임 후반부에 놈의 마을에서 수행하고 있는 마켈에게 빈 깡통과 ( 5점 ), 캔 뚜껑을 ( 1점 ) 가지고 가면 포인트에 따라 \n알루미늄 장비를 준다. 장비 교환시의 포인트는 누적 포인트로 계산된다.\n \n30 포인트 '알루미늄 팔덮개'   50 포인트 '알루미늄 신발'  70 포인트 '알루미늄 투구'  85 포인트 '알루미늄 갑옷'  100 포인트 '알루미늄 방패'\n \n\n2.푸크 마을 호수 요정에게 아이템 얻기\n 푸크 마을 호수 안에는 요정이 살고 있다. 이 요정과 만나려면 호수 안에 아무 아이템이나 던지면 되는데 처음 요정을 불러낸 후 몇 번 아이템을 던지면 어느 순간 요정이 노력 여하에 따라 쓰레기 ( 요정에게는 쓰레기이지만 우리에겐 둘도 없는 보물이다.^^ )를 준다고 한다. 요정이 말한 노력이란 스테이지 클리어 점수를 말하는 것으로 던전에 들어가 가장 아래층까지 내려가면 나오는 랭크가 바로 그것이다. 이 랭크의 평가가 골드나 플래티넘 일 경우 그 수에 따라 아이템을 주는데 세부 사항은 다음과 같다. ( 이 점수 역시 누적 점수이므로 찾아가면 순서대로 아이템을 준다. 뭐 극단적으론 나중에 한번에 가서 다 받을 수도 있다. )\n \n골드랭크 기준\n- 모든 적들을 죽였는가?\n- 파괴 가능한 모든 사물을 파괴했는가? \n- 데미지가 0 ~ 5정도 사이인가? (심한 경우에는 데미지를 받지 않아야 하는 곳도 있다. )\n단, 시간은 관계가 없으며 몽환 미궁은 위의 조건들과 관계없이 클리어를 하면 던전 레벨에 맞는 랭크를 받게 된다.\n \n골드랭크별 교환 아이템\n \n1개 대지의 신발\n 2개 질풍의 신발\n 3개 극한의 신발\n \n4개 어둠의 신발\n 6개 작열의 신발\n 8개 대지의 팔덮개\n \n10개 극한의 팔덮개\n 12개 섬광의 신발\n 14개 작열의 팔덮개\n \n16개 섬광의 팔덮개\n 18개 어둠의 팔덮개\n 20개 극한의 투구\n \n22개 작열의 투구\n 24개 어둠의 투구\n 26개 대지의 갑옷\n \n28개 극한의 갑옷\n 30개 작열의 갑옷\n 32개 질풍의 갑옷\n \n34개 질풍의 투구\n 35개 질풍의 팔덮개\n 36개 대지의 투구\n \n37개 섬광의 투구\n 38개 어둠의 갑옷\n 39개 섬광의 갑옷\n \n40개 이벤트\n  \n  \n \n위의 장비들을 모은 후 타프네 사막에 있는 레지네프에게 가면 반지와 장비를 교환해 준다.\n대지 세트 ( 신발 +  팔덮개 + 갑옷 + 투구 ) = 대지의 반지\n질풍 세트 ( 신발 +  팔덮개 + 갑옷 + 투구 ) = 질풍의 반지\n극한 세트 ( 신발 +  팔덮개 + 갑옷 + 투구 ) = 극한의 반지\n어둠 세트 ( 신발 +  팔덮개 + 갑옷 + 투구 ) = 어둠의 반지\n작열 세트 ( 신발 +  팔덮개 + 갑옷 + 투구 ) = 작열의 반지\n섬광 세트 ( 신발 +  팔덮개 + 갑옷 + 투구 ) = 섬광의 반지 \n6개의 반지를 모두 얻은 후에 레지네프에게 말을 걸면 브로마이드 6을 얻을 수 있다.\n \n\n3.불사신의 날개 얻는 법(위로)\n 1. 운디네 랜드에서 열쇠를 받은 후 운디네 랜드의 그라나와 대화를 하면 커플룩을 준다.\n 2. 푸크마을의 리자하에게 가면 커플룩을 신부 부케로 바꾸어준다.\n 3. 실프마을의 가출했던 소녀 리플에게 가면 신부 부케를 낚시대로 바꾸어준다.\n 4. 푸크 마을의 도구점 블릭크에게 가면 낚시대를 야구 셋트로 바꾸어준다.\n 5. 사라만다 마을의 올칸에게 가면 야구 셋트를 부채로 바꾸어준다.\n 6. 푸크 마을의 죠드에게 가면 부채를 매실주로 바꾸어준다.\n 7. 놈의 마을에 있는 록에게 가면 매실주를 장아찌(야채절임)로 바꾸어준다.\n 8. 푸크 마을의 유디트에게 가면 주면 장아찌(야채절임)를 안경으로 바꾸어준다. \n 9. 운디네 랜드의 루비니에게 가면 안경을 쾌적슬리퍼로 바꾸어준다.\n 10. 푸크 마을 프슈케 저택의 하녀 프람에게 가면 쾌적슬리퍼를 '불사신의 날개'로 바꾸어준다.\n\n4. 음식 조합\n\n\n쯔바이 음식\n 쯔바이는 몬스터를 죽이면 경험치를 얻는 것이 아니라 몬스터를 죽이면 \n나오는 음식을 먹고 경험치를 얻어 레벨업을 하게 되어 있다. \n다시 말하면 레벨업을 하고 싶으면 음식을 많이 많이 먹어야 한다는 소리다.\n 음식의 효과는 HP 회복과 경험치 획득의 두 가지 인데 HP 회복이야 어차피 \nHP의 최대치가 100이며 가장 효과가 없는 음식인 눈깔사탕이 10의 회복력을 가장 효과 좋은 \n음식들이 100의 회복력을 보여주니 그리 큰 차이는 없다. \n하지만 경험치 부분에서는 사탕이 경험치 1을 주지만 눈깔사탕은 43875의 엄청난 경험치를 줄 정도로 차이가 크다. \n그렇다면 이렇게 효과가 좋은 음식은 어떻게 하면 얻을 수 있을까? \n기본적으론 게이머가 상대할 몬스터의 레벨이 높아지면 몬스터가 떨어뜨리는 음식들도 좋아진다. \n하지만 몬스터마다 주는 음식도 틀리고 하니 이게 보통일이 아니다. \n그렇다고 크게 걱정할 필요는 없다. 이런 점을 고려해서 인지 쯔바이에서는 같은 음식 열 개를 모으면 \n대략 1.5 배 정도의 경험치를 주는 새로운 음식으로 교환을 해주는 시스템이 있다. \n음식 교환은 여관에 가서 크라이티에게 말을 걸면 해준다.  \n결론적으로 이 새로운 음식 시스템으로 인해 게이머는 게임 내내 음식을 먹을 것인가 교환할 것인가 하는 고민을 하게 된다.\n\n음식 교환\n( 10개를 모아 가져다 주면 다음 단계의 음식 1개를 주며 최종 단계의 아이템은 교환이 아닌 그냥 준다. )\n 사탕→푸크베리→레몬→라면→브로마이드 12\n \n주먹밥 →바나나 →귤 → 볶음면 → 물의 CD\n \n문어빵 → 마른 오징어 →치킨 → 카스테라 → 불의 CD\n \n푸딩 → 감 → 훈제계란 → 온천계란 → 브로마이드 14\n \n꼬치구이 → 삼치된장조림 →청포도 → 새우튀김덮밥 → 빛의 CD\n \n연근 →  볶은밥 →우유 → 바닷가재 → 어둠의 CD\n \n체리 → 소세지 → 뼈있는 고기→ 피자→ 브로마이드 15\n \n보리멸튀김 → 도너츠 → 참치살초밥 → 아이스크림 → 미궁의 CD\n \n쵸코렛→ 사과→ 멜론→ 떡구이 →저택의 CD\n \n카레 →등심스테이크 →딸기케익 → 중국냉면 → 환상의 CD\n \n바게트 빵 →샌드위치 → 구운주먹밥 → 장어구이 → 타이핑 오브 이스\n \n말린 가다랑어 →단팥빵 → 죽→ 눈깔사탕 → 브로마이드 16\n \n고기 완자 → 햄버거 → 두리안 → 바람의 CD\n  \n은어 → 오징어회 → 칠면조 →브로마이드 13\n  \n계란→ 딸기 → 파르페→ 땅의 CD\n  \n펫 게임에서 얻는 아이템은 실제 게임상의 레벨에 따라 달라진다. \n(밑의 자료는 필자가 게임을 하며 발견한 것으로 100% 정확하지 않을 수도 있으니 참고만 하시길...)-\nLV  1 - 사탕 , 주먹밥\n LV  2 - 문어빵\n LV  3 - 푸딩\n \nLV  4 - 꼬치구이, 체리\n LV  5 - 보리멸 튀김\n LV  6 - 쵸米?/span>\n \nLV  7, 8 - 바게뜨빵\n LV  9 - 고기 완자, 바나나, 은어\n LV 10 - 말린 오징어\n \nLV 11 - 감\n LV 12 - 삼치된장조림\n LV 13 - 볶음밥\n \nLV 14 - 소세지, 도너츠\n LV 15 - 사과\n LV 16 - 샌드위치\n \nLV 17 - 단팥빵\n LV 18 - 레몬, 햄버거, 귤\n LV 19 - 오징어회, 치킨\n \nLV 20 - 딸기\n LV 21, 22 - 청포도\n LV 23, 24 - 뼈있는 고기\n \nLV 25 - 참치살초밥\n LV 26 - 멜론\n LV 27 - 딸기케익\n \nLV 28, 29 - 죽\nLV 30 - 레몬, 햄버거, 귤, 오징어회, 치킨, 딸기, 청포도, 뼈있는 고기, 참치살초밥, 멜론, 딸기케익, 죽 중 랜덤하게 선택\n \n",
-			"file": "/D/download/FALCOM ZWEI/공략/쯔바이 각종 팁!.txt",
-			"file_size": 5985,
-			"file_write_time": 129943212940000000,
-			"settings":
-			{
-				"buffer_size": 3688,
-				"line_ending": "Windows",
-				"scratch": true
-			}
-		},
-		{
-			"file": "/C/totalCmd/wincmd.ini",
-			"settings":
-			{
-				"buffer_size": 13220,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "sudo mount -t cifs -o user='nayasis',password='Wjdghktn066^' //192.168.0.10/movie ./movie\nsudo mount -t cifs -o user='nayasis',password='Wjdghktn066^' //192.168.0.10/www ./www\nsudo mount -t cifs -o user='nayasis',password='Wjdghktn066^' //192.168.0.10/music ./music\n\n\n//192.168.0.10/movie /home/nayasis/mnt/movie cifs uid=nayasis,gid=nayasis ge,defaults,username=nayasis,file_mode=0755,dir_mode=0755,iocharset=utf8,noauto    0    2\n\n\n//192.168.0.10/movie /home/nayasis/mnt/movie cifs username=nayasis,pass=Wjdghktn066^,dmask=0777,fmask=0777,iocharset=utf8,domain=embeded 0 0\n//192.168.0.10/www /home/nayasis/mnt/www cifs username=nayasis,pass=Wjdghktn066^,dmask=0777,fmask=0777,iocharset=utf8,domain=embeded 0 0\n//192.168.0.10/music /home/nayasis/mnt/music cifs username=nayasis,pass=Wjdghktn066^,dmask=0777,fmask=0777,iocharset=utf8,domain=embeded 0 0\n\n//192.168.0.10/movie /home/nayasis/mnt/movie cifs username=nayasis,pass=Wjdghktn066^,uid=nayasis,gid=nayasis\n//192.168.0.10/www /home/nayasis/mnt/www cifs username=nayasis,pass=Wjdghktn066^,uid=nayasis,gid=nayasis\n//192.168.0.10/music /home/nayasis/mnt/music cifs username=nayasis,pass=Wjdghktn066^,uid=nayasis,gid=nayasis0\n\n\n//192.168.0.10/movie /home/nayasis/mnt/movie cifs uid=nayasis,gid=nayasis ge,defaults,username=nayasis,file_mode=0755,dir_mode=0755,iocharset=utf8 0 0",
-			"settings":
-			{
-				"buffer_size": 1330,
-				"line_ending": "Windows",
-				"name": "sudo mount -t cifs -o user='nayasis',password='Wjd"
-			}
-		},
-		{
-			"file": "/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/User/Default (Windows).sublime-keymap",
-			"settings":
-			{
-				"buffer_size": 171,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "ZZ_Library/Linker.ahk",
-			"settings":
-			{
-				"buffer_size": 2233,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "ZZ_Library/FileUtil.ahk",
-			"settings":
-			{
-				"buffer_size": 2267,
+				"buffer_size": 1524,
 				"line_ending": "Windows"
 			}
 		}
@@ -246,7 +246,7 @@
 		[
 			[
 				"",
-				"AutoHotkey - Compile"
+				"AutoHotkey - Run"
 			],
 			[
 				"run",
@@ -370,6 +370,18 @@
 	],
 	"file_history":
 	[
+		"//NAS/emul/emulator/ZZ_Library/FileUtil.ahk",
+		"/C/totalCmd/wincmd.ini",
+		"//NAS/emul/emulator/ZZ_Library/Common.ahk",
+		"//NAS/emul/emulator/ZZ_Library/Common.ahk.bak",
+		"//NAS/emul/emulator/PC9801/NekoProject II 0.84/WrapperNp21nt.ahk.bak",
+		"//NAS/emul/emulator/ZZ_Library/Linker.ahk",
+		"/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/User/Default (Windows).sublime-keymap",
+		"//NAS/emul/emulator/Apple2gs/ActiveGS/WrapperActiveGs.ahk",
+		"/C/NIDE/NIDE.bat",
+		"/D/download/LoveraperMaki/LoveraperMaki/RUN.ini",
+		"/D/download/FALCOM ZWEI/bin/README.txt",
+		"/D/download/FALCOM ZWEI/공략/쯔바이 각종 팁!.txt",
 		"/D/download/The Banner Saga/RUN.ini",
 		"//NAS/emul/emulator/.gitignore",
 		"/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/Default/Default (Windows).sublime-keymap",
@@ -379,10 +391,8 @@
 		"/D/download/mame0139/gamelist.xml",
 		"/D/download/mame0139/listclones.txt",
 		"/D/download/mame0139/listfull.txt",
-		"//NAS/emul/emulator/ZZ_Library/Linker.ahk",
 		"//NAS/emul/emulator/ZZ_Library/Include.ahk",
 		"//NAS/emul/emulator/ZZ_Library/7Zip.ahk",
-		"//NAS/emul/emulator/ZZ_Library/FileUtil.ahk",
 		"/D/download/mame0139/gamelist.txt",
 		"/D/download/mame0139/mame.ini",
 		"/D/download/#Call of Duty 2/RUN.ini",
@@ -406,7 +416,6 @@
 		"/D/download/대항해시대3/script/CancelOptimalSetting.ahk",
 		"/D/download/Call of Duty Black Ops/script/CancelOptimalSetting.ahk",
 		"//NAS/emul/emulator/ZZ_Study/run/SamplePost.ahk",
-		"//NAS/emul/emulator/Apple2gs/ActiveGS/WrapperActiveGs.ahk",
 		"//NAS/emul/emulator/ZZ_Library/ResolutionChanger.ahk",
 		"/D/download/Call of Duty Black Ops/script/Click.ahk",
 		"/D/download/Call of Duty Black Ops/script/CancelSetting.ahk",
@@ -488,16 +497,7 @@
 		"/C/NIDE/bin/ide/IntelliJ IDEA 14.1.4/bin/idea64.exe.vmoptions",
 		"/C/NIDE/maven/settings.xml",
 		"/C/NIDE/bin/ide/IntelliJ IDEA 14.1.4/bin/idea.exe.vmoptions",
-		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/WinVICE/WinVICE.ahk",
-		"/D/download/xbox/Rayman 3 - Hoodlum Havoc.wanted",
-		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/CCS64/CCS64.ahk",
-		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/BlueMSX/BlueMSX.ahk",
-		"//NAS/emul/image/Apple2gs/rpg/Dragon Wars (1990)(Interplay)/run.activegsxml",
-		"//NAS/emul/image/Apple2gs/rpg/Dragon Wars (1990)(Interplay)/temp.2mg",
-		"//NAS/emul/image/Apple2gs/puzzle & board/Tetris (1988)(Spectrum Holobyte)/run.activegsxml",
-		"//NAS/emul/_tool/DaemonToolsImageCompress/DaemonToolsImageCompress.ahk",
-		"/D/game/The Witcher 3/DLC/reg.txt",
-		"//NAS/emul/image/Apple2gs/adventure/Police Quest (1987)(Sierra)/run.activegsxml"
+		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/WinVICE/WinVICE.ahk"
 	],
 	"find":
 	{
@@ -516,6 +516,8 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"files",
+			"Detector",
 			"[short",
 			"copy_path",
 			"\n;",
@@ -641,9 +643,7 @@
 			" ;End Function  ",
 			"_run",
 			"7Zip__SevenZip",
-			"7Zip_",
-			"7-zip32\\",
-			"quit"
+			"7Zip_"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -666,11 +666,73 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
+					"file": "/D/download/FALCOM ZWEI/bin/uninstallIndeo.bat",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5964,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1455,
+								1455
+							]
+						],
+						"settings":
+						{
+							"auto_name": "rem - list of indeo files",
+							"syntax": "Packages/Batch File/Batch File.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/D/download/FALCOM ZWEI/bin/README.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 773,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								351,
+								359
+							]
+						],
+						"settings":
+						{
+							"in_converting": true,
+							"origin_encoding": "EUC-KR",
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
 					"file": "Apple2gs/ActiveGS/WrapperActiveGs.ahk",
 					"semi_transient": false,
 					"settings":
@@ -682,46 +744,45 @@
 						"selection":
 						[
 							[
-								706,
-								706
+								2044,
+								2044
 							]
 						],
 						"settings":
 						{
 							"in_converting": true,
 							"origin_encoding": "CP949",
-							"revert_to_scratch": true,
 							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 85.0,
+						"translation.y": 579.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "/C/NIDE/NIDE.bat",
+					"buffer": 3,
+					"file": "ZZ_Study/run/RUN.ahk",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 264,
+						"buffer_size": 8605,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								61,
-								61
+								367,
+								367
 							]
 						],
 						"settings":
 						{
 							"origin_encoding": "ASCII",
-							"syntax": "Packages/Batch File/Batch File.tmLanguage"
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -731,8 +792,104 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "/D/download/LoveraperMaki/LoveraperMaki/RUN.ini",
+					"buffer": 4,
+					"file": "ZZ_Library/7Zip.ahk",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 21912,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								844,
+								844
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "PcEngine/MagicEngine1.1.3/WrapperMagicEngine.ahk",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1028,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								59,
+								59
+							]
+						],
+						"settings":
+						{
+							"in_converting": true,
+							"origin_encoding": "EUC-KR",
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": -0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 6,
+					"file": "/D/download/FALCOM ZWEI/bin/Indeo5/install.ahk",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 924,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								179,
+								179
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 42.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/D/download/Dead Space/RUN.ini",
 					"semi_transient": false,
 					"settings":
 					{
@@ -753,78 +910,19 @@
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 116,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								116,
-								116
-							]
-						],
-						"settings":
-						{
-							"auto_name": "type: cd C:\\Windows\\SysWOW64 (32bit users can skip",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 14.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "/D/download/FALCOM ZWEI/공략/쯔바이 각종 팁!.txt",
+					"buffer": 8,
+					"file": "/C/NIDE/maven/settings.xml",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3688,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3688,
-								3688
-							]
-						],
-						"settings":
-						{
-							"in_converting": true,
-							"origin_encoding": "EUC-KR",
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 640.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "/C/totalCmd/wincmd.ini",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 13220,
+						"buffer_size": 1524,
 						"regions":
 						{
 						},
@@ -837,129 +935,15 @@
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 442.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1330,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1112,
-								1089
-							]
-						],
-						"settings":
-						{
-							"auto_name": "sudo mount -t cifs -o user='nayasis',password='Wjd",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/C/totalCmd/program/Sublime Text Build 3083 x64/Data/Packages/User/Default (Windows).sublime-keymap",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 171,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								140,
-								140
-							]
-						],
-						"settings":
-						{
 							"origin_encoding": "ASCII",
-							"syntax": "Packages/JavaScript/JSON.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "ZZ_Library/Linker.ahk",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2233,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								319,
-								319
-							]
-						],
-						"settings":
-						{
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "ZZ_Library/FileUtil.ahk",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2267,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								779,
-								779
-							]
-						],
-						"settings":
-						{
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
+							"syntax": "Packages/XML/XML.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -982,11 +966,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -1018,8 +1009,20 @@
 		"selected_items":
 		[
 			[
-				"wrapper",
+				"run.ahk",
+				"ZZ_Study\\run\\RUN.ahk"
+			],
+			[
+				"wrappera",
 				"Apple2gs\\ActiveGS\\WrapperActiveGs.ahk"
+			],
+			[
+				"common.",
+				"ZZ_Library\\Common.ahk"
+			],
+			[
+				"wrapper",
+				"PcEngine\\MagicEngine1.1.3\\WrapperMagicEngine.ahk"
 			],
 			[
 				"linker",
@@ -1036,10 +1039,6 @@
 			[
 				"include",
 				"ZZ_Library\\Include.ahk"
-			],
-			[
-				"wrappera",
-				"Apple2gs\\ActiveGS\\WrapperActiveGs.ahk"
 			],
 			[
 				"wrapperact",
@@ -1106,15 +1105,15 @@
 		],
 		"width": 392.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": false,
-	"side_bar_width": 166.0,
+	"side_bar_visible": true,
+	"side_bar_width": 291.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
