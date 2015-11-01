@@ -116,7 +116,10 @@
 	"buffers":
 	[
 		{
+			"contents": "rem - list of indeo files\nrem \nrem ir32_32.dll\nrem ir41_32.ax  \nrem ir41_qc.dll  \nrem ir41_qcx.dll  \nrem ir50_32.dll  \nrem ir50_qc.dll  \nrem ir50_qcx.dll  \nrem ivfsrc.ax  \n\nrem backup operations  32-bit\n\ncopy %windir%\\system32\\ir32_32.dll %windir%\\system32\\ir32_32.dll.old\ncopy %windir%\\system32\\dllcache\\ir32_32.dll %windir%\\system32\\dllcache\\ir32_32.dll.old\ncopy %windir%\\system32\\ir41_32.ax %windir%\\system32\\ir41_32.ax.old\ncopy %windir%\\system32\\dllcache\\msdart.dll %windir%\\system32\ncopy %windir%\\system32\\ir41_qc.dll %windir%\\system32\\ir41_qc.dll.old\ncopy %windir%\\system32\\dllcache\\ir41_qc.dll %windir%\\system32\\dllcache\\ir41_qc.dll.old\ncopy %windir%\\system32\\ir41_qcx.dll %windir%\\system32\\ir41_qcx.dll.old\ncopy %windir%\\system32\\dllcache\\ir41_qcx.dll %windir%\\system32\\dllcache\\ir41_qcx.dll.old\ncopy %windir%\\system32\\ir50_32.dll %windir%\\system32\\ir50_32.dll.old\ncopy %windir%\\system32\\dllcache\\ir50_32.dll %windir%\\system32\\dllcache\\ir50_32.dll.old\ncopy %windir%\\system32\\ir50_qc.dll %windir%\\system32\\ir50_qc.dll.old\ncopy %windir%\\system32\\dllcache\\ir50_qc.dll %windir%\\system32\\dllcache\\ir50_qc.dll.old\ncopy %windir%\\system32\\ir50_qcx.dll %windir%\\system32\\ir50_qcx.dll.old\ncopy %windir%\\system32\\dllcache\\ir50_qcx.dll %windir%\\system32\\dllcache\\ir50_qcx.dll.old\ncopy %windir%\\system32\\ivfsrc.ax %windir%\\system32\\ivfsrc.ax.old\ncopy %windir%\\system32\\dllcache\\ivfsrc.ax %windir%\\system32\\dllcache\\ivfsrc.ax.old\n\n\nrem backup operations  wow64\n\ncopy %windir%\\syswow64\\ir32_32.dll %windir%\\syswow64\\ir32_32.dll.old\ncopy %windir%\\system32\\dllcache\\wir32_32.dll %windir%\\system32\\dllcache\\wir32_32.dll.old\ncopy %windir%\\syswow64\\ir41_32.ax %windir%\\syswow64\\ir41_32.ax.old\ncopy %windir%\\system32\\dllcache\\wir41_32.ax %windir%\\system32\\dllcache\\wir41_32.ax.old\ncopy %windir%\\syswow64\\ir41_qc.dll %windir%\\syswow64\\ir41_qc.dll.old\ncopy %windir%\\system32\\dllcache\\wir41_qc.dll %windir%\\system32\\dllcache\\wir41_qc.dll.old\ncopy %windir%\\syswow64\\ir41_qcx.dll %windir%\\syswow64\\ir41_qcx.dll.old\ncopy %windir%\\system32\\dllcache\\wir41_qcx.dll %windir%\\system32\\dllcache\\wir41_qcx.dll.old\ncopy %windir%\\syswow64\\ir50_32.dll %windir%\\syswow64\\ir50_32.dll.old\ncopy %windir%\\system32\\dllcache\\wir50_32.dll %windir%\\system32\\dllcache\\wir50_32.dll.old\ncopy %windir%\\syswow64\\ir50_qc.dll %windir%\\syswow64\\ir50_qc.dll.old\ncopy %windir%\\system32\\dllcache\\wir50_qc.dll %windir%\\system32\\dllcache\\wir50_qc.dll.old\ncopy %windir%\\syswow64\\ir50_qcx.dll %windir%\\syswow64\\ir50_qcx.dll.old\ncopy %windir%\\system32\\dllcache\\wir50_qcx.dll %windir%\\system32\\dllcache\\wir50_qcx.dll.old\ncopy %windir%\\syswow64\\ivfsrc.ax %windir%\\syswow64\\ivfsrc.ax.old\ncopy %windir%\\system32\\dllcache\\msdart.dll %windir%\\system32\n\n\n\nrem deletion operations - 32bit\n\nif exist %windir%\\system32\\ir32_32.dll.old (\n    del %windir%\\system32\\ir32_32.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\ir32_32.dll.old (\n    del %windir%\\system32\\dllcache\\ir32_32.dll\n    )\n    \nif exist %windir%\\system32\\ir41_32.ax.old (\n    del %windir%\\system32\\ir41_32.ax\n    )\n\nif exist %windir%\\system32\\dllcache\\ir41_32.ax.old (\n    del %windir%\\system32\\dllcache\\ir41_32.ax\n    )\n\nif exist %windir%\\system32\\ir41_qc.dll.old (\n    del %windir%\\system32\\ir41_qc.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\ir41_qc.dll.old (\n    del %windir%\\system32\\dllcache\\ir41_qc.dll\n    )\n    \nif exist %windir%\\system32\\ir41_qcx.dll.old (\n    del %windir%\\system32\\ir41_qcx.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\ir41_qcx.dll.old (\n    del %windir%\\system32\\dllcache\\ir41_qcx.dll\n    )\n    \nif exist %windir%\\system32\\ir50_32.dll.old (\n    del %windir%\\system32\\ir50_32.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\ir50_32.dll.old (\n    del %windir%\\system32\\dllcache\\ir50_32.dll\n    )\n\nif exist %windir%\\system32\\ir50_qc.dll.old (\n    del %windir%\\system32\\ir50_qc.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\ir50_qc.dll.old (\n    del %windir%\\system32\\dllcache\\ir50_qc.dll\n    )\n\nif exist %windir%\\system32\\ir50_qcx.dll.old (\n    del %windir%\\system32\\ir50_qcx.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\ir50_qcx.dll.old (\n    del %windir%\\system32\\dllcache\\ir50_qcx.dll\n    )\n\nif exist %windir%\\system32\\ivfsrc.ax.old (\n    del %windir%\\system32\\ivfsrc.ax\n    )\n\nif exist %windir%\\system32\\dllcache\\ivfsrc.ax.old (\n    del %windir%\\system32\\dllcache\\ivfsrc.ax\n    )\n    \n\nrem deletion operations - wow64\n\nif exist %windir%\\syswow64\\ir32_32.dll.old (\n    del %windir%\\syswow64\\ir32_32.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\wir32_32.dll.old (\n    del %windir%\\system32\\dllcache\\wir32_32.dll\n    )\n    \nif exist %windir%\\syswow64\\ir41_32.ax.old (\n    del %windir%\\syswow64\\ir41_32.ax\n    )\n\nif exist %windir%\\system32\\dllcache\\wir41_32.ax.old (\n    del %windir%\\system32\\dllcache\\wir41_32.ax\n    )\n\nif exist %windir%\\syswow64\\ir41_qc.dll.old (\n    del %windir%\\syswow64\\ir41_qc.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\wir41_qc.dll.old (\n    del %windir%\\system32\\dllcache\\wir41_qc.dll\n    )\n    \nif exist %windir%\\syswow64\\ir41_qcx.dll.old (\n    del %windir%\\syswow64\\ir41_qcx.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\wir41_qcx.dll.old (\n    del %windir%\\system32\\dllcache\\wir41_qcx.dll\n    )\n    \nif exist %windir%\\syswow64\\ir50_32.dll.old (\n    del %windir%\\syswow64\\ir50_32.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\wir50_32.dll.old (\n    del %windir%\\system32\\dllcache\\wir50_32.dll\n    )\n\nif exist %windir%\\syswow64\\ir50_qc.dll.old (\n    del %windir%\\syswow64\\ir50_qc.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\wir50_qc.dll.old (\n    del %windir%\\system32\\dllcache\\wir50_qc.dll\n    )\n\nif exist %windir%\\syswow64\\ir50_qcx.dll.old (\n    del %windir%\\syswow64\\ir50_qcx.dll\n    )\n\nif exist %windir%\\system32\\dllcache\\wir50_qcx.dll.old (\n    del %windir%\\system32\\dllcache\\wir50_qcx.dll\n    )\n\nif exist %windir%\\syswow64\\ivfsrc.ax.old (\n    del %windir%\\syswow64\\ivfsrc.ax\n    )\n\nif exist %windir%\\system32\\dllcache\\wivfsrc.ax.old (\n    del %windir%\\system32\\dllcache\\wivfsrc.ax\n    )",
 			"file": "/D/download/FALCOM ZWEI/bin/uninstallIndeo.bat",
+			"file_size": 6147,
+			"file_write_time": 130895606447854188,
 			"settings":
 			{
 				"buffer_size": 5964,
@@ -157,38 +160,79 @@
 			}
 		},
 		{
-			"file": "ZZ_Library/7Zip.ahk",
+			"contents": "ahk_class clasdesktop\n\n21 210",
 			"settings":
 			{
-				"buffer_size": 21912,
-				"line_ending": "Windows"
+				"buffer_size": 29,
+				"line_ending": "Windows",
+				"name": "ahk_class clasdesktop"
 			}
 		},
 		{
-			"contents": "#NoEnv\n#include %A_ScriptDir%\\..\\..\\ZZ_Library\\Include.ahk\n\nemulatorPid   := \"\"\nimageFilePath := %0%\n;imageFilePath := \"\"\n;imageFilePath := \"\\\\NAS\\emul\\image\\PcEngine\\hucard\\Batman (J).zip\"\n\nif( VirtualDisk.open( imageFilePath, false ) = true ) {\n	Run, % \"pce.exe \"\"./cards/Super CD-ROM2 System V3.01 (En).zip\"\"\",,,emulatorPid\n	WinWait, ahk_class MagicEngineWindowClass,, 5\n	IfWinExist\n	{\n		WinWaitActive, ahk_class MagicEngineWindowClass,, 5\n		;Sleep, 3000\n		;ControlSend,,{Enter},emulatorPid\n		;ControlSend,, {Enter},MagicEngine ahk_class MagicEngineWindowClass\n		;SendInput {Enter}\n		WinWaitClose\n	}\n	VirtualDisk.close()\n\n} else {\n	Run, % \"pce.exe \"\"\" imageFilePath \"\"\"\"\n}\n\nExitApp\n\n^F3::\n\n;MagicEngine  1.1\n;ahk_class MagicEngineWindowClass\n;ahk_exe pce.exe\n\n    Tray.show( \"Send Key\", \"Merong\" )\n	;SetKeyDelay(50)\n	;WinActive, ahk_class MagicEngineWindowClass\n	;ControlSend,, {ALT}+{F4}, ahk_class MagicEngineWindowClass\n	;Send !{F4}\n	SendMode InputThenPlay\n	;SendEvent {Enter}\n	SendInput {Enter}\n	;SendPlay {Enter}\n	return",
-			"file": "PcEngine/MagicEngine1.1.3/WrapperMagicEngine.ahk",
-			"file_size": 1071,
-			"file_write_time": 130862954006919916,
+			"contents": "SELECT  *\n    FROM    TABLE_SAMPLE\n    WHERE   1=1\n    \n      AND     age > #{age}\n    \n    \n      \n    \n    AND (\n        \n          names LIKE '%' || #{children.name_0_NybatisForEachNode} || '%' || #{index_0_NybatisForEachNode} OR age > #{children.age_0_NybatisForEachNode} -- #{index}\n        \n    OR\n        \n          names LIKE '%' || #{children.name_1_NybatisForEachNode} || '%' || #{index_1_NybatisForEachNode} OR age > #{children.age_1_NybatisForEachNode} -- #{index}\n        \n    OR\n        \n    )\n    ORDER BY title",
 			"settings":
 			{
-				"buffer_size": 1028,
+				"buffer_size": 526,
 				"line_ending": "Windows",
-				"scratch": true
+				"name": "SELECT  *"
+			}
+		},
+		{
+			"contents": "del ggx.zip\ndel pjustic.zip\ndel mvsc2.zip\ndel hmgeo.zip\ndel spawn.zip\ndel pstone2.zip\ndel pstone.zip\ndel gunsur2.zip\ndel capsnk.zip\ndel deathcox.zip\ndel suchie3.zip\ndel rockn2.zip\ndel rocknms.zip\ndel rockn3.zip\ndel rockn.zip\ndel shangril.zip\ndel demofist.zip\ndel cspike.zip\ndel pharrier.zip\ndel clubkrte.zip\ndel vf4cart.zip\ndel spikeout.zip\ndel vf4evoct.zip\ndel xtrmhnt2.zip\ndel samba.zip\ndel vstrik3c.zip\ndel derbyoc2.zip\ndel dybbnao.zip\ndel gram2000.zip\ndel slasho.zip\ndel f355twn2.zip\ndel smlg99.zip\ndel crackndj.zip\ndel hotd2.zip\ndel dybb99.zip\ndel 18wheelr.zip\ndel f355.zip\ndel fvipers2.zip\ndel wwfroyal.zip\ndel virnba.zip\ndel f355twin.zip\ndel zombrvn.zip\ndel dayto2pe.zip\ndel totd.zip\ndel spikeofe.zip\ndel vtenis2c.zip\ndel daytona2.zip\ndel oceanhun.zip\ndel lostwsga.zip\ndel otrigger.zip\ndel lamachin.zip\ndel srally2.zip\ndel magtruck.zip\ndel von2.zip\ndel sstrkfgt.zip\ndel vf3.zip\ndel harley.zip\ndel scud.zip\ndel skichamp.zip\ndel wldrider.zip\ndel eca.zip\ndel vs2v991.zip\ndel vs298.zip\ndel crzytaxi.zip\ndel vs2_2k.zip\ndel qmegamis.zip\ndel srally2x.zip\ndel ggram2.zip\ndel vs2.zip\ndel dirtdvls.zip\ndel derbyoc.zip\ndel coolridr.zip\ndel airtrix.zip\ndel bass.zip\ndel alpiltdx.zip\ndel topskatr.zip\ndel toyfight.zip\ndel kick4csh.zip\ndel csmash.zip\ndel dynamcop.zip\ndel lemans24.zip\ndel derbyocw.zip\ndel hanagumi.zip\ndel motoraid.zip\ndel doa.zip\ndel hotd.zip\ndel segawski.zip\ndel smarinef.zip\ndel von.zip\ndel sgtetris.zip\ndel vtennis.zip\ndel jambo.zip\ndel stcc.zip\ndel dynabb.zip\ndel skytargt.zip\ndel vf2.zip\ndel fvipers.zip\ndel gunblade.zip\ndel srallyc.zip\ndel skisuprg.zip\ndel schamp.zip\ndel lastbrnx.zip\ndel waverunr.zip\ndel daytona.zip\ndel indy500.zip\ndel manxtt.zip\ndel vcop2.zip\ndel fotns.zip\ndel ms5pcb.zip\ndel gwing2.zip\ndel doa2.zip",
+			"settings":
+			{
+				"buffer_size": 1736,
+				"line_ending": "Windows",
+				"name": "del ggx.zip"
+			}
+		},
+		{
+			"contents": "copy stvbios.zip d:\\download\\android\\temp\ncopy acpsx.zip d:\\download\\android\\temp\ncopy neogeo.zip d:\\download\\android\\temp\ncopy aleck64.zip d:\\download\\android\\temp\ncopy atluspsx.zip d:\\download\\android\\temp\ncopy crysbios.zip d:\\download\\android\\temp\ncopy cpzn2.zip d:\\download\\android\\temp\ncopy cpzn1.zip d:\\download\\android\\temp\ncopy psarc95.zip d:\\download\\android\\temp\ncopy skns.zip d:\\download\\android\\temp\ncopy tps.zip d:\\download\\android\\temp\ncopy pgm.zip d:\\download\\android\\temp\ncopy konamigx.zip d:\\download\\android\\temp\ncopy awbios.zip d:\\download\\android\\temp\ncopy hng64.zip d:\\download\\android\\temp\ncopy taitofx1.zip d:\\download\\android\\temp\n",
+			"settings":
+			{
+				"buffer_size": 655,
+				"line_ending": "Windows",
+				"name": "copy stvbios.zip d:\\download\\android\\temp"
 			}
 		},
 		{
 			"file": "/D/download/FALCOM ZWEI/bin/Indeo5/install.ahk",
 			"settings":
 			{
-				"buffer_size": 924,
+				"buffer_size": 946,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/D/download/Dead Space/RUN.ini",
+			"file": "/D/download/FALCOM ZWEI/RUN.ini",
 			"settings":
 			{
-				"buffer_size": 46,
+				"buffer_size": 191,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "AND (\n        \n          names LIKE '%' || #{children.name_0_NybatisForEachNode} || '%' || #{index_0_NybatisForEachNode} OR age > #{children.age_0_NybatisForEachNode} -- #{index}\n        \n    OR\n        \n          names LIKE '%' || #{children.name_1_NybatisForEachNode} || '%' || #{index_1_NybatisForEachNode} OR age > #{children.age_1_NybatisForEachNode} -- #{index}\n        \n    OR",
+			"settings":
+			{
+				"buffer_size": 383,
+				"line_ending": "Windows",
+				"name": "AND ("
+			}
+		},
+		{
+			"file": "/D/download/FALCOM ZWEI/bin/script/post/ClickStart.ahk",
+			"settings":
+			{
+				"buffer_size": 88,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "ZZ_Study/run/SamplePost.ahk",
+			"settings":
+			{
+				"buffer_size": 89,
 				"line_ending": "Windows"
 			}
 		},
@@ -197,23 +241,6 @@
 			"settings":
 			{
 				"buffer_size": 1524,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "NyBatis",
-			"settings":
-			{
-				"buffer_size": 7,
-				"line_ending": "Windows",
-				"name": "NyBatis"
-			}
-		},
-		{
-			"file": "/D/download/Crazy Taxi/RUN.ini",
-			"settings":
-			{
-				"buffer_size": 45,
 				"line_ending": "Windows"
 			}
 		}
@@ -263,7 +290,7 @@
 		[
 			[
 				"",
-				"AutoHotkey - Run"
+				"AutoHotkey - Compile"
 			],
 			[
 				"run",
@@ -387,6 +414,12 @@
 	],
 	"file_history":
 	[
+		"/D/download/FALCOM ZWEI/RUN.reg",
+		"/D/download/FALCOM ZWEI/RUN.ahk",
+		"//NAS/emul/emulator/PcEngine/MagicEngine1.1.3/WrapperMagicEngine.ahk",
+		"/D/download/Dead Space/RUN.ini",
+		"/D/download/Crazy Taxi/RUN.ini",
+		"/D/download/Crazy Taxi/Setup.ini",
 		"//NAS/emul/emulator/ZZ_Library/FileUtil.ahk",
 		"/C/totalCmd/wincmd.ini",
 		"//NAS/emul/emulator/ZZ_Library/Common.ahk",
@@ -454,7 +487,6 @@
 		"/D/download/ANNO1404G/Anno 1404 Gold Edition/RUN.ahk",
 		"/C/Users/Administrator/AppData/Local/Temp/_tc/Ys 1 Eternal.ahk",
 		"//NAS/emul/emulator/PlayStation/ePSXe 1.9.0 (T-Kr)/WrapperEpsxe.ahk",
-		"//NAS/emul/emulator/PcEngine/MagicEngine1.1.3/WrapperMagicEngine.ahk",
 		"/D/download/Resident Evil HD Remaster/RUN.ini",
 		"/D/download/Resident Evil HD Remaster/RUN.ahk",
 		"/D/download/ANNO1404G/Anno 1404 Gold Edition/bin/installFont.bat",
@@ -479,9 +511,7 @@
 		"/D/download/FALCOM ZWEI/RUN.ini",
 		"/D/download/Metro 2033 Redux/RUN.ini",
 		"/D/download/Metro 2033 Redux/RUN.reg",
-		"/D/download/FALCOM ZWEI/RUN.ahk",
 		"//NAS/emul/emulator/ZZ_Library/DiskContainer.ahk",
-		"/D/download/FALCOM ZWEI/RUN.reg",
 		"//NAS/emul/emulator/Apple2gs/ActiveGS/run.activegsxml",
 		"//NAS/emul/emulator/Apple2gs/kegs 0.91-win working frame(no disk images)/src/protos_xdriver.h",
 		"/D/download/FINAL FANTASY TYPE 0 HD/RUN.ini",
@@ -511,10 +541,7 @@
 		"/D/download/Starcraft/RUN.reg",
 		"//NAS/game-PC/STRATEGY/스타크래프트 1 [StarCraft]/윈도우7 레지스트리 등록/scbw116_x64.reg",
 		"/D/download/Include file.ahk",
-		"/C/NIDE/bin/ide/IntelliJ IDEA 14.1.4/bin/idea64.exe.vmoptions",
-		"/C/NIDE/maven/settings.xml",
-		"/C/NIDE/bin/ide/IntelliJ IDEA 14.1.4/bin/idea.exe.vmoptions",
-		"/C/development/NIDE/workspace/hyperlaunch-3/Modules/WinVICE/WinVICE.ahk"
+		"/C/NIDE/bin/ide/IntelliJ IDEA 14.1.4/bin/idea64.exe.vmoptions"
 	],
 	"find":
 	{
@@ -533,6 +560,11 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"d:\\download\\android\\temp",
+			"\n",
+			"12:40:05.537 DEBUG           (SqlGrammerTest.java:124) ",
+			"12:35:05.133 DEBUG           (SqlGrammerTest.java:124) ",
+			",",
 			"files",
 			"Detector",
 			"[short",
@@ -655,11 +687,6 @@
 			"7Zip__Recursion",
 			"opt",
 			"add",
-			"7Zip_",
-			" ;End Function",
-			" ;End Function  ",
-			"_run",
-			"7Zip__SevenZip",
 			"7Zip_"
 		],
 		"highlight": true,
@@ -683,7 +710,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 7,
 			"sheets":
 			[
 				{
@@ -715,7 +742,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
@@ -746,7 +773,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
@@ -777,7 +804,7 @@
 						"translation.y": 579.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
@@ -793,8 +820,235 @@
 						"selection":
 						[
 							[
-								367,
-								367
+								769,
+								769
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 30.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 29,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								29,
+								29
+							]
+						],
+						"settings":
+						{
+							"auto_name": "ahk_class clasdesktop",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 526,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								526
+							]
+						],
+						"settings":
+						{
+							"auto_name": "SELECT  *",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1736,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								1736
+							]
+						],
+						"settings":
+						{
+							"auto_name": "del ggx.zip",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 655,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								655
+							]
+						],
+						"settings":
+						{
+							"auto_name": "copy stvbios.zip d:\\download\\android\\temp",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/D/download/FALCOM ZWEI/bin/Indeo5/install.ahk",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 946,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								561,
+								561
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
+						},
+						"translation.x": -0.0,
+						"translation.y": 10.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/D/download/FALCOM ZWEI/RUN.ini",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 191,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								170,
+								170
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 383,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								302,
+								302
+							]
+						],
+						"settings":
+						{
+							"auto_name": "AND (",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/D/download/FALCOM ZWEI/bin/script/post/ClickStart.ahk",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 88,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								66,
+								66
 							]
 						],
 						"settings":
@@ -810,88 +1064,20 @@
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "ZZ_Library/7Zip.ahk",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 21912,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								844,
-								844
-							]
-						],
-						"settings":
-						{
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "PcEngine/MagicEngine1.1.3/WrapperMagicEngine.ahk",
+					"buffer": 12,
+					"file": "ZZ_Study/run/SamplePost.ahk",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1028,
+						"buffer_size": 89,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								59,
-								59
-							]
-						],
-						"settings":
-						{
-							"in_converting": true,
-							"origin_encoding": "EUC-KR",
-							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 4,
-			"sheets":
-			[
-				{
-					"buffer": 6,
-					"file": "/D/download/FALCOM ZWEI/bin/Indeo5/install.ahk",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 924,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								179,
-								179
+								0,
+								0
 							]
 						],
 						"settings":
@@ -900,43 +1086,14 @@
 							"syntax": "Packages/AutoHotkey/AutoHotkey.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 42.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "/D/download/Dead Space/RUN.ini",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 46,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								46,
-								46
-							]
-						],
-						"settings":
-						{
-							"origin_encoding": "UTF-8",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 14.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
+					"buffer": 13,
 					"file": "/C/NIDE/maven/settings.xml",
 					"semi_transient": false,
 					"settings":
@@ -962,64 +1119,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7,
-								0
-							]
-						],
-						"settings":
-						{
-							"auto_name": "NyBatis",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "/D/download/Crazy Taxi/RUN.ini",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 45,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								45,
-								45
-							]
-						],
-						"settings":
-						{
-							"origin_encoding": "UTF-8",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
+					"stack_index": 10,
 					"type": "text"
 				}
 			]
@@ -1042,18 +1142,11 @@
 				0,
 				1,
 				1
-			],
-			[
-				1,
-				0,
-				2,
-				1
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
 			1.0
 		],
 		"rows":
@@ -1181,7 +1274,7 @@
 		],
 		"width": 392.0
 	},
-	"selected_group": 1,
+	"selected_group": 0,
 	"settings":
 	{
 	},
