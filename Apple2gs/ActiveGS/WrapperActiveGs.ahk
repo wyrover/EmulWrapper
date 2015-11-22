@@ -172,8 +172,12 @@ removeDisk( slotNo ) {
 }
 
 setCacheDir() {
-	cacheDir := "z:\apple2gs"
-	Linker.linkDir( "c:/users/" a_username "/My Documents/ActiveGSLocalData", cacheDir )
+	cacheDir := "z:\emuLoader\apple2gs"
+	FileCreateDir, %cacheDir%
+	IfExist, %cacheDir%
+	{
+		Linker.linkDir( "c:/users/" a_username "/My Documents/ActiveGSLocalData", cacheDir )	
+	}
 }
 
 setConfig( imageFilePath ) {

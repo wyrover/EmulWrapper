@@ -146,8 +146,8 @@ readProperties( file ) {
 			}
 		}
 
-    key := RegExReplace( A_LoopReadLine, "^(.*?)=.*?$", "$1" )
-    val := RegExReplace( A_LoopReadLine, "^.*?=(.*?)$", "$1" )
+    	key := RegExReplace( A_LoopReadLine, "^(.*?)=.*?$", "$1" )
+    	val := RegExReplace( A_LoopReadLine, "^.*?=(.*?)$", "$1" )
 
 		prop[ Trim(key) ] := Trim(val)
 
@@ -229,14 +229,16 @@ setRegistry( file, properties ) {
 
 		if ( isHex == true ) {
 			regVal := RegExReplace( regVal, "[\\\t ]", "" )
+		}
 
-			if ( regType == "REG_QWORD" ) {
-				;; Not Working !!
-				regVal := toNumberFromHex( regVal )
-			} else {
-				regVal := toStringFromHex( regVal )
-			}
-
+		if ( regType == "REG_QWORD" ) {
+			regVal := toNumberFromHex( regVal )
+		} else if( regType == "REG_MULTI_SZ" ) {
+			regVal := toStringFromHex( regVal )
+		} else if( regType == "REG_EXPAND_SZ" ) {
+			regVal := toStringFromHex( regVal )
+		} else if( regType == "REG_BINARY" ) {
+			StringReplace, regVal, regVal, % ",", , All
 		}
 		
 		RegWrite, % regType, % regKey, % regName, % regVal
