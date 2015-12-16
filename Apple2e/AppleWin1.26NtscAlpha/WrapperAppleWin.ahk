@@ -2,9 +2,9 @@
 #include %A_ScriptDir%\..\..\ZZ_Library\Include.ahk
 
 imageFilePath  := %0%
-;imageFilePath  := "\\NAS\emul\image\Apple2e\Adventure\���θǼ� [Neuromancer (1988)(Interplay)]\Neuromancer (1988)(Interplay)(Disk 1 of 4).zip"
-;imageFilePath  := "\\NAS\emul\image\Apple2e\Adventure\���θǼ� [Neuromancer (1988)(Interplay)]\01.zip"
-;imageFilePath  := "\\NAS\emul\image\Apple2e\Adventure\���θǼ� [Neuromancer (1988)(Interplay)]"
+;imageFilePath  := "\\NAS\emul\image\Apple2e\Adventure\´º·Î¸Ç¼­ [Neuromancer (1988)(Interplay)]\Neuromancer (1988)(Interplay)(Disk 1 of 4).zip"
+;imageFilePath  := "\\NAS\emul\image\Apple2e\Adventure\´º·Î¸Ç¼­ [Neuromancer (1988)(Interplay)]\01.zip"
+;imageFilePath  := "\\NAS\emul\image\Apple2e\Adventure\´º·Î¸Ç¼­ [Neuromancer (1988)(Interplay)]"
 ;imageFilePath  := "\\NAS\emul\image\PC9801\0_imagesFdi\Ys 1\Ys 1 (Falcom).D88"
 
 fddContainer := new DiskContainer( imageFilePath, "i).*\.zip" )
@@ -12,7 +12,7 @@ fddContainer.initSlot( 2 )
 
 if( setConfig( imageFilePath ) == true )
 {
-	Run, % "AppleWin.exe " fddOption,,,emulatorPid
+	Run, % "AppleWin.exe -no-printscreen-dlg " fddOption,,,emulatorPid
 	WinWait, ahk_class APPLE2FRAME,, 5
 	IfWinExist
 	{

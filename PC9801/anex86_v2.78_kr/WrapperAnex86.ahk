@@ -3,10 +3,13 @@
 
 emulatorPid    := ""
 imageFilePath  := %0%
-;imageFilePath  := "\\NAS\emul\image\PC9801\0_imagesPatched\ÇÏ±Þ»ý 2 [Kakyusei (1996)(Elf)(T-Kr)]\ÇÏ±Þ»ý.hdi"
-;imageFilePath  := "\\NAS\emul\image\PC9801\0_imagesPatched\°¨±Ý [ÊøÐ× Kankin (1995)(Illusion)(T-Kr)]\kanqhan.hdi"
+imageFilepath  := "\\NAS\emul\image\PC9801\0_imagesPatched\µ¿¹æºÀ¸¶·Ï [Story of Eastern Wonderland (T-Kr)]"
 
-if( setConfig(imageFilePath) = true )
+
+fddContainer := new DiskContainer( imageFilePath, "i).*\.(fdi)" )
+fddContainer.initSlot( 2 )
+
+if( setConfig(imageFilePath) == true )
 {
 	
 	Run, % "anex86.exe -cdefault",,,emulatorPid
@@ -55,10 +58,10 @@ setConfig( imageFilePath ) {
 	
 	registryPath := "S-1-5-21-108037658-2208837996-2228346073-500\Software\A.N.\anex86\config\default"
 	
-	currDir := FileUtil.getDirInlcudeFile( imageFilepath )
+	currDir := FileUtil.getDir( imageFilepath )
 	confDir := currDir . "\_EL_CONFIG"
 	
-	if( currDir = "" )
+	if( currDir == "" )
 		return false
 	
 	IfExist %confDir%\font
@@ -83,30 +86,34 @@ setConfig( imageFilePath ) {
 	RegWrite,  REG_SZ, HKU, %registryPath%, fdd2,
 	RegWrite,  REG_SZ, HKU, %registryPath%, fddhist,
 	
-	hist := ""
-	Loop, %currDir%\*.hdi
-	{
-		hist = %hist%%A_LoopFileFullPath%,
-		if ( a_index <= 2 )
-			RegWrite REG_SZ, HKU, %registryPath%, hdd%a_index%, %A_LoopFileFullPath%
-	}
-	
-	hist := SubStr( hist, 1, StrLen(hist) - 1 )
-	RegWrite REG_SZ, HKU, %registryPath%, hddhist, %hist%
 
-	hist := ""
-	Loop, %currDir%\*.fdi
+	; Set Hdd & Fdd
+	files := FileUtil.getFiles( currDir, "i).*\.(hdi)" )
+	Loop, % files.MaxIndex()
 	{
-		hist = %hist%%A_LoopFileFullPath%,
-		if( a_index <= 2 )
-			RegWrite REG_SZ, HKU, %registryPath%, fdd%a_index%, %A_LoopFileFullPath%
+		if( a_index > 2 )
+			break
+
+		RegWrite REG_SZ, HKU, %registryPath%, hdd%a_index%, % files[a_index]
+
+		if( a_index == 1 )
+		RegWrite REG_SZ, HKU, %registryPath%, hddhist, % files[a_index]
+	}
+
+	files := FileUtil.getFiles( currDir, "i).*\.(fdi)" )
+	Loop, % files.MaxIndex()
+	{
+		if( a_index > 2 )
+			break
+
+		RegWrite REG_SZ, HKU, %registryPath%, fdd%a_index%, % files[a_index]
+
+		if( a_index == 1 )
+		RegWrite REG_SZ, HKU, %registryPath%, fddhist, % files[a_index]
 	}
 	
-	hist := SubStr( hist, 1, StrLen(hist) - 1 )
-	RegWrite REG_SZ, HKU, %registryPath%, fddhist, %hist%
-	
-	return true
-	
+    return true
+
 }
 
 isNotFullScreen() {

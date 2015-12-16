@@ -79,13 +79,16 @@ class DiskContainer {
         
     }
     
-    toOption() {
+    toOption( limitCount=999, prefix="", postfix="" ) {
         
         returnVal := ""
         
         Loop % this.size()
         {
-            returnVal := % returnVal " """ this.container[A_Index] """"
+            if( A_Index > limitCount )
+                break
+
+            returnVal := % returnVal prefix " """ this.container[A_Index] """" postfix
         }
         
         return returnVal
@@ -181,6 +184,10 @@ class DiskContainer {
         if( DiskContainer.slot[ slotNo ] == null )
             DiskContainer.slot[ slotNo ] := {}
         DiskContainer.slot[ slotNo ].fileInserted := file
+    }
+
+    getFileInSlot( slotNo ) {
+        return DiskContainer.slot[ slotNo ].fileInserted
     }
     
     getFile( index ) {

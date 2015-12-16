@@ -10,7 +10,6 @@ class FileUtil {
     }
 
 	getDir( path ) {
-	;getDirInlcudeFile( filePath ) {
 
 		IfNotExist %path%, return ""
 
@@ -45,35 +44,16 @@ class FileUtil {
 
 	}
 	
-	; getFiles( dir, pattern=".*" ) {
-		
-	; 	currDir := FileUtil.getDir( dir )
-	; 	files   := []
-		
-	; 	Loop, %currDir%\*
-	; 	{
-	; 		if not regexmatch( A_LoopFileFullPath, pattern )
-	; 			continue
-			
-	; 		files.Insert( A_LoopFileFullPath )
-	; 	}
-		
-	; 	sortArray( files )
-		
-	; 	return files
-		
-	; }
-
 	getFiles( path, pattern=".*" ) {
 		
-		files   := []
+		files := []
 
-		if ( FileUtil.isFile(path) ) {
+		if ( this.isFile(path) ) {
 			if RegExMatch( path, pattern )
 				files.Insert( path )
 
 		} else {
-			currDir := FileUtil.getDir( path )
+			currDir := this.getDir( path )
 			Loop, %currDir%\*
 			{
 				if not RegExMatch( A_LoopFileFullPath, pattern )
@@ -83,10 +63,25 @@ class FileUtil {
 			}
 			sortArray( files )
 		}
-
 		
 		return files
 		
+	}
+
+	getFile( pathDirOrFile, pattern=".*" ) {
+
+		if ( pathDirOrFile == "" or this.isFile(pathDirOrFile) )  {
+			return pathDirOrFile
+		}
+
+        files := this.getFiles( pathDirOrFile, pattern )
+
+        if ( files.MaxIndex() > 0 ) {
+        	return files[ 1 ]
+        }
+
+        return ""
+
 	}
 	
 	isDir( path ) {
