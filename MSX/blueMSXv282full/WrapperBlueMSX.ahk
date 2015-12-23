@@ -78,17 +78,17 @@ reset() {
 	Send, {ShiftUp}
 	Send, {CtrlUp}
 	WinActivate, ahk_class blueMSX
-
-insertDisk( slotNo	Send {F12}
+	Send, {F12}
 }
-, file ) {
+
+insertDisk( slotNo, file ) {
 
 	IfNotExist % file 
-        return
+    return
 
-    WinActivate, ahk_class blueMSX
+  WinActivate, ahk_class blueMSX
 	
-	if( slotNo == "1" ) {
+	if ( slotNo == "1" ) {
 		Send {LCtrl Down}{F9}  ;FDD1
 		Send {LCtrl Up}
 	} else if( slotNo == "2" ) {
@@ -112,7 +112,7 @@ insertDisk( slotNo	Send {F12}
 
 removeDisk( slotNo ) {
 
-    WinActivate, ahk_class blueMSX
+  WinActivate, ahk_class blueMSX
 
 	if( slotNo == "1" ) {
 		Send {RCtrl Down}{F9}  ;FDD1

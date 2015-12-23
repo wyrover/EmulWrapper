@@ -1,124 +1,44 @@
 #NoEnv
 #include %A_ScriptDir%\..\..\ZZ_Library\Include.ahk
 
-ptr := A_PtrSize ? "Ptr" : "UInt"
-char_size := A_IsUnicode ? 2 : 1
-
 emulatorPid    := ""
 imageFilePath  := %0%
-;imageFilePath  := "\\NAS\emul\image\MSX\YS2"
-imageFilePath   := "\\NAS\emul\image\MSX\MSX2 Various\ÀÌ½º 2 [Ancient Ys Vanished II - The Final Chapter (1988)(Falcom)(T-En)]"
+;imageFilePath  := "d:\app\dev\MSXROM\YS2 [Test]"
+;imageFilePath  := ""
 
-fddContainer := new DiskContainer( imageFilePath, "i).*\.dsk\.zip" )
+fddContainer := new DiskContainer( imageFilePath, "i).*\.dsk(\.zip)?$" )
 fddContainer.initSlot( 2 )
 
 option := setConfig( imageFilePath )
 
 if( option != false ) {
 
-	pipeName := "openMsxPipe"
-	pipe     := a_scriptDir "\" pipeName
+	;MsgBox, % option
 
-	; pipe      := CreateNamedPipe( pipeName, 2 )
+	;commandLine := "openmsx.exe -machine Panasonic_FS-A1GT -control stdio" option
+	; commandLine := "openmsx.exe -machine BOOSTED_MSX2+_JP -control stdio" option
+	commandLine := "openmsx.exe -machine Boosted_MSXturboR -control stdio" option
+	; commandLine := "openmsx.exe -machine Boosted_MSXturboR_with_IDE -control stdio" option
+	;commandLine := "openmsx.exe -machine Gradiente_Expert_DD_Plus -control stdio" option
 
-	;DllCall("ConnectNamedPipe","uint",pipe,"uint",0)
+	global cmd := new Cli( commandLine, false )
 
-	;MsgBox % "openmsx.exe -machine BOOSTED_MSX2+_JP -control pipe " option " > " pipeName
-;	msgbox powershell.exe -noexit -command ".\openmsx.exe -machine BOOSTED_MSX2+_JP %option% -control pipe > %pipeName%"
-	;MsgBox, % "openmsx.exe -machine BOOSTED_MSX2+_JP " option
+	while "" == ( line := cmd.readPipe() )
+	{
+		Sleep, 200
+		if ( a_index > 25 ) {
+			executor.close()
+			ExitApp
+		}		
+	}
 
-	;Run, % "openmsx.exe -machine BOOSTED_MSX2+_JP -control stdio" option,,, emulatorPid
-	Run, % "openmsx.exe -machine BOOSTED_MSX2+_JP" option,,, emulatorPid
-	
-	;run, powershell.exe -noexit -command ".\openmsx.exe -machine BOOSTED_MSX2+_JP -diska ""\\NAS\emul\image\MSX\YS2\Ancient Ys Vanished II - The Final Chapter (1988)(Falcom)(Disk 1 of 2)(Game Disk).dsk.zip"""" -diskb ""\\NAS\emul\image\MSX\YS2\Ancient Ys Vanished II - The Final Chapter (1988)(Falcom)(Disk 2 of 2)(Data Disk).dsk.zip"""" -control stdio",,, emulationPid
-	
-	;Run, openmsx.exe -machine BOOSTED_MSX2+_JP %option%,,, emulatorPid
-	;Run, % "openmsx.exe -machine BOOSTED_MSX2+_JP -control pipe " option,,HIDE,emulatorPid
+	sendCommand( "<openmsx-control>" )
+	sendCommand( "unset renderer" )
+	sendCommand( "set power on" )
 
-	;shell.run( "openmsx.exe -machine BOOSTED_MSX2+_JP -control pipe " option " > """ pipeName """" )
+	cmd.waitForClose()
 
-;	Sleep, 100
-
-; MsgBox, Start
-
-;Sleep, 1000
-
-;WinUAE( "<command>set renderer SDL</command>" )
-
-; While ! DllCall( "WaitNamedPipe", "Str", pipeName, "Ptr", 0xffffffff)
-;     Sleep, 500
-
-WinWait, ahk_exe openmsx.exe,,5
-IfWinExist
-{
-
-	;sendCommand( "<openmsx-control>" )
-	;sendCommand( "unset renderer" )
-	;sendCommand( "set power on" )
-
-;c:\Users\Administrator\AppData\Local\Temp\openmsx-default\
-	WinWaitClose, ahk_exe openmsx.exe
-
-}
-	
-
-	; Sleep, 2000
-
-	; message := ""
-
- ;    while "" != (data := pipe.Read(4096))
-	; 	message .= data
-       
- ;    msgbox % message
-
-
-
-; while ConnectNamedPipe(pipeName)
-; {
-;     ; Read the message incrementally (if it is long).
-;     message := ""
-;     while "" != (data := pipe.Read(4096))
-; 		message .= data
-       
-;     ; Process the message.
-;     ;MsgBox % message
-;     ;Run, %message%
-;     params .= message
-;     ;params .= " """ message """"
-;     msgbox % params
-		  		
-;     ; Disconnect so that we can accept another connection.
-;     DllCall("DisconnectNamedPipe", "ptr", hpipe)	
-; }
-
-; DllCall("ConnectNamedPipe", ptr, pipe, ptr, 0)
-
-; MsgBox, Connected
-
-; PipeMsg := (A_IsUnicode ? chr(0xfeff) : chr(239) chr(187) chr(191)) . PipeMsg
-; If !DllCall("WriteFile", ptr, pipe, "str", PipeMsg, "uint", (StrLen(PipeMsg)+1)*char_size, "uint*", 0, ptr, 0)
-;     MsgBox WriteFile failed: %ErrorLevel%/%A_LastError%
-
-; ;MsgBox, Click OK to close handle
-
-; DllCall("CloseHandle", ptr, pipe)
-
-
-; Loop, read, %pipe_name%
-;  MSgBox, %A_LoopReadLine%
-
-
-
-	; WinWait, ahk_exe openmsx.exe,,5
-	; IfWinExist
-	; {
-
-	; 	WinWaitClose, ahk_exe openmsx.exe
-
-	; 	; MsgBox, End
-
-
-	; }
+	cmd.close()	
 	
 } else {
 	Run, % ".\Catapult\bin\Catapult.exe",,,emulatorPid
@@ -129,19 +49,19 @@ ExitApp
 ^+PGUP::
 
 	If GetKeyState( "z", "P" ) ; Ctrl + Shift + Z + PgUp :: Remove Disk in Drive#1
-		fddContainer.removeDisk( "1", "removeDisk" )
+	fddContainer.removeDisk( "1", "removeDisk" )
 	else ; Ctrl + Shift + PgUp :: Insert Disk in Drive#1
-		fddContainer.insertDisk( "1", "insertDisk" )
+	fddContainer.insertDisk( "1", "insertDisk" )
 	
 	return
 
 ^+PGDN:: ; Insert Disk in Drive#2
 
 	If GetKeyState( "z", "P" ) ; Ctrl + Shift + Z + PgDn :: Remove Disk in Drive#2
-		fddContainer.removeDisk( "2", "removeDisk" )
+	fddContainer.removeDisk( "2", "removeDisk" )
 
 	else ; Ctrl + Shift + PgDn :: Insert Disk in Drive#2
-		fddContainer.insertDisk( "2", "insertDisk" )
+	fddContainer.insertDisk( "2", "insertDisk" )
 	
 	return
 
@@ -165,25 +85,12 @@ ExitApp
 	return
 
 sendCommand( command ) {
-	IfWinExist, ahk_exe openmsx.exe
-	{
-		if ! RegExMatch( command, "^<.+?>$") {
-			command := "<command>" command "</command>"
-		}
 
-		WinActivate, ahk_class ConsoleWindowClass ahk_exe openmsx.exe
-		SendInput, %command%`n
-		WinActivate, ahk_class SDL_app ahk_exe openmsx.exe
-	}
-}
+	if ! RegExMatch( command, "^<.+?>$")
+		command := "<command>" command "</command>"
 
-StrPutVar( string, ByRef var, encoding ) {
-    ; Ensure capacity.
-    VarSetCapacity( var, StrPut(string, encoding)
-        ; StrPut returns char count, but VarSetCapacity needs bytes.
-        * ((encoding="utf-16"||encoding="cp1200") ? 2 : 1) )
-    ; Copy or convert the string.
-    return StrPut( string, &var, encoding )
+	cmd.writePipe( command, "UTF-8" )
+
 }
 
 reset() {
@@ -198,9 +105,9 @@ reset() {
 insertDisk( slotNo, file ) {
 
 	IfNotExist % file 
-        return
+		return
 
-    command := file
+	command := file
 	command := RegExReplace( command, "\\", "/" )
 	command := RegExReplace( command, "( |\[|\])", "\$1" )
 
@@ -212,73 +119,70 @@ insertDisk( slotNo, file ) {
 		return
 	}
 
-	StrPutVar( command, commandNew, "utf-16" )
-	MsgBox, %commandNew%
-	sendCommand( commandNew )
-	;sendCommand( command )
+	sendCommand( command )
 
 }
 
 removeDisk( slotNo ) {
 
-    WinActivate, ahk_class blueMSX
+	WinActivate, ahk_class blueMSX
 
 	if ( slotNo == "1" ) {
 		sendCommand( "diska eject" )
 	} else if( slotNo == "2" ) {
 		sendCommand( "diskb eject" )
 	}
-    
+
 }
 
 setConfig( imageFilePath ) {
 
 	currDir := FileUtil.getDir( imageFilepath )
 	confDir := currDir . "\_EL_CONFIG"
-	
+
 	if( currDir = "" ) {
 		return false
 	}
-	
+
 	option := ""
 
 	; Add Casette
-	files := FileUtil.getFiles( currDir, "i).*\.cas\.zip" )
+	files := FileUtil.getFiles( currDir, "i).*\.cas(\.zip)?$" )
 	if ( files.MaxIndex() > 0 ) {
 		option := % option " -cassetteplayer """ files[ 1 ] """"
 		return option
 	}
 
 	; Add Rom
-	files := FileUtil.getFiles( currDir, "i).*\.rom\.zip" )
+	files := FileUtil.getFiles( currDir, "i).*\.rom(\.zip)?$" )
 	if ( files.MaxIndex() > 0 ) {
 		Loop, % files.MaxIndex()
 		{
 			if( a_index == 1 )
-				option := % option " -carta """ files[a_index] """"
+			option := % option " -carta """ files[a_index] """"
 
 			if( a_index == 2 )
-				option := % option " -cartb """ files[a_index] """"
+			option := % option " -cartb """ files[a_index] """"
 
 			if( a_index > 2 )			
-			    break
+			break
 		}
 		return option
 	}
 
 	; Add Disk
-	files := FileUtil.getFiles( currDir, "i).*\.dsk\.zip" )
+	files := FileUtil.getFiles( currDir, "i).*\.dsk(\.zip)?$" )
 	if ( files.MaxIndex() > 0 ) {
 		Loop, % files.MaxIndex()
 		{
 			if( a_index == 1 )
-				option := % option " -diska """ files[a_index] """"
+			option := % option " -diska """ files[a_index] """"
 
 			if( a_index == 2 )
-				option := % option " -diskb """ files[a_index] """"
+			option := % option " -diskb """ files[a_index] """"
 
 			if( a_index > 2 )			
-			    break
+			break
 		}
 		return option
 	}
