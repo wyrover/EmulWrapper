@@ -16,11 +16,11 @@
 
 class Tray {
 
-    __New() {
-        throw Exception( "Tray is a static class, dont instante it!", -1 )
-    }
+	__New() {
+	    throw Exception( "Tray is a static class, dont instante it!", -1 )
+	}
 
-    show( title, message:="", duration=2000 ) {
+	show( title, message:="", duration=2000 ) {
 
 		this.hide()
 
@@ -47,12 +47,12 @@ class Tray {
 			gui, destroy
 			return
 
-    }
+	}
 	
 	hide() {
 		SetTimer, Tray.show_remove, off
 		gui, destroy
-    }
+  }
 
 }
 

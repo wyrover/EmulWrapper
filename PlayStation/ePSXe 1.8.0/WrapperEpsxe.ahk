@@ -4,52 +4,172 @@
 emulatorPid := ""
 
 imageFilePath := %0%
-;imageFilePath := "d:\download\PS1 ROM\전국무쌍 (한글판)\Sengoku Mugen (J).ccd"
+;imageFilePath := "\\NAS\emul\image\PlayStation\어드벤쳐\물망초 [Forget Me Not - Pallete (T-Kr)]"
 
-if ( imageFilePath = "" ) {
+cdContainer := new DiskContainer( imageFilePath, "i).*\.(iso|cue|mdx)?$" )
+cdContainer.initSlot( 1 )
 
-    Run, % "ePSXe.exe",,,emulatorPid
-	ExitApp	
+if ( cdContainer.size() >= 1 ) {
 
-} else {
+	config := getConfig( imageFilepath )
 
-	setConfig( imageFilePath )
+	if ( VirtualDisk.open( cdContainer.getFile(1) ) == true ) {
 
-	if ( VirtualDisk.open( imageFilePath ) = true ) {
-		;RunWait, % "ePSXe.exe -nogui -slowboot",,,emulatorPid
-		RunWait, % "ePSXe.exe -nogui",,,emulatorPid
+		Run, % "ePSXe.exe " config,,,emulatorPid
+
+		WinWait, ahk_class EPSXGUI,, 10
+		IfWinExist
+		{
+			WinActivate, ahk_class EPSXGUI
+			Send !{F}{Enter}
+			Process, WaitClose, %emulatorPid%
+		}
+
 		VirtualDisk.close()
+		
 	} else {
-;		MsgBox, % "ePSXe.exe -nogui -loadbin """ imageFilePath """"
-    	RunWait, % "ePSXe.exe -nogui -loadbin """ imageFilePath """",,,emulatorPid
+		config := config " -loadbin """ cdContainer.getFile(1) """"
+   	RunWait, % "ePSXe.exe " config,,,emulatorPid
 	}
 
-	ExitApp
-
+} else {
+	Run, % "ePSXe.exe",,,emulatorPid	
 }
 
-!F4:: ; ALT + F4
+ExitApp	
 
-    ;SetWinDelay, 50
+
+!F4:: ; ALT + F4
+  ;SetWinDelay, 50
 	;PostMessage, 0x111, 40007,,,ahk_class EPSX	; Exit ePSXe ; ControlSend,, {Esc down}{Esc up}, ePSXe ahk_class EPSX
 	;RunWait, taskkill /im ePSXe.exe /f
-	Process, Close, %emulatorPid%
-
-    ResolutionChanger.restore()
-    VirtualDisk.close()
-
-    ExitApp
+	;Process, Close, %emulatorPid%
+  ;ResolutionChanger.restore()
+  openMainGui()
+	Send !{F}{E}
+  return
 	
-^F3::
-    Tray.show( "Merong", "blablah" )
+^+PGUP:: ; Change CD rom
+	cdContainer.insertDisk( "1", "changeCdRom" )
 	return
 
 
+^+End:: ; Cancel Disk Change	
+	cdContainer.cancel()
+	return
+
+^+Del:: ; Reset
+	openMainGui()
+	Send !{R}{R}
+	waitEmulator()
+	return
+
+^+F4:: ;Exit
+	Process, Close, %emulatorPid%
+  ResolutionChanger.restore()
+  VirtualDisk.close()
+	return
+
+^+Insert:: ; Toggle Speed
+	Tray.show( "Toggle speed" )
+	WinActivate, ahk_class EPSX
+
+	SendInput {F4 down}
+	Sleep, 50
+	SendInput {F4 up}
+	Sleep, 100
+
+	return
+
+openMainGui() {
+
+	IfWinExist ahk_class EPSX
+	{
+		SendInput {Esc down}
+		Sleep, 50
+		SendInput {Esc up}
+		Sleep, 100
+	}
+
+	WinWait, ahk_class EPSXGUI,, 10
+	IfWinExist
+	{
+		WinActivate, ahk_class EPSXGUI
+	}
+
+}
+
+waitEmulator() {
+	WinWait, ahk_class EPSX,, 10
+	IfWinExist
+	{
+		WinActivate, ahk_class EPSX
+	}	
+}
+
+changeCdRom( slotNo, file ) {
+	openMainGui()
+	Send !{F}{C}{C}
+	if ( VirtualDisk.open( file ) == true ) {
+		WinActivate, ahk_exe ePSXe.exe ahk_class #32770
+		Send {Enter}
+	} else {
+		WinActivate, ahk_exe ePSXe.exe ahk_class #32770
+		Send {Escape}
+	}
+	waitEmulator()
+	return
+}
+
+getConfig( imageFilePath ) {
+
+	dirConf   := FileUtil.getDir( imageFilepath ) . "\_EL_CONFIG"
+	dirBios   := dirConf "\bios"
+	dirMemory := dirConf "\memcards"
+
+	FileUtil.makeDir( dirConf )
+	FileUtil.makeDir( dirMemory )	
+
+	customBiosPath := ""
+
+	IfExist %dirBios%
+	{
+		Loop, %dirBios%\*.bin
+		{
+			customBiosPath := A_LoopFileFullPath
+			break
+		}
+	}
+
+	IfNotExist %dirMemory%\epsxe001.mcr
+		FileAppend,,%dirMemory%\epsxe001.mcr
+	IfNotExist %dirMemory%\epsxe002.mcr
+		FileAppend,,%dirMemory%\epsxe002.mcr
+
+	option := ""
+
+	if( customBiosPath != "" ) {
+		option := option " -bios """ customBiosPath """"
+	}
+
+	option := option " -loadmemc0 """ dirMemory "\epsxe001.mcr" """"
+	option := option " -loadmemc1 """ dirMemory "\epsxe002.mcr" """"
+
+	option := option " -slowboot"
+	;option := option " -nogui"
+
+	return option
+	
+}
+
+/*
 setConfig( imageFilePath ) {
 	
 	registryPath := "S-1-5-21-108037658-2208837996-2228346073-500\Software\epsxe\config"
 	
 	confDir := FileUtil.getDir( imageFilepath ) . "\_EL_CONFIG"
+
+
 	
 	IfExist %confDir%\bios
 	{
@@ -81,3 +201,4 @@ setConfig( imageFilePath ) {
 	}
 
 }
+*/

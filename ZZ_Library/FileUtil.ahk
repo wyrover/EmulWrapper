@@ -131,4 +131,8 @@ class FileUtil {
 
 	}
 
+	makeDir( path ) {
+		FileCreateDir, %path%
+	}
+
 }

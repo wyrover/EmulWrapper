@@ -13,7 +13,7 @@ option := setConfig( imageFilePath )
 if( option != false ) {
 
 	Run, % "d:\app\Emul\MSX\blueMSXv282full\blueMSX.exe " option,,,emulatorPid
-	WinWait, ahk_class blueMSX,, 5
+	WinWait, ahk_class blueMSX,, 10
 	IfWinExist
 	{
 		reset()
