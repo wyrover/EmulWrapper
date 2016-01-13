@@ -7,11 +7,25 @@ DetectHiddenWindows, on
 #SingleInstance
 
 Tray_Icons := TrayIconsSearch()
-for index, element in Tray_Icons
-{
-	infoText .= "idx: " . element.idx . " | idn: " . element.idn . " | Pid: " . element.pid . " | uID: " . element.uID . " | MessageID: " . element.MessageID . " | hWnd: " . element.hWnd . " | Class: " . element.Class . " | Process: " . element.Process . "`n" . "   | Tooltip: " . element.Tooltip . "`n`n"
+
+for index, element in Tray_Icons {
+
+	element.Tooltip := RegExReplace( element.Tooltip, "\n", "`n`t" )
+
+	infoText .=    "idx: "       . element.idx
+	infoText .= " | idn: "       . element.idn
+	infoText .= " | Pid: "       . element.pid
+	infoText .= " | uID: "       . element.uID
+	infoText .= " | MessageID: " . element.MessageID
+	infoText .= " | hWnd: "      . element.hWnd
+	infoText .= " | Class: "     . element.Class
+	infoText .= " | Process: "   . element.Process . "`n"
+	infoText .= "Tooltip: `t"    . element.Tooltip . "`n`n"
 }
+
 MsgBox, %infoText%
+
+ExitApp
 	
 TrayIconsSearch(sTerm="")
 {
@@ -30,8 +44,7 @@ return Tray_Icons
 }
 
 
-TrayIcons(sExeName = "")
-{
+TrayIcons(sExeName = "") {
 	arr := {}
 	Setting_A_DetectHiddenWindows := A_DetectHiddenWindows
 	DetectHiddenWindows, On
@@ -67,15 +80,15 @@ TrayIcons(sExeName = "")
 		,	DllCall("ReadProcessMemory", "Uint", hProc, "Uint", iString, "Uint", &wTooltip, "Uint", 128*2, "Uint", 0)
 		,	DllCall("WideCharToMultiByte", "Uint", 0, "Uint", 0, "str", wTooltip, "int", -1, "str", sTooltip, "int", 128, "Uint", 0, "Uint", 0)
 		,	Index = arr.MaxIndex()>0 ? arr.MaxIndex()+1 : 1
-		,	arr[Index,"idx"] := A_Index-1
-		,	arr[Index,"idn"] := idn
-		,	arr[Index,"Pid"] := Pid
-		,	arr[Index,"uID"] := uID
+		,	arr[Index,"idx"]       := A_Index-1
+		,	arr[Index,"idn"]       := idn
+		,	arr[Index,"Pid"]       := Pid
+		,	arr[Index,"uID"]       := uID
 		,	arr[Index,"MessageID"] := nMsg
-		,	arr[Index,"hWnd"] := hWnd
-		,	arr[Index,"Class"] := sClass
-		,	arr[Index,"Process"] := sProcess
-		,	arr[Index,"Tooltip"] := (A_IsUnicode ? wTooltip : sTooltip)
+		,	arr[Index,"hWnd"]      := hWnd
+		,	arr[Index,"Class"]     := sClass
+		,	arr[Index,"Process"]   := sProcess
+		,	arr[Index,"Tooltip"]   := (A_IsUnicode ? wTooltip : sTooltip)
 	}
 	DllCall("VirtualFreeEx", "Uint", hProc, "Uint", pProc, "Uint", 0, "Uint", 0x8000)
 	DllCall("CloseHandle", "Uint", hProc)
@@ -83,8 +96,7 @@ TrayIcons(sExeName = "")
 	Return	arr
 }
 
-TrayIconsOverflow(sExeName = "")
-{
+TrayIconsOverflow(sExeName = "") {
 	arr := {}
 	Setting_A_DetectHiddenWindows := A_DetectHiddenWindows
 	DetectHiddenWindows, On
@@ -107,7 +119,7 @@ TrayIconsOverflow(sExeName = "")
 		DllCall("ReadProcessMemory", "Uint", hProc, "Uint", dwData, "Uint", &nfo, "Uint", 32, "Uint", 0)
 		If	NumGet(btn,12,"Uint")
 			hWnd	:= NumGet(nfo, 0)
-		,	uID	:= NumGet(nfo, 4)
+		,	uID	  := NumGet(nfo, 4)
 		,	nMsg	:= NumGet(nfo, 8)
 		,	hIcon	:= NumGet(nfo,20)
 		Else	hWnd	:= NumGet(nfo, 0,"int64"), uID:=NumGet(nfo, 8,"Uint"), nMsg:=NumGet(nfo,12,"Uint")
@@ -116,18 +128,18 @@ TrayIconsOverflow(sExeName = "")
 		WinGetClass, sClass,           ahk_id %hWnd%
 		If !sExeName || (sExeName = sProcess) || (sExeName = pid)
 			VarSetCapacity(sTooltip,128), VarSetCapacity(wTooltip,128*2)
-		,	DllCall("ReadProcessMemory", "Uint", hProc, "Uint", iString, "Uint", &wTooltip, "Uint", 128*2, "Uint", 0)
-		,	DllCall("WideCharToMultiByte", "Uint", 0, "Uint", 0, "str", wTooltip, "int", -1, "str", sTooltip, "int", 128, "Uint", 0, "Uint", 0)
+		,	DllCall("ReadProcessMemory",   "Uint", hProc, "Uint", iString, "Uint", &wTooltip, "Uint", 128*2, "Uint", 0)
+		,	DllCall("WideCharToMultiByte", "Uint", 0,     "Uint", 0,       "str",  wTooltip,  "int", -1,     "str", sTooltip, "int", 128, "Uint", 0, "Uint", 0)
 		,	Index = arr.MaxIndex()>0 ? arr.MaxIndex()+1 : 1
-		,	arr[Index,"idx"] := A_Index-1
-		,	arr[Index,"idn"] := idn
-		,	arr[Index,"Pid"] := Pid
-		,	arr[Index,"uID"] := uID
+		,	arr[Index,"idx"]       := A_Index-1
+		,	arr[Index,"idn"]       := idn
+		,	arr[Index,"Pid"]       := Pid
+		,	arr[Index,"uID"]       := uID
 		,	arr[Index,"MessageID"] := nMsg
-		,	arr[Index,"hWnd"] := hWnd
-		,	arr[Index,"Class"] := sClass
-		,	arr[Index,"Process"] := sProcess
-		,	arr[Index,"Tooltip"] := (A_IsUnicode ? wTooltip : sTooltip)
+		,	arr[Index,"hWnd"]      := hWnd
+		,	arr[Index,"Class"]     := sClass
+		,	arr[Index,"Process"]   := sProcess
+		,	arr[Index,"Tooltip"]   := (A_IsUnicode ? wTooltip : sTooltip)
 	}
 	DllCall("VirtualFreeEx", "Uint", hProc, "Uint", pProc, "Uint", 0, "Uint", 0x8000)
 	DllCall("CloseHandle", "Uint", hProc)
@@ -135,15 +147,13 @@ TrayIconsOverflow(sExeName = "")
 	Return	arr
 }
 
-
-GetTrayBar()
-{
+GetTrayBar() {
 	ControlGet, hParent, hWnd,, TrayNotifyWnd1  , ahk_class Shell_TrayWnd
 	ControlGet, hChild , hWnd,, ToolbarWindow321, ahk_id %hParent%
 	Loop
 	{
 		ControlGet, hWnd, hWnd,, ToolbarWindow32%A_Index%, ahk_class Shell_TrayWnd
-		If  Not	hWnd
+		If Not hWnd
 			Break
 		Else If	hWnd = %hChild%
 		{
