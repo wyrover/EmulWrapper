@@ -21,7 +21,7 @@ ExitApp
 
 
 ^F3::
-    Tray.show( "Merong", "blablah" )
+    Tray.showMessage( "Merong", "blablah" )
 	return
 
 

@@ -79,7 +79,7 @@ ExitApp
 	return
 
 ^+Insert:: ; Toggle Speed
-	Tray.show( "Toggle speed" )
+	Tray.showMessage( "Toggle speed" )
 	WinActivate, ahk_class SDL_app ahk_exe openmsx.exe
 	Send {F9}
 	return

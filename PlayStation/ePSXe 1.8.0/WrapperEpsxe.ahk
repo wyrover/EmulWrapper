@@ -71,7 +71,7 @@ ExitApp
 	return
 
 ^+Insert:: ; Toggle Speed
-	Tray.show( "Toggle speed" )
+	Tray.showMessage( "Toggle speed" )
 	WinActivate, ahk_class EPSX
 
 	SendInput {F4 down}

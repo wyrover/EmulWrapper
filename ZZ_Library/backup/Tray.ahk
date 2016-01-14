@@ -6,23 +6,23 @@
 ;ExitApp
 ;
 ;^F3::
-;	Tray.show( "Timed Tray Tip", "This will be displayed for 5 seconds" )
+;	Tray.showMessage( "Timed Tray Tip", "This will be displayed for 5 seconds" )
 ;	return
 ;^F4::
-;	Tray.hide()
+;	Tray.hideMessage()
 ;	return
 ;!F4::
 ;	ExitApp
 
 class Tray {
 
-    __New() {
-        throw Exception( "Tray is a static class, dont instante it!", -1 )
-    }
+  __New() {
+    throw Exception( "Tray is a static class, dont instante it!", -1 )
+  }
 
-    showTip( title, message, duration=3, option=1 ) {
+  showTip( title, message, duration=3, option=1 ) {
 
-    	Tray.hide()
+    Tray.hideMessage()
 
 		duration := duration * 1000
 		TrayTip %title%, %message%, , %option%
@@ -30,15 +30,15 @@ class Tray {
 		return
 
 		Tray.show_remove:
-			Tray.hide()
+			Tray.hideMessage()
 			return
 
-    }
+  }
 	
 	hideTip() {
 		SetTimer, Tray.show_remove, off
 		TrayTip
-    }
+  }
 
 }
 

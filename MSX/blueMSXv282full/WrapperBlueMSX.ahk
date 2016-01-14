@@ -67,7 +67,7 @@ ExitApp
 ^+Insert:: ; Toggle Speed
 	Send, {ShiftUp}
 	Send, {CtrlUp}
-	Tray.show( "Toggle speed" )
+	Tray.showMessage( "Toggle speed" )
 	WinActivate, ahk_class blueMSX
 	Send {LCtrl Down}{LShift Down}{M}
 	Send {LCtrl Up}

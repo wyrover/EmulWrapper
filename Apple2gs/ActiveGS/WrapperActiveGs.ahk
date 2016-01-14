@@ -83,10 +83,10 @@ ExitApp
 		if ( speedNormal != false ) {
 			Send {end}
 			speedNormal := false
-			Tray.show( "Toggle speed to unlimited" )
+			Tray.showMessage( "Toggle speed to unlimited" )
 		} else {
 			speedNormal := true
-			Tray.show( "Toggle speed to normal" )
+			Tray.showMessage( "Toggle speed to normal" )
 		}
 
 		WinClose, ahk_class #32770

@@ -32,7 +32,7 @@ ExitApp
 ;ahk_class MagicEngineWindowClass
 ;ahk_exe pce.exe
 
-    Tray.show( "Send Key", "Merong" )
+    Tray.showMessage( "Send Key", "Merong" )
 	;SetKeyDelay(50)
 	;WinActive, ahk_class MagicEngineWindowClass
 	;ControlSend,, {ALT}+{F4}, ahk_class MagicEngineWindowClass

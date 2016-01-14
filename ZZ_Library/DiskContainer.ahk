@@ -21,12 +21,12 @@ return
 
 ^+PGUP:: ; Drive#1 Disk Change
     fddContainer.insertDisk( "1", "setDisk" )
-    ;Tray.show( "Disk 1", fddContainer.toString(), 10000 )
+    ;Tray.showMessage( "Disk 1", fddContainer.toString(), 10000 )
 	return
 
 ^+PGDN:: ; Drive#2 Disk Change
 	fddContainer.insertDisk( "2", "setDisk" )
-    ;Tray.show( "Disk 2", fddContainer.toString(), 10000 )
+    ;Tray.showMessage( "Disk 2", fddContainer.toString(), 10000 )
 	return
 
 ^F3::
@@ -119,7 +119,7 @@ class DiskContainer {
 
         SetTimer, Timer_DiskContainer_insertDisk_RunFunction, off
 
-        ;Tray.show( "Compare", file "`n == " DiskContainer.slot[ slotNo ].fileInserted "`n ==" this.toString(), 10000 )
+        ;Tray.showMessage( "Compare", file "`n == " DiskContainer.slot[ slotNo ].fileInserted "`n ==" this.toString(), 10000 )
 
         ; Set Slot
         if( DiskContainer.slot[ slotNo ] == null )
@@ -130,7 +130,7 @@ class DiskContainer {
 
 
         ; Show Status
-        Tray.show( "Insert Disk in Drive " slotNo, FileUtil.getFileName(file) )
+        Tray.showMessage( "Insert Disk in Drive " slotNo, FileUtil.getFileName(file) )
 
 		SetTimer, Timer_DiskContainer_insertDisk_RunFunction, -%duration%
 		return
@@ -157,7 +157,7 @@ class DiskContainer {
     
     removeDisk( slotNo, functionName ) {
 
-        Tray.show( "Remove disk in Drive " slotNo, "" )
+        Tray.showMessage( "Remove disk in Drive " slotNo, "" )
         slot := DiskContainer.slot[ slotNo ]
         Func( functionName ).( slotNo, slot.file )
         slot.fileInserted := ""
@@ -167,7 +167,7 @@ class DiskContainer {
     }
     
     cancel() {
-        Tray.show( "Cancel to change disk" )
+        Tray.showMessage( "Cancel to change disk" )
         For slotNo, slot in DiskContainer.slot
         {
             if( slot.file == "" )
