@@ -1,6 +1,11 @@
 #NoEnv
 #include %A_ScriptDir%\..\..\ZZ_Library\Include.ahk
 
+
+sendKey( "F1" )
+
+ExitApp
+
 emulatorPid   := ""
 imageFilePath := %0%
 ;imageFilePath := ""
@@ -16,10 +21,7 @@ if ( (romFile := FileUtil.getFile(imageFilepath, "i).*\.(mdx|mdf|cue)" )) != "" 
 	IfWinExist
 	{
 		WinWaitActive, ahk_class MagicEngineWindowClass,, 10
-		SendInput {Enter down}
-		Sleep, 50
-		SendInput {Enter up}
-		Sleep, 100
+		sendKey( "Enter" )
 		WinWaitClose
 	}
 	VirtualDisk.close()

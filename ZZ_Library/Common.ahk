@@ -99,13 +99,20 @@ sortArray( Array, Order="A" ) {
 }
 */
 
+sendKey( key ) {
+  SendInput {%key% down}
+  Sleep, 50
+  SendInput {%key% up}
+  Sleep, 100
+}
+
 sortArray( Array ) {
-    t:=Object()
-    for k, v in Array
-        t[RegExReplace(v,"\s")]:=v
-    for k, v in t
-        Array[A_Index]:=v
-    return Array
+  t := Object()
+  for k, v in Array
+    t[RegExReplace(v,"\s")]:=v
+  for k, v in t
+    Array[A_Index]:=v
+  return Array
 }
 
 /**
@@ -116,15 +123,12 @@ sortArray( Array ) {
 class Detector {
 
     static 64 := true
-
     static _void := Detector._init()
 
     _init() {
-        
         ThisProcess := DllCall("GetCurrentProcess") 
         if ! DllCall("IsWow64Process", "uint", ThisProcess, "int*", IsWow64Process) 
             Detector.64 := false 
-        
     }
     
     __New() {

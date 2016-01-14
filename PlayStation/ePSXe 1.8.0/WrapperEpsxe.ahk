@@ -73,38 +73,24 @@ ExitApp
 ^+Insert:: ; Toggle Speed
 	Tray.showMessage( "Toggle speed" )
 	WinActivate, ahk_class EPSX
-
-	SendInput {F4 down}
-	Sleep, 50
-	SendInput {F4 up}
-	Sleep, 100
-
+	sendKey( "F4" )
 	return
 
 openMainGui() {
 
 	IfWinExist ahk_class EPSX
-	{
-		SendInput {Esc down}
-		Sleep, 50
-		SendInput {Esc up}
-		Sleep, 100
-	}
+		sendKey( "Esc" )
 
 	WinWait, ahk_class EPSXGUI,, 10
 	IfWinExist
-	{
 		WinActivate, ahk_class EPSXGUI
-	}
 
 }
 
 waitEmulator() {
 	WinWait, ahk_class EPSX,, 10
 	IfWinExist
-	{
 		WinActivate, ahk_class EPSX
-	}	
 }
 
 changeCdRom( slotNo, file ) {
