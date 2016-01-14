@@ -1,15 +1,9 @@
 #NoEnv
 #include %A_ScriptDir%\..\..\ZZ_Library\Include.ahk
 
-
-sendKey( "F1" )
-
-ExitApp
-
 emulatorPid   := ""
 imageFilePath := %0%
 ;imageFilePath := ""
-;imageFilePath := "\\NAS\emul\image\PcEngine\hucard\Batman (J).zip"
 
 if ( (romFile := FileUtil.getFile(imageFilepath, "i).*\.(mdx|mdf|cue)" )) != "" ) {
 
@@ -21,22 +15,42 @@ if ( (romFile := FileUtil.getFile(imageFilepath, "i).*\.(mdx|mdf|cue)" )) != "" 
 	IfWinExist
 	{
 		WinWaitActive, ahk_class MagicEngineWindowClass,, 10
+		SendKey( "Home" )
+	  SendKey( "Enter" )
+	  Sleep, 400
+    SendKey( "Down" )
+	  SendKey( "Enter" )
+	  Sleep, 1200
 		sendKey( "Enter" )
 		WinWaitClose
 	}
 	VirtualDisk.close()
 
 } else if( (romFile := FileUtil.getFile(imageFilepath, "i).*\.(zip|pce)" )) != "" ) {
-	RunWait, % "pce.exe""" romFile """"
+	debug( "pce.exe """ romFile """" )
+	RunWait, % "pce.exe """ romFile """"
 } else {
 	Run, % "pce.exe"
 }
 
 ExitApp
 
+
 ^+Del:: ; Reset
+	SendKey( "Esc" )
+	SendKey( "Home" )
+	SendKey( "Down" )
+	SendKey( "Enter" )
 	return
 
 ^+Insert:: ; Toggle Speed
+
 	Tray.showMessage( "Toggle speed" )
+
+	if( GetKeyState( "Tab" ) == true ) {
+		SendInput {Tab up}
+	} else {
+		SendInput {Tab Down}
+	}
+
 	return

@@ -19,7 +19,7 @@ sendKey( key ) {
   SendInput {%key% down}
   Sleep, 50
   SendInput {%key% up}
-  Sleep, 100
+  Sleep, 50
 }
 
 sortArray( Array ) {
