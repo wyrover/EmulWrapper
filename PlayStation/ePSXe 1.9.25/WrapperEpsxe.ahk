@@ -1,6 +1,9 @@
 #NoEnv
 #include %A_ScriptDir%\..\..\ZZ_Library\Include.ahk
 
+; epsxe stores its settings in the registry @ HKEY_CURRENT_USER\Software\epsxe\config
+; plugins store their settings in the registry @ HKEY_CURRENT_USER\Software\Vision Thing\PSEmu Pro
+
 emulatorPid := ""
 
 imageFilePath := %0%
@@ -90,15 +93,13 @@ openMainGui() {
 waitEmulator() {
 	WinWait, ahk_class EPSX,, 10
 	IfWinExist
-	{
 		WinActivate, ahk_class EPSX
-	}	
 }
 
 changeCdRom( slotNo, file ) {
 	openMainGui()
 	Send !{F}{C}{C}
-	if ( VirtualDisk.open( file ) == true ) {
+	if ( VirtualDisk.open(file) == true ) {
 		WinActivate, ahk_exe ePSXe.exe ahk_class #32770
 		Send {Enter}
 	} else {
