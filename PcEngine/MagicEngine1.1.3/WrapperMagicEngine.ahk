@@ -6,39 +6,35 @@ imageFilePath := %0%
 ;imageFilePath := ""
 ;imageFilePath := "\\NAS\emul\image\PcEngine\hucard\Batman (J).zip"
 
-if( VirtualDisk.open( imageFilePath, false ) = true ) {
-	Run, % "pce.exe ""./cards/Super CD-ROM2 System V3.01 (En).zip""",,,emulatorPid
-	WinWait, ahk_class MagicEngineWindowClass,, 5
+if ( (romFile := FileUtil.getFile(imageFilepath, "i).*\.(mdx|mdf|cue)" )) != "" ) {
+
+	if ( VirtualDisk.open(romFile) != true )
+		ExitApp
+
+	Run, % "pce.exe ""./cards/Super CD-ROM2 System V3.01 (En).zip"" -cd",,,emulatorPid
+	WinWait, ahk_class MagicEngineWindowClass,, 10
 	IfWinExist
 	{
-		WinWaitActive, ahk_class MagicEngineWindowClass,, 5
-		;Sleep, 3000
-		;ControlSend,,{Enter},emulatorPid
-		;ControlSend,, {Enter},MagicEngine ahk_class MagicEngineWindowClass
-		;SendInput {Enter}
+		WinWaitActive, ahk_class MagicEngineWindowClass,, 10
+		SendInput {Enter down}
+		Sleep, 50
+		SendInput {Enter up}
+		Sleep, 100
 		WinWaitClose
 	}
 	VirtualDisk.close()
 
+} else if( (romFile := FileUtil.getFile(imageFilepath, "i).*\.(zip|pce)" )) != "" ) {
+	RunWait, % "pce.exe""" romFile """"
 } else {
-	Run, % "pce.exe """ imageFilePath """"
+	Run, % "pce.exe"
 }
 
 ExitApp
 
-^F3::
+^+Del:: ; Reset
+	return
 
-;MagicEngine  1.1
-;ahk_class MagicEngineWindowClass
-;ahk_exe pce.exe
-
-    Tray.showMessage( "Send Key", "Merong" )
-	;SetKeyDelay(50)
-	;WinActive, ahk_class MagicEngineWindowClass
-	;ControlSend,, {ALT}+{F4}, ahk_class MagicEngineWindowClass
-	;Send !{F4}
-	SendMode InputThenPlay
-	;SendEvent {Enter}
-	SendInput {Enter}
-	;SendPlay {Enter}
+^+Insert:: ; Toggle Speed
+	Tray.showMessage( "Toggle speed" )
 	return
